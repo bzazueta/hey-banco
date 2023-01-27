@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HeyVisitas"
+        android:hardwareAccelerated="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".ScannerVisitActivity"
+            android:exported="false"
+            android:label="@string/title_activity_scanner_visit"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".ScannerProviderActivity"
+            android:exported="false"
+            android:label="@string/title_activity_canner_provider"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".ScannerQRActivity"
+            android:exported="false"
+            android:label="@string/title_activity_scanner_qractivity"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".HomeLobbyActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home_lobby"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".MessageSolvedActivity"
+            android:exported="false"
+            android:label="@string/title_activity_messageolved"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".MessageHistoryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_message_history"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".MessageActivity"
+            android:exported="false"
+            android:label="@string/title_activity_message"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".SeeFileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_see_file"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".ContentNoticeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_content_notice"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".NoticesActivity"
+            android:exported="false"
+            android:label="@string/title_activity_notices"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".NoticesmessagesActvity"
+            android:exported="false"
+            android:label="@string/title_activity_noticesmessages_actvity"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".ProvidersActivity"
+            android:exported="false"
+            android:label="@string/title_activity_providers"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".PendingVisitsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_pending_visits"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".PickIdentification"
+            android:exported="false"
+            android:label="@string/title_activity_pick_identification"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".VisitsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_visits"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false"
+            android:label="@string/title_activity_forgot_password"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
+    </application>
+
+</manifest>

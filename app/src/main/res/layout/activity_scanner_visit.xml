@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:background="@drawable/gradient_drawable"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScannerVisitActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/back"
+            android:background="@drawable/border_radius"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/tvHeybanco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:text="Hey Banco"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvVisit"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:padding="16dp"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:textColor="@color/white"
+            android:text="Visita"
+            android:layout_marginStart="60dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/home_border_radius"
+            />
+
+        <ImageView
+            android:id="@+id/ivCircle"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/img"
+            android:layout_marginStart="105dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
+            />
+
+
+        <TextView
+            android:id="@+id/tvDepartament"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:text="Departamento"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/ivCircle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+        <EditText
+            android:id="@+id/etDepartament"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:hint="Ventas"
+            android:backgroundTint="@color/black"
+            android:layout_marginEnd="10dp"
+            android:editable="false"
+            app:layout_constraintTop_toBottomOf="@+id/ivCircle"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:text="Nombre"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/etDepartament"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:hint="Fausto Nieto"
+            android:editable="false"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/black"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etDepartament"
+            />
+
+        <TextView
+            android:id="@+id/tvPlacas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:text="Placas"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/etName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/etPlacas"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:hint="AB 98745 A"
+            android:enabled="false"
+            android:backgroundTint="@color/black"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etName"
+            />
+
+        <Button
+            android:id="@+id/btnEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entrada"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/white"
+            android:background="@drawable/border_radius"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:onClick="basicAlert"
+            app:layout_constraintTop_toBottomOf="@+id/tvPlacas"/>
+
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salida"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/white"
+            android:background="@drawable/border_radius"
+            android:onClick="basicAlert"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPlacas"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
