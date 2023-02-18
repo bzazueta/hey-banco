@@ -30,7 +30,7 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:padding="16dp"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="italic"
         android:textColor="@color/white"
         android:text="Visitas"
@@ -40,11 +40,11 @@
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
-        android:id="@+id/ivCircle"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/visitas_img"        android:id="@+id/ivCircle"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/img"
+        android:layout_marginStart="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         />
@@ -57,7 +57,7 @@
         android:gravity="center"
         android:layout_marginTop="50dp"
         android:padding="16dp"
-        android:textSize="24sp"
+        android:textSize="25sp"
         android:textStyle="italic"
         android:textColor="@color/white"
         android:text="Visitas pendientes"
@@ -67,11 +67,12 @@
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/pending_image"
         android:id="@+id/ivCircleVisit"
+        android:layout_marginEnd="20dp"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/img_pending"
         android:layout_marginTop="40dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvVisit"
@@ -84,22 +85,23 @@
         android:gravity="center"
         android:layout_marginTop="50dp"
         android:padding="16dp"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="italic"
         android:textColor="@color/white"
-        android:text="Provedores"
+        android:text="Proveedores"
         app:layout_constraintTop_toBottomOf="@+id/tvPendingVisit"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/provider_images"
         android:id="@+id/ivCircleProviders"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/img_providers"
         android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPendingVisit"
         />
@@ -111,22 +113,23 @@
         android:gravity="center"
         android:layout_marginTop="50dp"
         android:padding="16dp"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="italic"
         android:textColor="@color/white"
-        android:text="Avisos y mensaes"
+        android:text="Avisos y mensajes"
         app:layout_constraintTop_toBottomOf="@+id/tvProviders"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/avisos"
         android:id="@+id/ivCircleMessage"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/img_messages"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProviders"
         />

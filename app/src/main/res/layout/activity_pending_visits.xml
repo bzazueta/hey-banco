@@ -34,9 +34,9 @@
 
     <TextView
         android:id="@+id/tvVisit"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="60dp"
-        android:gravity="center"
+        android:gravity="right"
         android:layout_marginTop="10dp"
         android:padding="16dp"
         android:textSize="24sp"
@@ -50,26 +50,26 @@
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/visitas_img"
         android:id="@+id/ivCircle"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@drawable/img_pending"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="55dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         />
 
     <RelativeLayout
-        android:layout_width="280dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivCircle"
         >
 
@@ -80,7 +80,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp"
+            android:dividerHeight="1.5dp"
             android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
 
     </RelativeLayout>

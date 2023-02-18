@@ -40,9 +40,9 @@
 
         <TextView
             android:id="@+id/tvVisit"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="60dp"
-            android:gravity="center"
+            android:gravity="right"
             android:layout_marginTop="10dp"
             android:padding="16dp"
             android:textSize="24sp"
@@ -56,12 +56,12 @@
             android:background="@drawable/home_border_radius"
             />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@mipmap/visitas_img"
             android:id="@+id/ivCircle"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/img"
-            android:layout_marginStart="105dp"
+            android:layout_marginStart="130dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
             />
@@ -152,26 +152,26 @@
 
         <Button
             android:id="@+id/btnEnter"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="Entrada"
             android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
             android:textColor="@color/white"
-            android:background="@drawable/border_radius"
+            android:backgroundTint="@color/button_background_color"
             app:layout_constraintLeft_toLeftOf="parent"
             android:onClick="basicAlert"
             app:layout_constraintTop_toBottomOf="@+id/tvPlacas"/>
 
         <Button
             android:id="@+id/btnExit"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="Salida"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:textColor="@color/white"
-            android:background="@drawable/border_radius"
+            android:backgroundTint="#BD7100"
             android:onClick="basicAlert"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPlacas"/>

@@ -50,25 +50,27 @@
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
-        android:id="@+id/ivCircle"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/image_visitas"        android:id="@+id/ivCircle"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@drawable/img"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="100dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         />
 
     <EditText
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:id="@+id/tvDate"
         android:hint="fecha"
         android:inputType="date"
         android:focusable="false"
         android:clickable="true"
         android:maxLines="1"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_edit_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivCircle"
@@ -91,9 +93,11 @@
 
     <Spinner
         android:id="@+id/spDepartaments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
         android:entries="@array/departaments"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_edit_text"
         app:layout_constraintTop_toBottomOf="@+id/tvDepartament"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -116,12 +120,12 @@
     <EditText
         android:id="@+id/etName"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:hint="Nombre"
-        android:backgroundTint="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_edit_text"        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvName"
         />
@@ -144,12 +148,12 @@
     <EditText
         android:id="@+id/etPlacas"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:hint="Placas"
-        android:backgroundTint="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_edit_text"        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPlacas"
         />

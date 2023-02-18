@@ -39,21 +39,22 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:padding="16dp"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="italic"
         android:textColor="@color/white"
-        android:text="Noticias"
+        android:text="Avisos"
         app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/avisos"
         android:id="@+id/ivCircle"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/img_notices"
+        android:layout_marginStart="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         />
@@ -66,7 +67,7 @@
         android:gravity="center"
         android:layout_marginTop="50dp"
         android:padding="16dp"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="italic"
         android:textColor="@color/white"
         android:text="Mensajes"
@@ -76,12 +77,13 @@
         android:background="@drawable/home_border_radius"
         />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/mensajes"
         android:id="@+id/ivCircleVisit"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/img_messages"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNotice"
         />

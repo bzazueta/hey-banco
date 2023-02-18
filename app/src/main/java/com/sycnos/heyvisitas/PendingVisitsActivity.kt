@@ -33,11 +33,27 @@ class PendingVisitsActivity : AppCompatActivity() {
             val visitList4 = ArrayList<String>()
             visitList4.add("Hora de salida")
 
+            val visitList5 = ArrayList<String>()
+            visitList5.add("Hora de salida")
+
+            val visitList6 = ArrayList<String>()
+            visitList6.add("Hora de salida")
+
+            val visitList7 = ArrayList<String>()
+            visitList7.add("Hora de salida")
+
+            val visitList8 = ArrayList<String>()
+            visitList8.add("Hora de salida")
+
 
             listData["Visita 1"] = visitList
             listData["Visita 2"] = visitList2
             listData["Visita 3"] = visitList3
             listData["Visita 4"] = visitList4
+            listData["Visita 5"] = visitList5
+            listData["Visita 6"] = visitList6
+            listData["Visita 7"] = visitList7
+            listData["Visita 8"] = visitList8
 
 
             return listData

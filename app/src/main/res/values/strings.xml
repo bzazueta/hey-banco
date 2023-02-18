@@ -115,9 +115,8 @@
         <item>56</item>
         <item>57</item>
         <item>58</item>
-   d     <item>59</item>
-        <item>60</item>
-    </string-array>0029
+        <item>59</item>
+    </string-array>
     <string name="true_tick">\u2713 solucionado</string>
     <string name="back">\u003c</string>
 
