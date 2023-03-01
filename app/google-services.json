@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "38491017018",
+    "project_id": "heyvisitasqa",
+    "storage_bucket": "heyvisitasqa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38491017018:android:219444555ef9ba93bc8a03",
+        "android_client_info": {
+          "package_name": "com.sycnos.heyvisitas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38491017018-84rjo0bfb9m1lb5tbcvdej17fd0gket7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sycnos.heyvisitas",
+            "certificate_hash": "d0a433258909c606c0c74ad69a98415c9bb9a150"
+          }
+        },
+        {
+          "client_id": "38491017018-gol0ml6untdaqi2m2b1clnmsenm2hkrm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmdt6I3FuWFjp15H9StrqlF7KUN_ZWbm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38491017018-gol0ml6untdaqi2m2b1clnmsenm2hkrm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

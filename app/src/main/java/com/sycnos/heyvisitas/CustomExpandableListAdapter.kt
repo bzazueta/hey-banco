@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import com.sycnos.heyvisitas.databinding.ListGroupBinding
 import com.sycnos.heyvisitas.databinding.ListItemBinding
 
@@ -42,12 +45,22 @@ class CustomExpandableListAdapter internal constructor(
             convertView = itemBinding.root
             holder = ItemViewHolder()
             holder.label = itemBinding.expandedListItem
+            holder.btnAdd = itemBinding.btnBack
+            holder.spHours = itemBinding.spHours
             convertView.tag = holder
         } else {
             holder = convertView.tag as ItemViewHolder
         }
         val expandedListText = getChild(listPosition, expandedListPosition) as String
         holder.label!!.text = expandedListText
+        holder.btnAdd!!.setOnClickListener(View.OnClickListener {
+
+            val spnHour = holder.spHours!!.selectedItem.toString()
+            Toast.makeText(context,spnHour,Toast.LENGTH_SHORT).show()
+            spnHour.toString()
+            val expandedListText = getChild(listPosition, expandedListPosition) as String
+            expandedListText.toString()
+        })
         return convertView
     }
 
@@ -83,6 +96,7 @@ class CustomExpandableListAdapter internal constructor(
             convertView.tag = holder
         } else {
             holder = convertView.tag as GroupViewHolder
+
         }
         val listTitle = getGroup(listPosition) as String
         holder.label!!.text = listTitle
@@ -99,9 +113,12 @@ class CustomExpandableListAdapter internal constructor(
 
     inner class ItemViewHolder {
         internal var label: TextView? = null
+        internal var btnAdd: Button? = null
+        internal var spHours : Spinner? = null
     }
 
     inner class GroupViewHolder {
         internal var label: TextView? = null
+        internal var btnAdd: Button? = null
     }
 }
