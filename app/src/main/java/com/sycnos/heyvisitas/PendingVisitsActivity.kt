@@ -15,8 +15,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
+import com.sycnos.heyvisitas.data.models.Deparments
+import com.sycnos.heyvisitas.data.models.Visits
 import com.sycnos.heyvisitas.databinding.ActivityPendingVisitsBinding
 import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
@@ -28,47 +31,8 @@ class PendingVisitsActivity : AppCompatActivity() {
     var mensajes : Mensajes = Mensajes()
     private var adapter: ExpandableListAdapter? = null
     private var titleList: List<String>? = null
-    val data: HashMap<String, List<String>>
-        get() {
-            val listData = HashMap<String, List<String>>()
+    val listData = HashMap<String, List<String>>()
 
-            val visitList = ArrayList<String>()
-            visitList.add("Hora de salida")
-
-            val visitList2 = ArrayList<String>()
-            visitList2.add("Hora de salida")
-
-            val visitList3 = ArrayList<String>()
-            visitList3.add("Hora de salida")
-
-            val visitList4 = ArrayList<String>()
-            visitList4.add("Hora de salida")
-
-            val visitList5 = ArrayList<String>()
-            visitList5.add("Hora de salida")
-
-            val visitList6 = ArrayList<String>()
-            visitList6.add("Hora de salida")
-
-            val visitList7 = ArrayList<String>()
-            visitList7.add("Hora de salida")
-
-            val visitList8 = ArrayList<String>()
-            visitList8.add("Hora de salida")
-
-
-            listData["Visita 1"] = visitList
-            listData["Visita 2"] = visitList2
-            listData["Visita 3"] = visitList3
-            listData["Visita 4"] = visitList4
-            listData["Visita 5"] = visitList5
-            listData["Visita 6"] = visitList6
-            listData["Visita 7"] = visitList7
-            listData["Visita 8"] = visitList8
-
-
-            return listData
-        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +41,7 @@ class PendingVisitsActivity : AppCompatActivity() {
         binding = ActivityPendingVisitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.btnBack.setOnClickListener { finish() }
-        setupExpandableListView()
+        //setupExpandableListView()
 
         try
         {
@@ -110,26 +74,7 @@ class PendingVisitsActivity : AppCompatActivity() {
             e.toString()
         }
     }
-    private fun setupExpandableListView() {
-        val expandableListView = binding.expandableListView
-        val listData = data
-        titleList = ArrayList(listData.keys)
-        adapter = CustomExpandableListAdapter(this, titleList as ArrayList<String>, listData)
-        expandableListView.setAdapter(adapter)
 
-        expandableListView.setOnGroupExpandListener { groupPosition ->
-
-        }
-
-        expandableListView.setOnGroupCollapseListener { groupPosition ->
-
-        }
-
-        expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-             listData.get("ghgh")?.get(childPosition)
-            false
-        }
-    }
 
     fun getPendingVisits(params: RequestParams?) {
         val client = AsyncHttpClient()
@@ -164,13 +109,28 @@ class PendingVisitsActivity : AppCompatActivity() {
                 try {
                     progresoPendingVisits.dismiss()
                     jsonObject = JSONObject(responseString)
-//                    if (jsonObject.getString("message").equals("Datos correctos."))
-//                    {
-//
-//                    }
-//                    if (jsonObject.getString("message").equals("Datos Incorrectos.")) {
-//                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@HomeActivity);
-//                    }
+                    if (jsonObject.has("status")) {
+                        if (jsonObject.getString("status").equals("true"))
+                        {
+                            listData.clear()
+                            val visits : Visits = Visits()
+                            for (i in 0 until jsonObject.getJSONArray("Visitas Pendientes").length())
+                            {
+                                val visitList = ArrayList<String>()
+                                visits.id_visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("id_visita")
+                                visits.Nombre_Visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("Nombre_Visita")
+                                visitList.add(visits.id_visita)
+                                //visitList.add(visits.Nombre_Visita)
+                                listData[visits.Nombre_Visita] = visitList
+                                // VariablesGlobales.arrayListDeptos.add(visits)
+                            }
+                            listData.size
+                            setupExpandableListView()
+                        }
+                    }
+                    else{
+                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@PendingVisitsActivity);
+                    }
                 } catch (e: JSONException) {
                     binding.tvVisit.isEnabled = true
                     progresoPendingVisits.dismiss()
@@ -178,5 +138,26 @@ class PendingVisitsActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun setupExpandableListView() {
+        val expandableListView = binding.expandableListView
+        val listData_ = listData
+        titleList = ArrayList(listData_.keys)
+        adapter = CustomExpandableListAdapter(this, titleList as ArrayList<String>, listData)
+        expandableListView.setAdapter(adapter)
+
+        expandableListView.setOnGroupExpandListener { groupPosition ->
+
+        }
+
+        expandableListView.setOnGroupCollapseListener { groupPosition ->
+
+        }
+
+        expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
+            listData.get("ghgh")?.get(childPosition)
+            false
+        }
     }
 }

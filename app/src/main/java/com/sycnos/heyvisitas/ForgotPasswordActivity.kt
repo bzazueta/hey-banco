@@ -43,14 +43,15 @@ class ForgotPasswordActivity : AppCompatActivity() {
             progresoForgotPassword.setIndeterminate(false)
             progresoForgotPassword.setCancelable(false)
             progresoForgotPassword.show()
-            binding.etUser.setText("calixto.pinon@hey.inc")
+           // binding.etUser.setText("calixto.pinon@hey.inc")
 
             if(binding.etUser.text.toString().equals(""))
             {
                 progresoForgotPassword.dismiss()
                 validado=false
                 binding.btnRecoveryPassword.isEnabled = true
-                Toast.makeText(this@ForgotPasswordActivity,"Favor de ingresar el usuario", Toast.LENGTH_SHORT).show()
+                mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar el usuario",this@ForgotPasswordActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+               // Toast.makeText(this@ForgotPasswordActivity,"Favor de ingresar el usuario", Toast.LENGTH_SHORT).show()
             }
 
             if(validado)
@@ -120,12 +121,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     jsonObject = JSONObject(responseString)
                     if (jsonObject.getString("status") == "true")
                     {
-                        //**guardar json en shared preferences***///
-
+                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("msg"),this@ForgotPasswordActivity);
                     }
                     if (jsonObject.getString("status") == "false") {
                         binding.btnRecoveryPassword.isEnabled = true
-                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("text"),this@ForgotPasswordActivity);
+                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("msg"),this@ForgotPasswordActivity);
                     }
                 } catch (e: JSONException) {
                     binding.btnRecoveryPassword.isEnabled = true

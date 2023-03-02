@@ -82,23 +82,30 @@ class MainActivity : AppCompatActivity() {
                 progresoLogin.setIndeterminate(false)
                 progresoLogin.setCancelable(false)
                 progresoLogin.show()
-                binding.etUser.setText("calixto.pinon@hey.inc")
-                binding.etPassword.setText("calixto2022")
+                //binding.etUser.setText("calixto.pinon@hey.inc")
+                //binding.etPassword.setText("calixto2022")
 
                 if(binding.etUser.text.toString().equals(""))
                 {
                     progresoLogin.dismiss()
                     validado=false
                     binding.btnLogin.isEnabled = true
-                    Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar el usuario",this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
                 }
 
-                if(binding.etPassword.text.toString().equals(""))
-                {
-                    progresoLogin.dismiss()
-                    validado=false
-                    binding.btnLogin.isEnabled = true
-                    Toast.makeText(this@MainActivity,"Favor de ingresar la contraseña",Toast.LENGTH_SHORT).show()
+                if(validado) {
+                    if (binding.etPassword.text.toString().equals("")) {
+                        progresoLogin.dismiss()
+                        validado = false
+                        binding.btnLogin.isEnabled = true
+                        mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar la contraseña",this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+//                        Toast.makeText(
+//                            this@MainActivity,
+//                            "Favor de ingresar la contraseña",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+                    }
                 }
 
                 if(validado)
@@ -113,6 +120,8 @@ class MainActivity : AppCompatActivity() {
                     {
                         binding.btnLogin.isEnabled = true
                         progresoLogin.dismiss()
+                        mensajes!!.mensajeAceptar("Mensaje",e.toString(),this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
                     }
                 }
             }catch (e: Exception)
@@ -247,7 +256,6 @@ class MainActivity : AppCompatActivity() {
             ) {
                 progresoLogin.dismiss()
                 binding.btnLogin.isEnabled = true
-                //var x = responseString
 
                 mensajes!!.mensajeAceptar(
                     "Mensaje",
@@ -261,27 +269,21 @@ class MainActivity : AppCompatActivity() {
                 headers: Array<Header>,
                 responseString: String
             ) {
-                // progresoCobro.dismiss()
+
                 var jsonObject: JSONObject? = null
                 try
                 {
                     progresoLogin.dismiss()
                     binding.btnLogin.isEnabled = true
-                    var respuesta = responseString.replace("[","").replace("]","")
-                    if(respuesta.equals("Token successfully stored."))
+                    jsonObject = JSONObject(responseString)
+                    if (jsonObject.getString("status") == "true")
                     {
-
+                        //mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("text"),this@MainActivity);
                     }
-                    //jsonObject = JSONObject(responseString)
-//                    if (jsonObject.getString("status") == "true")
-//                    {
-//
-//
-//                    }
-//                    if (jsonObject.getString("status") == "false") {
-//                        binding.btnLogin.isEnabled = true
-//                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("text"),this@MainActivity);
-//                    }
+                    if (jsonObject.getString("status") == "false") {
+                        binding.btnLogin.isEnabled = true
+                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("text"),this@MainActivity);
+                    }
                 } catch (e: JSONException) {
                     binding.btnLogin.isEnabled = true
                     progresoLogin.dismiss()

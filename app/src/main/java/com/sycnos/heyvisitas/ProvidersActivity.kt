@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +18,11 @@ import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityProvidersBinding
 import com.sycnos.heyvisitas.util.FormatoFechas
 import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.FileNotFoundException
 
 class ProvidersActivity : AppCompatActivity() {
 
@@ -29,16 +32,49 @@ class ProvidersActivity : AppCompatActivity() {
     var mensajes : Mensajes = Mensajes()
     var date : String = ""
     var formatoFechas : FormatoFechas = FormatoFechas()
+    var arrayListDescripcion : ArrayList<String> = ArrayList()
+    var arrayListIds : ArrayList<String> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityProvidersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        arrayListIds.add("Seleccionar")
+//        arrayListDescripcion.add("Seleccionar")
+//        for (i in 0 until VariablesGlobales.arrayListDeptos.size)
+//        {
+//            var descripcion = VariablesGlobales.arrayListDeptos.get(i).descripcion
+//            var id = VariablesGlobales.arrayListDeptos.get(i).id
+//            arrayListIds.add(id)
+//            arrayListDescripcion.add(descripcion)
+//        }
+//
+//        val adapter = ArrayAdapter<String>(
+//            this,
+//            android.R.layout.simple_spinner_item,
+//            arrayListDescripcion
+//        )
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        binding.spDepartaments.setAdapter(adapter)
+
+
         binding.btnBack.setOnClickListener { finish() }
 
         binding.tvDate.setOnClickListener{
             showDatePickerDialog()
         }
+
+        binding.btnSelect.setOnClickListener(View.OnClickListener {
+
+            val i = Intent(this@ProvidersActivity, PickIdentificationProvidersActivity::class.java)
+            i.putExtra("date","")
+            i.putExtra("deparment","")
+            i.putExtra("name","")
+            i.putExtra("placas","")
+            i.putExtra("frecuently","")
+            startActivity(i)
+        })
 
         binding.btnAdd.setOnClickListener(View.OnClickListener {
 
@@ -50,22 +86,22 @@ class ProvidersActivity : AppCompatActivity() {
             progresoProviders.setCancelable(false)
             progresoProviders.show()
 
-            if(binding.etDate.text.toString().equals(""))
+            if(binding.tvDate.text.toString().isNullOrEmpty())
             {
                 progresoProviders.dismiss()
                 validado=false
                 binding.btnAdd.isEnabled = true
-                Toast.makeText(this@ProvidersActivity,"Favor de seleccionar una fecha...", Toast.LENGTH_SHORT).show()
+                mensajes!!.mensajeAceptar("Mensaje","Favor de seleccionar una fecha",this@ProvidersActivity);
             }
 
             if(validado)
             {
-                if(binding.spDepartaments.selectedItem.toString().equals(""))
+                if(binding.spDepartaments.selectedItem.toString().equals("Seleccionar"))
                 {
                     progresoProviders.dismiss()
                     validado=false
                     binding.btnAdd.isEnabled = true
-                    Toast.makeText(this@ProvidersActivity,"Seleccione un departamento...", Toast.LENGTH_SHORT).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Seleccione un departamento",this@ProvidersActivity);
                 }
             }
 
@@ -76,7 +112,7 @@ class ProvidersActivity : AppCompatActivity() {
                     progresoProviders.dismiss()
                     validado=false
                     binding.btnAdd.isEnabled = true
-                    Toast.makeText(this@ProvidersActivity,"Ingrese un nombre...", Toast.LENGTH_SHORT).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre",this@ProvidersActivity);
                 }
             }
 
@@ -87,7 +123,8 @@ class ProvidersActivity : AppCompatActivity() {
                     progresoProviders.dismiss()
                     validado=false
                     binding.btnAdd.isEnabled = true
-                    Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese una empresa",this@ProvidersActivity);
+                    //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -113,14 +150,26 @@ class ProvidersActivity : AppCompatActivity() {
                     params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
                     params.put("nombre", binding.etName.text.toString())
                     params.put("empresa", binding.etBussines.text.toString())
-                    params.put("identificacion", "")
+                    if(VariablesGlobales.getImagen() != null)
+                    {
+                        params.put("identificacion", VariablesGlobales.getImagen())
+                    }
+                    if(VariablesGlobales.getImagen() == null)
+                    {
+                        params.put("identificacion", "")
+                    }
                     params.put("responsable", binding.etResponsable.text.toString())
                     params.put("ticket", binding.etTicket.text.toString())
                     params.put("tel_contacto", binding.etTel.text.toString())
                     params.put("frecuencia", "0")
                     params.put("trabajo_realizar", binding.etWork.text.toString())
                     createProviders(params)
-                }catch (e :java.lang.Exception)
+                }catch(e : FileNotFoundException) {
+                    progresoProviders.dismiss()
+                    binding.btnAdd.isEnabled = true
+                    e.toString();
+                }
+                catch (e :java.lang.Exception)
                 {
                     progresoProviders.dismiss()
                     binding.btnAdd.isEnabled = true
@@ -194,11 +243,16 @@ class ProvidersActivity : AppCompatActivity() {
                         mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message")+ proveedor,this@ProvidersActivity);
 
                     }
-                    if (jsonObject.getString("message") == "Email o Password Incorrectos.") {
+                   else{
                         progresoProviders.dismiss()
                         binding.btnAdd.isEnabled = true
-                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("text"),this@ProvidersActivity);
+                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
                     }
+//                    if (jsonObject.getString("message") == "Agrega 2 o mas registros de identidicacion :  (Nombre,Empresa,Identificacion)") {
+//                        progresoProviders.dismiss()
+//                        binding.btnAdd.isEnabled = true
+//                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("text"),this@ProvidersActivity);
+//                    }
                 } catch (e: JSONException) {
                     binding.btnAdd.isEnabled = true
                     progresoProviders.dismiss()

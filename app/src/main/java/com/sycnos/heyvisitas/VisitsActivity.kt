@@ -23,6 +23,7 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class VisitsActivity : AppCompatActivity() {
@@ -33,19 +34,30 @@ class VisitsActivity : AppCompatActivity() {
     var date : String = ""
     var formatoFechas : FormatoFechas = FormatoFechas()
     var identificacion: File? = null
+    var arrayListDescripcion : ArrayList<String> = ArrayList()
+    var arrayListIds : ArrayList<String> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityVisitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        arrayListIds.add("Seleccionar")
+        arrayListDescripcion.add("Seleccionar")
+        for (i in 0 until VariablesGlobales.arrayListDeptos.size)
+        {
+            var descripcion = VariablesGlobales.arrayListDeptos.get(i).descripcion
+            var id = VariablesGlobales.arrayListDeptos.get(i).id
+            arrayListIds.add(id)
+            arrayListDescripcion.add(descripcion)
+        }
 
-//        val adapter = ArrayAdapter<String>(
-//            this,
-//            R.layout.simple_spinner_item,
-//            resources.getStringArray(R.array.array_departaments)
-//        )
-      //  adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-      //  binding.spDepartaments.setAdapter(adapter)
+        val adapter = ArrayAdapter<String>(
+            this,
+            R.layout.simple_spinner_item,
+            arrayListDescripcion
+        )
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        binding.spDepartaments.setAdapter(adapter)
 
         binding.tvDate.setOnClickListener{
             showDatePickerDialog()
@@ -73,6 +85,7 @@ class VisitsActivity : AppCompatActivity() {
         }
 
 
+
         binding.btnAdd.setOnClickListener(View.OnClickListener {
 
             var validado : Boolean = true
@@ -88,7 +101,8 @@ class VisitsActivity : AppCompatActivity() {
                 binding.btnAdd.isEnabled = true
                 progresoCrearVisita.dismiss()
                 validado = false
-                Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
+                mensajes!!.mensajeAceptar("Mensaje","Seleccione una fecha",this@VisitsActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
 
             }
             if(validado) {
@@ -96,48 +110,16 @@ class VisitsActivity : AppCompatActivity() {
                     binding.btnAdd.isEnabled = true
                     progresoCrearVisita.dismiss()
                     validado = false
-                    Toast.makeText(
-                        this@VisitsActivity,
-                        "Seleccione un departamento",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Seleccione un departamento",this@VisitsActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
                 }
             }
 
             if(validado) {
-                if (binding.etName.text.toString().equals("")) {
+                if (binding.etName.text.toString().isNullOrEmpty() && binding.etPlacas.text.toString().isNullOrEmpty() && VariablesGlobales.getImagen()==null) {
                     binding.btnAdd.isEnabled = true
                     progresoCrearVisita.dismiss()
                     validado = false
-                    Toast.makeText(this@VisitsActivity, "Ingrese un nombre", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-            if(validado==false) {
-                if (!binding.etName.text.toString().equals("")) {
-                    if (binding.etPlacas.text.toString().equals("")) {
-                        binding.btnAdd.isEnabled = true
-                        progresoCrearVisita.dismiss()
-                        validado = false
-                        Toast.makeText(
-                            this@VisitsActivity,
-                            "Ingrese las placas",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                }
-            }
-            if(validado==false) {
-                if (VariablesGlobales.getImagen().equals("null")) {
-                    binding.btnAdd.isEnabled = true
-                    progresoCrearVisita.dismiss()
-                    validado = false
-                    Toast.makeText(
-                        this@VisitsActivity,
-                        "Seleccione una identificación",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre, una placa o una identificación",this@VisitsActivity);
                 }
             }
 
@@ -168,7 +150,7 @@ class VisitsActivity : AppCompatActivity() {
                     params.put("password",pasw)
                     params.put("placas",if( binding.etPlacas.text.toString().equals(""))"" else binding.etPlacas.text.toString())
                     params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
-                    params.put("departamento_id", 1)
+                    params.put("departamento_id", arrayListIds.get(binding.spDepartaments.selectedItemPosition))
                     params.put("nombre", if( binding.etName.text.toString().equals(""))"" else binding.etName.text.toString())
                     params.put("frecuencia", frecuently)
                     if(VariablesGlobales.getImagen() != null)

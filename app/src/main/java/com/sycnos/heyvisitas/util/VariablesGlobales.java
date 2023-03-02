@@ -1,6 +1,9 @@
 package com.sycnos.heyvisitas.util;
 
+import com.sycnos.heyvisitas.data.models.Deparments;
+
 import java.io.File;
+import java.util.ArrayList;
 
 public class VariablesGlobales {
 
@@ -13,6 +16,7 @@ public class VariablesGlobales {
     }
 
     public  static File imagen = null;
+    public static ArrayList<Deparments> arrayListDeptos = new ArrayList<>();
 }
 
 
