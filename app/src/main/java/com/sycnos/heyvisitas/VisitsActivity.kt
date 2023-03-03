@@ -153,13 +153,12 @@ class VisitsActivity : AppCompatActivity() {
                         frecuently = "0"
                     }
                     if (binding.cbFrecuently.isChecked) {
-                        frecuently = "4"
+                        frecuently = "1"
                     }
-                    var user  = sharedPref.getUsuario(this@VisitsActivity)
-                    var pasw  = sharedPref.getPass(this@VisitsActivity)
+
                     val params = RequestParams()
-                    params.put("email", user)
-                    params.put("password",pasw)
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password",VariablesGlobales.getPasw())
                     params.put("placas",if( binding.etPlacas.text.toString().equals(""))"" else binding.etPlacas.text.toString())
                     params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
                     params.put("departamento_id", arrayListIds.get(binding.spDepartaments.selectedItemPosition))

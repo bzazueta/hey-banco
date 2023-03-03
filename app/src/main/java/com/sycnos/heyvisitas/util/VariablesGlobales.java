@@ -7,6 +7,36 @@ import java.util.ArrayList;
 
 public class VariablesGlobales {
 
+    public  static File imagen = null;
+    public  static String user = "";
+    public  static String idUser = "";
+    public  static String pasw = "";
+
+    public static String getIdUser() {
+        return idUser;
+    }
+
+    public static void setIdUser(String idUser) {
+        VariablesGlobales.idUser = idUser;
+    }
+    public static String getUser() {
+        return user;
+    }
+
+    public static void setUser(String user) {
+        VariablesGlobales.user = user;
+    }
+
+    public static String getPasw() {
+        return pasw;
+    }
+
+    public static void setPasw(String pasw) {
+        VariablesGlobales.pasw = pasw;
+    }
+
+
+
     public static File getImagen() {
         return imagen;
     }
@@ -15,7 +45,7 @@ public class VariablesGlobales {
         VariablesGlobales.imagen = imagen;
     }
 
-    public  static File imagen = null;
+
     public static ArrayList<Deparments> arrayListDeptos = new ArrayList<>();
 }
 

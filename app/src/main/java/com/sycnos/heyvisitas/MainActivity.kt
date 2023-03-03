@@ -17,6 +17,7 @@ import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityMainBinding
 import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
@@ -120,8 +121,8 @@ class MainActivity : AppCompatActivity() {
                     try
                     {
                         val params = RequestParams()
-                        params.put("email", binding.etUser.text.toString())
-                        params.put("password", binding.etPassword.text.toString())
+                        params.put("email", binding.etUser.text.toString().trim())
+                        params.put("password", binding.etPassword.text.toString().trim())
                         login(params)
                     }catch (e: Exception)
                     {
@@ -190,22 +191,11 @@ class MainActivity : AppCompatActivity() {
                         jsonObject = JSONObject(responseString)
                         if (jsonObject.getString("status") == "true")
                         {
-                            //**guardar json en shared preferences***///
-                            val sharedPref: SharedPreferences =
-                                this@MainActivity.getSharedPreferences(
-                                    "user", MODE_PRIVATE
-                                )
-                            val editor = sharedPref.edit()
-                            editor.putString("user", jsonObject.toString())
-                            editor.commit()
-                            val pass = sharedPref.edit()
-                            pass.putString("password", binding.etPassword.text.toString())
-                            pass.commit()
-
-                            //****obtener json guardado en shared preferences*****///
-                            val stringJson = sharedPref.getString("user", "")
-                            val json = JSONObject(stringJson)
-                            json.length()
+                            //****seteamos las variables que vamos a ocupar en todas las pantallas*****///
+                            VariablesGlobales.setIdUser(jsonObject.getJSONObject("user").getString("id"))
+                            VariablesGlobales.setUser(jsonObject.getJSONObject("user").getString("email"))
+                            VariablesGlobales.setPasw( binding.etPassword.text.toString().trim())
+                            //****fin variables*****///
 
                             //****enviamos el token*****///
                             try
@@ -300,3 +290,20 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
+
+//**guardar json en shared preferences***///
+//                            val sharedPref: SharedPreferences =
+//                                this@MainActivity.getSharedPreferences(
+//                                    "user", MODE_PRIVATE
+//                                )
+//                            val editor = sharedPref.edit()
+//                            editor.putString("user", jsonObject.toString())
+//                            editor.commit()
+//                            val pass = sharedPref.edit()
+//                            pass.putString("password", binding.etPassword.text.toString())
+//                            pass.commit()
+//
+//                            //****obtener json guardado en shared preferences*****///
+//                            val stringJson = sharedPref.getString("user", "")
+//                            val json = JSONObject(stringJson)
+//                            json.length()

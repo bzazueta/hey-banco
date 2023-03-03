@@ -44,11 +44,11 @@ class HomeActivity : AppCompatActivity() {
                 progresoValidaVisita.setCancelable(false)
                 progresoValidaVisita.show()
 
-                var user  = sharedPref.getUsuario(this@HomeActivity)
-                var pasw  = sharedPref.getPass(this@HomeActivity)
+                //var user  = sharedPref.getUsuario(this@HomeActivity)
+                //var pasw  = sharedPref.getPass(this@HomeActivity)
                 val params = RequestParams()
-                params.put("email", user)
-                params.put("password",pasw)
+                params.put("email", VariablesGlobales.getUser())
+                params.put("password",VariablesGlobales.getPasw())
                 validarUsuario(params)
 
             }catch (e : Exception)
@@ -75,11 +75,10 @@ class HomeActivity : AppCompatActivity() {
                 progresoValidaVisita.setIndeterminate(false)
                 progresoValidaVisita.setCancelable(false)
                 progresoValidaVisita.show()
-                var user  = sharedPref.getUsuario(this@HomeActivity)
-                var pasw  = sharedPref.getPass(this@HomeActivity)
+
                 val params = RequestParams()
-                params.put("email", user)
-                params.put("password",pasw)
+                params.put("email", VariablesGlobales.getUser())
+                params.put("password",VariablesGlobales.getPasw())
                 validarProveedor(params)
             }catch (e : Exception)
             {
