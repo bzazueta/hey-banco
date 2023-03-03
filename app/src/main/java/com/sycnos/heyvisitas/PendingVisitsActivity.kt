@@ -1,25 +1,17 @@
 package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ExpandableListAdapter
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
-import com.sycnos.heyvisitas.data.models.Deparments
 import com.sycnos.heyvisitas.data.models.Visits
 import com.sycnos.heyvisitas.databinding.ActivityPendingVisitsBinding
 import com.sycnos.heyvisitas.util.Mensajes
-import com.sycnos.heyvisitas.util.VariablesGlobales
+import com.sycnos.heyvisitas.util.SharedPref
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
@@ -32,6 +24,7 @@ class PendingVisitsActivity : AppCompatActivity() {
     private var adapter: ExpandableListAdapter? = null
     private var titleList: List<String>? = null
     val listData = HashMap<String, List<String>>()
+    var sharedPref : SharedPref = SharedPref()
 
 
 
@@ -53,19 +46,10 @@ class PendingVisitsActivity : AppCompatActivity() {
             progresoPendingVisits.setCancelable(false)
             progresoPendingVisits.show()
 
-            val sharedPref: SharedPreferences =
-                this@PendingVisitsActivity.getSharedPreferences("user", MODE_PRIVATE
-                )
-            //****obtener json guardado en shared preferences*****///
-            val stringJson = sharedPref.getString("user", "")
-            val user = JSONObject(stringJson)
-            user.length()
-
-            val pasw = sharedPref.getString("password", "")
-            // val pasw = JSONObject(stringPass)
-            pasw.toString()
+            var user  = sharedPref.getUsuario(this@PendingVisitsActivity)
+            var pasw  = sharedPref.getPass(this@PendingVisitsActivity)
             val params = RequestParams()
-            params.put("email", user.getJSONObject("user").getString("email"))
+            params.put("email", user)
             params.put("password",pasw)
             getPendingVisits(params)
 
@@ -144,7 +128,7 @@ class PendingVisitsActivity : AppCompatActivity() {
         val expandableListView = binding.expandableListView
         val listData_ = listData
         titleList = ArrayList(listData_.keys)
-        adapter = CustomExpandableListAdapter(this, titleList as ArrayList<String>, listData)
+        adapter = CustomExpandableListAdapter(this@PendingVisitsActivity, titleList as ArrayList<String>, listData)
         expandableListView.setAdapter(adapter)
 
         expandableListView.setOnGroupExpandListener { groupPosition ->

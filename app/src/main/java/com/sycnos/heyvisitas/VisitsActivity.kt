@@ -16,6 +16,7 @@ import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityVisitsBinding
 import com.sycnos.heyvisitas.util.FormatoFechas
 import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.SharedPref
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
@@ -36,6 +37,7 @@ class VisitsActivity : AppCompatActivity() {
     var identificacion: File? = null
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
+    var sharedPref : SharedPref = SharedPref()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,6 +66,7 @@ class VisitsActivity : AppCompatActivity() {
         }
 
         binding.btnBack.setOnClickListener{
+            VariablesGlobales.setImagen(null)
             finish()
         }
 
@@ -115,11 +118,29 @@ class VisitsActivity : AppCompatActivity() {
             }
 
             if(validado) {
-                if (binding.etName.text.toString().isNullOrEmpty() && binding.etPlacas.text.toString().isNullOrEmpty() && VariablesGlobales.getImagen()==null) {
+                if (binding.etName.text.toString().isNullOrEmpty()) {
                     binding.btnAdd.isEnabled = true
                     progresoCrearVisita.dismiss()
                     validado = false
-                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre, una placa o una identificación",this@VisitsActivity);
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre",this@VisitsActivity);
+                }
+            }
+
+            if(validado) {
+                if (binding.etPlacas.text.toString().isNullOrEmpty()) {
+                    binding.btnAdd.isEnabled = true
+                    progresoCrearVisita.dismiss()
+                    validado = false
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese una placa ",this@VisitsActivity);
+                }
+            }
+
+            if(validado) {
+                if (VariablesGlobales.getImagen()==null) {
+                    binding.btnAdd.isEnabled = true
+                    progresoCrearVisita.dismiss()
+                    validado = false
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese una indentificación ",this@VisitsActivity);
                 }
             }
 
@@ -134,19 +155,10 @@ class VisitsActivity : AppCompatActivity() {
                     if (binding.cbFrecuently.isChecked) {
                         frecuently = "4"
                     }
-                    val sharedPref: SharedPreferences =
-                    this@VisitsActivity.getSharedPreferences("user", MODE_PRIVATE
-                    )
-                    //****obtener json guardado en shared preferences*****///
-                    val stringJson = sharedPref.getString("user", "")
-                    val json = JSONObject(stringJson)
-                    json.length()
-
-                    val pasw = sharedPref.getString("password", "")
-                    // val pasw = JSONObject(stringPass)
-                    pasw.toString()
+                    var user  = sharedPref.getUsuario(this@VisitsActivity)
+                    var pasw  = sharedPref.getPass(this@VisitsActivity)
                     val params = RequestParams()
-                    params.put("email", json.getJSONObject("user").getString("email"))
+                    params.put("email", user)
                     params.put("password",pasw)
                     params.put("placas",if( binding.etPlacas.text.toString().equals(""))"" else binding.etPlacas.text.toString())
                     params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))

@@ -18,6 +18,7 @@ import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityProvidersBinding
 import com.sycnos.heyvisitas.util.FormatoFechas
 import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.SharedPref
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
@@ -34,29 +35,30 @@ class ProvidersActivity : AppCompatActivity() {
     var formatoFechas : FormatoFechas = FormatoFechas()
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
+    var sharedPref : SharedPref = SharedPref()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityProvidersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        arrayListIds.add("Seleccionar")
-//        arrayListDescripcion.add("Seleccionar")
-//        for (i in 0 until VariablesGlobales.arrayListDeptos.size)
-//        {
-//            var descripcion = VariablesGlobales.arrayListDeptos.get(i).descripcion
-//            var id = VariablesGlobales.arrayListDeptos.get(i).id
-//            arrayListIds.add(id)
-//            arrayListDescripcion.add(descripcion)
-//        }
-//
-//        val adapter = ArrayAdapter<String>(
-//            this,
-//            android.R.layout.simple_spinner_item,
-//            arrayListDescripcion
-//        )
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//        binding.spDepartaments.setAdapter(adapter)
+        arrayListIds.add("Seleccionar")
+        arrayListDescripcion.add("Seleccionar")
+        for (i in 0 until VariablesGlobales.arrayListDeptos.size)
+        {
+            var descripcion = VariablesGlobales.arrayListDeptos.get(i).descripcion
+            var id = VariablesGlobales.arrayListDeptos.get(i).id
+            arrayListIds.add(id)
+            arrayListDescripcion.add(descripcion)
+        }
+
+        val adapter = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_item,
+            arrayListDescripcion
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spDepartaments.setAdapter(adapter)
 
 
         binding.btnBack.setOnClickListener { finish() }
@@ -132,19 +134,10 @@ class ProvidersActivity : AppCompatActivity() {
             {
                 try
                 {
-                    val sharedPref: SharedPreferences =
-                        this@ProvidersActivity.getSharedPreferences("user", MODE_PRIVATE
-                        )
-                    //****obtener json guardado en shared preferences*****///
-                    val stringJson = sharedPref.getString("user", "")
-                    val json = JSONObject(stringJson)
-                    json.length()
-
-                    val pasw = sharedPref.getString("password", "")
-                    // val pasw = JSONObject(stringPass)
-                    pasw.toString()
+                    var user  = sharedPref.getUsuario(this@ProvidersActivity)
+                    var pasw  = sharedPref.getPass(this@ProvidersActivity)
                     val params = RequestParams()
-                    params.put("email", json.getJSONObject("user").getString("email"))
+                    params.put("email", user)
                     params.put("password", pasw)
                     params.put("departamento_id","1" )//binding.spDepartaments.selectedItem.toString()
                     params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))

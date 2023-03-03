@@ -1,6 +1,9 @@
 package com.sycnos.heyvisitas
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +12,29 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.RequestParams
+import com.loopj.android.http.TextHttpResponseHandler
+import com.sycnos.heyvisitas.data.models.Visits
 import com.sycnos.heyvisitas.databinding.ListGroupBinding
 import com.sycnos.heyvisitas.databinding.ListItemBinding
+import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.SharedPref
+import cz.msebera.android.httpclient.Header
+import org.json.JSONException
+import org.json.JSONObject
 
 
 class CustomExpandableListAdapter internal constructor(
-    private val context: Context,
+    private val context: Activity,
     private val titleList: List<String>,
     private val dataList: HashMap<String, List<String>>
 ) : BaseExpandableListAdapter() {
 
+    var sharedPref : SharedPref = SharedPref()
+    private lateinit var progresoCreateVisits : ProgressDialog
+    var mensajes : Mensajes = Mensajes()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private lateinit var groupBinding: ListGroupBinding
     private lateinit var itemBinding: ListItemBinding
@@ -47,19 +63,42 @@ class CustomExpandableListAdapter internal constructor(
             holder.label = itemBinding.expandedListItem
             holder.btnAdd = itemBinding.btnBack
             holder.spHours = itemBinding.spHours
+            holder.spMinutes = itemBinding.spMinutes
             convertView.tag = holder
         } else {
             holder = convertView.tag as ItemViewHolder
         }
         val expandedListText = getChild(listPosition, expandedListPosition) as String
         holder.label!!.text = expandedListText
+        holder.label!!.visibility = View.GONE
         holder.btnAdd!!.setOnClickListener(View.OnClickListener {
-
+        try {
+            val idVisita = getChild(listPosition, expandedListPosition) as String
             val spnHour = holder.spHours!!.selectedItem.toString()
-            Toast.makeText(context,spnHour,Toast.LENGTH_SHORT).show()
-            spnHour.toString()
-            val expandedListText = getChild(listPosition, expandedListPosition) as String
-            expandedListText.toString()
+            val spnMinutes = holder.spMinutes!!.selectedItem.toString()
+            Toast.makeText(context, idVisita + "-" + spnHour + "-" + spnMinutes, Toast.LENGTH_SHORT).show()
+            progresoCreateVisits = ProgressDialog(context)
+            progresoCreateVisits.setMessage("Registrando salida...")
+            progresoCreateVisits.setIndeterminate(false)
+            progresoCreateVisits.setCancelable(false)
+            progresoCreateVisits.show()
+
+            var user  = sharedPref.getUsuario(context)
+            var pasw  = sharedPref.getPass(context)
+            val params = RequestParams()
+            params.put("email", user)
+            params.put("password", pasw)
+            params.put("id_visitas",idVisita)
+            createVisits(params)
+        }catch (e : java.lang.Exception)
+        {
+            e.toString()
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT)
+                .show()
+
+        }
+
+
         })
         return convertView
     }
@@ -115,10 +154,53 @@ class CustomExpandableListAdapter internal constructor(
         internal var label: TextView? = null
         internal var btnAdd: Button? = null
         internal var spHours : Spinner? = null
+        internal var spMinutes : Spinner? = null
     }
 
     inner class GroupViewHolder {
         internal var label: TextView? = null
         internal var btnAdd: Button? = null
+    }
+
+    fun createVisits(params: RequestParams?) {
+        val client = AsyncHttpClient()
+        //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
+
+        client.post(context.getString(com.sycnos.heyvisitas.R.string.urlDominio)+"/public/api/salidas", params, object : TextHttpResponseHandler() {
+            override fun onFailure(
+                statusCode: Int,
+                headers:Array<Header>,
+                responseString: String,
+                throwable: Throwable
+            ) {
+                progresoCreateVisits.dismiss()
+                var x = responseString
+
+                mensajes!!.mensajeAceptarExpandableList(
+                    "Mensaje",
+                    responseString,
+                    context)
+
+            }
+
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<Header>,
+                responseString: String
+            )
+            {
+
+                var jsonObject: JSONObject? = null
+                try
+                {
+                    progresoCreateVisits.dismiss()
+                    jsonObject = JSONObject(responseString)
+                    mensajes!!.mensajeAceptarExpandableList("Mensaje",jsonObject.getString("message"),context);
+                } catch (e: JSONException) {
+                    progresoCreateVisits.dismiss()
+                    e.printStackTrace()
+                }
+            }
+        })
     }
 }

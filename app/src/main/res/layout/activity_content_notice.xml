@@ -67,19 +67,18 @@
     <TextView
         android:id="@+id/tvMessage2"
         android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/border_radius"
+        android:gravity="center"
         android:padding="16dp"
+        android:text="Descripción del aviso"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:textColor="@color/black"
-        android:text="Descripción del aviso"
-        app:layout_constraintTop_toBottomOf="@+id/btnFile"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/border_radius"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/btnFile" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

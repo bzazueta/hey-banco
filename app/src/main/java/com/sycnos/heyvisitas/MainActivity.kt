@@ -82,8 +82,15 @@ class MainActivity : AppCompatActivity() {
                 progresoLogin.setIndeterminate(false)
                 progresoLogin.setCancelable(false)
                 progresoLogin.show()
-                //binding.etUser.setText("calixto.pinon@hey.inc")
-                //binding.etPassword.setText("calixto2022")
+
+//                binding.etUser.setText("guardia001@hey.inc")//calixto.pinon@hey.inc
+//                binding.etPassword.setText("123456")//calixto2022
+
+//                binding.etUser.setText("calixto.pinon@hey.inc")//
+//                binding.etPassword.setText("calixto2022")//
+
+//                binding.etUser.setText("usuario@hey.inc")//
+//                binding.etPassword.setText("123456")//
 
                 if(binding.etUser.text.toString().equals(""))
                 {
@@ -217,10 +224,10 @@ class MainActivity : AppCompatActivity() {
 
                             var idRol = jsonObject.getJSONObject("user").getString("rol")
                             when(idRol){
-                                "lobby" -> {
+                                "2" -> {
                                     val i = Intent(this@MainActivity, HomeLobbyActivity::class.java)
                                     startActivity(i)}
-                                 "2" -> {
+                                 "1" -> {
                                      val i = Intent(this@MainActivity, HomeActivity::class.java)
                                      startActivity(i)
                                  }else -> {

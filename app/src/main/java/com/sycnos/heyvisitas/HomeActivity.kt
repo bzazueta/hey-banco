@@ -11,6 +11,7 @@ import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.data.models.Deparments
 import com.sycnos.heyvisitas.databinding.ActivityHomeBinding
 import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.SharedPref
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
@@ -22,6 +23,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var progresoValidaVisita : ProgressDialog
     var mensajes : Mensajes = Mensajes()
+    var sharedPref : SharedPref = SharedPref()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,21 +43,14 @@ class HomeActivity : AppCompatActivity() {
                 progresoValidaVisita.setIndeterminate(false)
                 progresoValidaVisita.setCancelable(false)
                 progresoValidaVisita.show()
-                val sharedPref: SharedPreferences =
-                    this@HomeActivity.getSharedPreferences("user", MODE_PRIVATE
-                    )
-                //****obtener json guardado en shared preferences*****///
-                val stringJson = sharedPref.getString("user", "")
-                val user = JSONObject(stringJson)
-                user.length()
 
-                val pasw = sharedPref.getString("password", "")
-                // val pasw = JSONObject(stringPass)
-                pasw.toString()
+                var user  = sharedPref.getUsuario(this@HomeActivity)
+                var pasw  = sharedPref.getPass(this@HomeActivity)
                 val params = RequestParams()
-                params.put("email", user.getJSONObject("user").getString("email"))
+                params.put("email", user)
                 params.put("password",pasw)
                 validarUsuario(params)
+
             }catch (e : Exception)
             {
                 progresoValidaVisita.dismiss()
@@ -80,19 +75,10 @@ class HomeActivity : AppCompatActivity() {
                 progresoValidaVisita.setIndeterminate(false)
                 progresoValidaVisita.setCancelable(false)
                 progresoValidaVisita.show()
-                val sharedPref: SharedPreferences =
-                    this@HomeActivity.getSharedPreferences("user", MODE_PRIVATE
-                    )
-                //****obtener json guardado en shared preferences*****///
-                val stringJson = sharedPref.getString("user", "")
-                val user = JSONObject(stringJson)
-                user.length()
-
-                val pasw = sharedPref.getString("password", "")
-                // val pasw = JSONObject(stringPass)
-                pasw.toString()
+                var user  = sharedPref.getUsuario(this@HomeActivity)
+                var pasw  = sharedPref.getPass(this@HomeActivity)
                 val params = RequestParams()
-                params.put("email", user.getJSONObject("user").getString("email"))
+                params.put("email", user)
                 params.put("password",pasw)
                 validarProveedor(params)
             }catch (e : Exception)
@@ -207,13 +193,9 @@ class HomeActivity : AppCompatActivity() {
                     if (jsonObject.getString("message").equals("Datos correctos."))
                     {
                         val deptos : Deparments = Deparments()
-                        //jsonArray = JSONArray(jsonObject.getJSONArray("Departamentos"))
-//                        for (i in 0 until jsonObject.getJSONArray("Departamentos").length())
-//                        {
-////                            deptos.id = jsonObject.getJSONArray("Departamentos").getJSONObject(i).getString("Id")
-////                            deptos.descripcion = jsonObject.getJSONArray("Departamentos").getJSONObject(i).getString("Descripcion")
-////                            VariablesGlobales.arrayListDeptos.add(deptos)
-//                        }
+                        deptos.id = jsonObject.getJSONObject("proveedor").getString("departamento_id")
+                        deptos.descripcion  = jsonObject.getJSONObject("proveedor").getString("descripcion")
+                        VariablesGlobales.arrayListDeptos.add(deptos)
                         VariablesGlobales.arrayListDeptos.size
                         val i = Intent(this@HomeActivity, ProvidersActivity::class.java)
                         startActivity(i)

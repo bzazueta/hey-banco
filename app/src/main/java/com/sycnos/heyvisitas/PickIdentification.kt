@@ -83,7 +83,7 @@ class PickIdentification : AppCompatActivity() {
 //                progresoCrearVisita.setCancelable(false)
 //                progresoCrearVisita.show()
 //
-//                val sharedPref: SharedPreferences =
+//                val sharedPref: SharedPref =
 //                    this@PickIdentification.getSharedPreferences("user", MODE_PRIVATE
 //                    )
 //                //****obtener json guardado en shared preferences*****///

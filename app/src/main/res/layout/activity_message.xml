@@ -60,128 +60,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         />
 
-    <TextView
-        android:id="@+id/tvMessage"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/border_radius"
-        android:padding="16dp"
-        android:text="Mensaje 1"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
-
-    <Button
-        android:id="@+id/btnSee"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:text="ver"
-        android:textSize="13sp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="25dp"
-        android:textColor="@color/white"
-        android:background="@drawable/border_radius"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivCircle"
-        />
-
-    <TextView
-        android:id="@+id/tvMessage2"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:padding="16dp"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        android:textColor="@color/black"
-        android:text="Mensaje 2"
-        app:layout_constraintTop_toBottomOf="@+id/btnSee"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/border_radius"
-        />
-
-    <TextView
-        android:id="@+id/tvMessageSolved"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="60dp"
-        android:padding="5dp"
-        android:textSize="17sp"
-        android:textStyle="italic"
-        android:textColor="@color/solved"
-        android:text="@string/true_tick"
-        app:layout_constraintTop_toBottomOf="@+id/btnSee"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/border_radius_invisible"
-        />
-
-
-    <TextView
-        android:id="@+id/tvMessage3"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:padding="16dp"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        android:textColor="@color/black"
-        android:text="Mensaje 3"
-        app:layout_constraintTop_toBottomOf="@+id/tvMessage2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/border_radius"
-        />
-
-    <Button
-        android:id="@+id/btnSee3"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:text="ver"
-        android:textSize="13sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:textColor="@color/white"
-        android:background="@drawable/border_radius"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMessage2"
-        />
-    <TextView
-        android:id="@+id/tvMessage4"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:padding="16dp"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        android:textColor="@color/black"
-        android:text="Mensaje 4"
-        app:layout_constraintTop_toBottomOf="@+id/btnSee3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/border_radius"
-        />
-
-    <Button
-        android:id="@+id/btnSee4"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:text="ver"
-        android:textSize="13sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:textColor="@color/white"
-        android:background="@drawable/border_radius"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSee3"
-        />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
