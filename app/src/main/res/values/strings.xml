@@ -123,6 +123,7 @@
     <string name="back">\u003c</string>
 
     <string name="urlDominio">https://sycnos.com/heybanco_qa</string>
+    <string name="urlArchivo">https://sycnos.com/heybanco_qa/public/storage/</string>
     <string name="default_notification_channel_id">default chanel</string>
     <string name="msg_token_fmt">tokenFirebase</string>
     <string-array name="array_departaments">
@@ -137,4 +138,6 @@
         <item>Earth</item>
         <item>Mars</item>
     </string-array>
+
+
 </resources>

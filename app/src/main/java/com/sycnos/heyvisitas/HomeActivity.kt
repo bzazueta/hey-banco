@@ -87,6 +87,7 @@ class HomeActivity : AppCompatActivity() {
                 e.toString()
             }
         }
+
         binding.tvMessage.setOnClickListener {
             val i = Intent(this@HomeActivity, NoticesmessagesActvity::class.java)
             startActivity(i)

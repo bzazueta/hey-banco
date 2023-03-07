@@ -12,11 +12,12 @@
         android:id="@+id/btnBack"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:text="@string/back"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/border_radius"
+        android:text="@string/back"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvHeybanco"
@@ -37,19 +38,45 @@
         android:id="@+id/tvMessage"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:gravity="center"
         android:layout_marginTop="50dp"
+        android:background="@drawable/border_radius"
+        android:gravity="center"
         android:padding="16dp"
+        android:text="visualicación del archivo."
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:textColor="@color/black"
-        android:text="visualicación del archivo."
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/border_radius"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

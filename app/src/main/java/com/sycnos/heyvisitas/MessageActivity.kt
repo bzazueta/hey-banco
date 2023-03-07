@@ -61,6 +61,7 @@ class MessageActivity : AppCompatActivity() {
                         val i = Intent(this@MessageActivity, MessageHistoryActivity::class.java)
                         i.putExtra("titulo",messages.titulo)
                         i.putExtra("cuerpo",messages.cuerpo)
+                        i.putExtra("id",messages.id)
                         startActivity(i)
                     }
 

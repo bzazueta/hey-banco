@@ -12,6 +12,7 @@ import com.sycnos.heyvisitas.data.models.Visits
 import com.sycnos.heyvisitas.databinding.ActivityPendingVisitsBinding
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.SharedPref
+import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
@@ -46,11 +47,11 @@ class PendingVisitsActivity : AppCompatActivity() {
             progresoPendingVisits.setCancelable(false)
             progresoPendingVisits.show()
 
-            var user  = sharedPref.getUsuario(this@PendingVisitsActivity)
-            var pasw  = sharedPref.getPass(this@PendingVisitsActivity)
+//            var user  = sharedPref.getUsuario(this@PendingVisitsActivity)
+//            var pasw  = sharedPref.getPass(this@PendingVisitsActivity)
             val params = RequestParams()
-            params.put("email", user)
-            params.put("password",pasw)
+            params.put("email", VariablesGlobales.getUser())
+            params.put("password", VariablesGlobales.getPasw())
             getPendingVisits(params)
 
         }catch (e :java.lang.Exception)
@@ -58,7 +59,6 @@ class PendingVisitsActivity : AppCompatActivity() {
             e.toString()
         }
     }
-
 
     fun getPendingVisits(params: RequestParams?) {
         val client = AsyncHttpClient()

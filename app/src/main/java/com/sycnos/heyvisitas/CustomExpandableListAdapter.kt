@@ -21,6 +21,7 @@ import com.sycnos.heyvisitas.databinding.ListGroupBinding
 import com.sycnos.heyvisitas.databinding.ListItemBinding
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.SharedPref
+import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
@@ -76,18 +77,16 @@ class CustomExpandableListAdapter internal constructor(
             val idVisita = getChild(listPosition, expandedListPosition) as String
             val spnHour = holder.spHours!!.selectedItem.toString()
             val spnMinutes = holder.spMinutes!!.selectedItem.toString()
-            Toast.makeText(context, idVisita + "-" + spnHour + "-" + spnMinutes, Toast.LENGTH_SHORT).show()
+           // Toast.makeText(context, idVisita + "-" + spnHour + "-" + spnMinutes, Toast.LENGTH_SHORT).show()
             progresoCreateVisits = ProgressDialog(context)
             progresoCreateVisits.setMessage("Registrando salida...")
             progresoCreateVisits.setIndeterminate(false)
             progresoCreateVisits.setCancelable(false)
             progresoCreateVisits.show()
 
-            var user  = sharedPref.getUsuario(context)
-            var pasw  = sharedPref.getPass(context)
             val params = RequestParams()
-            params.put("email", user)
-            params.put("password", pasw)
+            params.put("email", VariablesGlobales.getUser())
+            params.put("password", VariablesGlobales.getPasw())
             params.put("id_visitas",idVisita)
             createVisits(params)
         }catch (e : java.lang.Exception)
@@ -195,7 +194,14 @@ class CustomExpandableListAdapter internal constructor(
                 {
                     progresoCreateVisits.dismiss()
                     jsonObject = JSONObject(responseString)
-                    mensajes!!.mensajeAceptarExpandableList("Mensaje",jsonObject.getString("message"),context);
+                    if (jsonObject.getString("message") == "Salida correctamente.")
+                    {
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),context);
+                    }
+                    else {
+                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),context);
+                    }
+
                 } catch (e: JSONException) {
                     progresoCreateVisits.dismiss()
                     e.printStackTrace()

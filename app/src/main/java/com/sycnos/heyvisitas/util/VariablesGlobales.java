@@ -12,6 +12,12 @@ public class VariablesGlobales {
     public  static String idUser = "";
     public  static String pasw = "";
 
+    public  static String urlArchivo = "";
+
+    public  static String urlArchivoMessage = "";
+
+    public  static String urlFotoMessage = "";
+
     public static String getIdUser() {
         return idUser;
     }
@@ -36,7 +42,6 @@ public class VariablesGlobales {
     }
 
 
-
     public static File getImagen() {
         return imagen;
     }
@@ -45,6 +50,30 @@ public class VariablesGlobales {
         VariablesGlobales.imagen = imagen;
     }
 
+    public static String getUrlArchivo() {
+        return urlArchivo;
+    }
+
+    public static void setUrlArchivo(String urlArchivo) {
+        VariablesGlobales.urlArchivo = urlArchivo;
+    }
+
+
+    public static String getUrlArchivoMessage() {
+        return urlArchivoMessage;
+    }
+
+    public static void setUrlArchivoMessage(String urlArchivoMessage) {
+        VariablesGlobales.urlArchivoMessage = urlArchivoMessage;
+    }
+
+    public static String getUrlFotoMessage() {
+        return urlFotoMessage;
+    }
+
+    public static void setUrlFotoMessage(String urlFotoMessage) {
+        VariablesGlobales.urlFotoMessage = urlFotoMessage;
+    }
 
     public static ArrayList<Deparments> arrayListDeptos = new ArrayList<>();
 }

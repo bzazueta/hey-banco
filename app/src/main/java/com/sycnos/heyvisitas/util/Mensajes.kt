@@ -33,4 +33,18 @@ class Mensajes {
             show()
         }
     }
+
+    fun mensajeAceptarCerrar(titulo: String ,mensaje : String,activity : Activity) {
+        val builder = AlertDialog.Builder(activity)
+        with(builder)
+        {
+            setTitle(titulo)
+            val message = setMessage(mensaje)
+                .setPositiveButton("Aceptar", DialogInterface.OnClickListener {
+                        dialog, id ->
+                    activity.finish()
+                })
+            show()
+        }
+    }
 }

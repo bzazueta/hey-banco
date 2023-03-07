@@ -25,113 +25,116 @@
 
     <TextView
         android:id="@+id/tvVisit"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
-        android:gravity="center"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/home_border_radius"
+        android:gravity="center"
         android:padding="16dp"
+        android:text="Visitas"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="italic"
-        android:textColor="@color/white"
-        android:text="Visitas"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/home_border_radius"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@mipmap/visitas_img"        android:id="@+id/ivCircle"
+        android:id="@+id/ivCircle"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
-        />
-
+        android:layout_height="90dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:src="@mipmap/visitas_img"
+        app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
     <TextView
         android:id="@+id/tvPendingVisit"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
-        android:gravity="center"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/home_border_radius"
+        android:gravity="center"
         android:padding="16dp"
+        android:text="Visitas pendientes"
+        android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="italic"
-        android:textColor="@color/white"
-        android:text="Visitas pendientes"
-        app:layout_constraintTop_toBottomOf="@+id/tvVisit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/home_border_radius"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvVisit" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@mipmap/pending_image"
         android:id="@+id/ivCircleVisit"
-        android:layout_marginEnd="20dp"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvVisit"
-        />
+        android:layout_height="90dp"
+        android:layout_marginEnd="8dp"
+        android:src="@mipmap/pending_image"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPendingVisit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPendingVisit"
+        app:layout_constraintVertical_bias="0.6" />
 
     <TextView
         android:id="@+id/tvProviders"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
-        android:gravity="center"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/home_border_radius"
+        android:gravity="center"
         android:padding="16dp"
+        android:text="Proveedores"
+        android:textColor="@color/white"
         android:textSize="28sp"
         android:textStyle="italic"
-        android:textColor="@color/white"
-        android:text="Proveedores"
-        app:layout_constraintTop_toBottomOf="@+id/tvPendingVisit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/home_border_radius"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPendingVisit" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@mipmap/provider_images"
         android:id="@+id/ivCircleProviders"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPendingVisit"
-        />
+        android:layout_height="90dp"
+        android:layout_marginStart="16dp"
+        android:src="@mipmap/provider_images"
+        app:layout_constraintBottom_toBottomOf="@+id/tvProviders"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvProviders" />
 
     <TextView
         android:id="@+id/tvMessage"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
-        android:gravity="center"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/home_border_radius"
+        android:gravity="center"
         android:padding="16dp"
-        android:textSize="22sp"
-        android:textStyle="italic"
-        android:textColor="@color/white"
         android:text="Avisos y mensajes"
-        app:layout_constraintTop_toBottomOf="@+id/tvProviders"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/home_border_radius"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvProviders" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@mipmap/avisos"
         android:id="@+id/ivCircleMessage"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProviders"
-        />
+        android:layout_height="90dp"
+        android:src="@mipmap/avisos"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvMessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

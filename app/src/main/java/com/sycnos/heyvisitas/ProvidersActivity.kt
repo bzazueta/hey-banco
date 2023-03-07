@@ -61,7 +61,9 @@ class ProvidersActivity : AppCompatActivity() {
         binding.spDepartaments.setAdapter(adapter)
 
 
-        binding.btnBack.setOnClickListener { finish() }
+        binding.btnBack.setOnClickListener {
+            VariablesGlobales.setImagen(null)
+            finish() }
 
         binding.tvDate.setOnClickListener{
             showDatePickerDialog()
@@ -109,7 +111,7 @@ class ProvidersActivity : AppCompatActivity() {
 
             if(validado)
             {
-                if(binding.etName.toString().equals(""))
+                if(binding.etName.text.toString().equals(""))
                 {
                     progresoProviders.dismiss()
                     validado=false
@@ -120,7 +122,7 @@ class ProvidersActivity : AppCompatActivity() {
 
             if(validado)
             {
-                if(binding.etBussines.toString().equals(""))
+                if(binding.etBussines.text.toString().equals(""))
                 {
                     progresoProviders.dismiss()
                     validado=false
@@ -132,14 +134,74 @@ class ProvidersActivity : AppCompatActivity() {
 
             if(validado)
             {
+                if(VariablesGlobales.getImagen() == null)
+                {
+                    progresoProviders.dismiss()
+                    validado=false
+                    binding.btnAdd.isEnabled = true
+                    mensajes!!.mensajeAceptar("Mensaje","Seleccione una INE o GAFETE",this@ProvidersActivity);
+                    //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            if(validado)
+            {
+                if(binding.etResponsable.text.toString().equals(""))
+                {
+                    progresoProviders.dismiss()
+                    validado=false
+                    binding.btnAdd.isEnabled = true
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese las placas",this@ProvidersActivity);
+                    //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            if(validado)
+            {
+                if(binding.etTicket.text.toString().equals(""))
+                {
+                    progresoProviders.dismiss()
+                    validado=false
+                    binding.btnAdd.isEnabled = true
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un ticket",this@ProvidersActivity);
+                    //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            if(validado)
+            {
+                if(binding.etTel.text.toString().equals(""))
+                {
+                    progresoProviders.dismiss()
+                    validado=false
+                    binding.btnAdd.isEnabled = true
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un número de contacto",this@ProvidersActivity);
+                    //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            if(validado)
+            {
+                if(binding.etWork.text.toString().equals(""))
+                {
+                    progresoProviders.dismiss()
+                    validado=false
+                    binding.btnAdd.isEnabled = true
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese el trabajo a realizar",this@ProvidersActivity);
+                    //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
+
+            if(validado)
+            {
                 try
                 {
-                    var user  = sharedPref.getUsuario(this@ProvidersActivity)
-                    var pasw  = sharedPref.getPass(this@ProvidersActivity)
                     val params = RequestParams()
-                    params.put("email", user)
-                    params.put("password", pasw)
-                    params.put("departamento_id","1" )//binding.spDepartaments.selectedItem.toString()
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password", VariablesGlobales.getPasw())
+                    params.put("departamento_id", arrayListIds.get(binding.spDepartaments.selectedItemPosition) )//binding.spDepartaments.selectedItem.toString()
                     params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
                     params.put("nombre", binding.etName.text.toString())
                     params.put("empresa", binding.etBussines.text.toString())
@@ -233,7 +295,7 @@ class ProvidersActivity : AppCompatActivity() {
                     if (jsonObject.getString("message") == "Datos correctos.")
                     {
                         var proveedor : String = jsonObject.getJSONObject("proveedor").getString("name")
-                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message")+ proveedor,this@ProvidersActivity);
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
 
                     }
                    else{

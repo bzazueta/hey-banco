@@ -232,15 +232,13 @@ class VisitsActivity : AppCompatActivity() {
                 try {
                     progresoCrearVisita.dismiss()
                     jsonObject = JSONObject(responseString)
-                   // if (jsonObject.getString("status") == "true")
-                    //{
+                    if (jsonObject.getString("message") == "Datos correctos.")
+                    {
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
+                    }
+                    else{
                         mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
-
-
-//                    }
-//                    if (jsonObject.getString("status") == "false") {
-//                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("text"),this@VisitsActivity);
-//                    }
+                    }
                 } catch (e: JSONException) {
                     binding.btnAdd.isEnabled = true
                     progresoCrearVisita.dismiss()

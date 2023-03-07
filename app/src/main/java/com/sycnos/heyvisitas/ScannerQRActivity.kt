@@ -1,18 +1,30 @@
 package com.sycnos.heyvisitas
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.integration.android.IntentIntegrator
+import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.RequestParams
+import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityScannerQractivityBinding
+import com.sycnos.heyvisitas.util.Mensajes
+import com.sycnos.heyvisitas.util.VariablesGlobales
+import cz.msebera.android.httpclient.Header
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 
 class ScannerQRActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityScannerQractivityBinding
-
+    private lateinit var progresoScannerVisit : ProgressDialog
+    var mensajes : Mensajes = Mensajes()
+    var idVisita : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,19 +47,35 @@ class ScannerQRActivity : AppCompatActivity() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        var resp = "provedor";
         if (result != null) {
             if (result.contents == null) {
                 Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show()
-            } else {
-                when(result.contents){
+            } else
+            {
+                idVisita = result.contents.toString()
+                progresoScannerVisit = ProgressDialog(this@ScannerQRActivity)
+                progresoScannerVisit.setMessage("Cargando información...")
+                progresoScannerVisit.setIndeterminate(false)
+                progresoScannerVisit.setCancelable(false)
+                progresoScannerVisit.show()
+
+                val params = RequestParams()
+                getDetailVisits(params)
+
+
+                when(resp){
                     "provedor" -> {
                         val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
+                        i.putExtra("id_visita",result.contents.toString())
                         startActivity(i)}
                     "visita" -> {
                         val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
+                        i.putExtra("id_visita",result.contents.toString())
                         startActivity(i)
                     }else -> {
                     val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
+                    i.putExtra("id_visita",result.contents.toString())
                     startActivity(i)
                 }
                 }
@@ -56,6 +84,71 @@ class ScannerQRActivity : AppCompatActivity() {
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    fun getDetailVisits(params: RequestParams?) {
+        val client = AsyncHttpClient()
+        //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
+
+        client.get(getString(com.sycnos.heyvisitas.R.string.urlDominio)+"public/api/visitas/qr/${idVisita}", params, object : TextHttpResponseHandler() {
+            override fun onFailure(
+                statusCode: Int,
+                headers:Array<Header>,
+                responseString: String,
+                throwable: Throwable
+            ) {
+                progresoScannerVisit.dismiss()
+                var x = responseString
+
+                mensajes!!.mensajeAceptar(
+                    "Mensaje",
+                    responseString,
+                    this@ScannerQRActivity)
+
+            }
+
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<Header>,
+                responseString: String
+            ) {
+                progresoScannerVisit.dismiss()
+
+                var jsonObject: JSONObject? = null
+                var jsonArray: JSONArray? = null
+                try
+                {
+                    progresoScannerVisit.dismiss()
+                    jsonObject = JSONObject(responseString)
+
+                    var tipoVisita = jsonObject.getString("tipo")
+
+                    when(tipoVisita)
+                    {
+                        "1" ->
+                        {
+                            val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
+                            i.putExtra("id_visita",jsonObject.getString("id"))
+                            startActivity(i)}
+                        "2" ->
+                        {
+                            val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
+                            i.putExtra("id_visita",jsonObject.getString("id"))
+                            startActivity(i)
+                        }else -> {
+                        val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
+                        i.putExtra("id_visita",jsonObject.getString("id"))
+                        startActivity(i)
+                       }
+                    }
+
+                } catch (e: JSONException) {
+
+                    progresoScannerVisit.dismiss()
+                    e.printStackTrace()
+                }
+            }
+        })
     }
 
 }

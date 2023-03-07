@@ -37,6 +37,8 @@ class NoticesAdapter(noticesActivity: NoticesActivity, private val arrayNotices:
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         var noticesList : Notices = arrayNotices!![position]
         holder.lblNotice.setText(noticesList.titulo)
+        holder.lblNotice.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
         //holder.lblTotalLista.setText(infoList.getTotal())
 
 
