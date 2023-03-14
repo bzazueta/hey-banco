@@ -35,9 +35,18 @@ class ScannerQRActivity : AppCompatActivity() {
             finish()
         }
         binding.btnAdd.setOnClickListener {
-            /*
-            val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
-            startActivity(i)*/
+
+//            val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
+//            i.putExtra("id_visita","id")
+//            i.putExtra("nombre","name")
+//            i.putExtra("empresa","empresa")
+//            i.putExtra("responsable","id")
+//            i.putExtra("ticket","ticket")
+//            i.putExtra("tel_contacto","id")
+//            i.putExtra("trabajo","trabajo_realizar")
+//            i.putExtra("placas","placas")
+//            i.putExtra("departamento","departamento")
+//            startActivity(i)
             initScanner()
         }
 
@@ -64,21 +73,21 @@ class ScannerQRActivity : AppCompatActivity() {
                 getDetailVisits(params)
 
 
-                when(resp){
-                    "provedor" -> {
-                        val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
-                        i.putExtra("id_visita",result.contents.toString())
-                        startActivity(i)}
-                    "visita" -> {
-                        val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
-                        i.putExtra("id_visita",result.contents.toString())
-                        startActivity(i)
-                    }else -> {
-                    val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
-                    i.putExtra("id_visita",result.contents.toString())
-                    startActivity(i)
-                }
-                }
+//                when(resp){
+//                    "provedor" -> {
+//                        val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
+//                        i.putExtra("id_visita",result.contents.toString())
+//                        startActivity(i)}
+//                    "visita" -> {
+//                        val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
+//                        i.putExtra("id_visita",result.contents.toString())
+//                        startActivity(i)
+//                    }else -> {
+//                    val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
+//                    i.putExtra("id_visita",result.contents.toString())
+//                    startActivity(i)
+//                }
+//                }
                 Toast.makeText(this, "El valor escaneado es: " + result.contents, Toast.LENGTH_LONG).show()
             }
         } else {
@@ -90,7 +99,7 @@ class ScannerQRActivity : AppCompatActivity() {
         val client = AsyncHttpClient()
         //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
 
-        client.get(getString(com.sycnos.heyvisitas.R.string.urlDominio)+"public/api/visitas/qr/${idVisita}", params, object : TextHttpResponseHandler() {
+        client.get(getString(com.sycnos.heyvisitas.R.string.urlDominio)+"/public/api/visitas/qr/${idVisita}", params, object : TextHttpResponseHandler() {
             override fun onFailure(
                 statusCode: Int,
                 headers:Array<Header>,
@@ -129,16 +138,41 @@ class ScannerQRActivity : AppCompatActivity() {
                         {
                             val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
                             i.putExtra("id_visita",jsonObject.getString("id"))
-                            startActivity(i)}
+                            i.putExtra("nombre",jsonObject.getString("name"))
+                            i.putExtra("empresa",jsonObject.getString("empresa"))
+                            i.putExtra("responsable",jsonObject.getString("id"))
+                            i.putExtra("ticket",jsonObject.getString("ticket"))
+                            i.putExtra("tel_contacto",jsonObject.getString("id"))
+                            i.putExtra("trabajo",jsonObject.getString("trabajo_realizar"))
+                            i.putExtra("placas",jsonObject.getString("placas"))
+                            i.putExtra("departamento",jsonObject.getJSONObject("departamento").getString("descripcion"))
+                            startActivity(i)
+                        }
                         "2" ->
                         {
                             val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
                             i.putExtra("id_visita",jsonObject.getString("id"))
+                            i.putExtra("nombre",jsonObject.getString("name"))
+                            i.putExtra("empresa",jsonObject.getString("empresa"))
+                            i.putExtra("responsable",jsonObject.getString("id"))
+                            i.putExtra("ticket",jsonObject.getString("ticket"))
+                            i.putExtra("tel_contacto",jsonObject.getString("id"))
+                            i.putExtra("trabajo",jsonObject.getString("trabajo_realizar"))
+                            i.putExtra("placas",jsonObject.getString("placas"))
+                            i.putExtra("departamento",jsonObject.getJSONObject("departamento").getString("descripcion"))
                             startActivity(i)
                         }else -> {
-                        val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
-                        i.putExtra("id_visita",jsonObject.getString("id"))
-                        startActivity(i)
+                            val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
+                            i.putExtra("id_visita",jsonObject.getString("id"))
+                            i.putExtra("nombre",jsonObject.getString("name"))
+                            i.putExtra("empresa",jsonObject.getString("empresa"))
+                            i.putExtra("responsable",jsonObject.getString("id"))
+                            i.putExtra("ticket",jsonObject.getString("ticket"))
+                            i.putExtra("tel_contacto",jsonObject.getString("id"))
+                            i.putExtra("trabajo",jsonObject.getString("trabajo_realizar"))
+                            i.putExtra("placas",jsonObject.getString("placas"))
+                            i.putExtra("departamento",jsonObject.getJSONObject("departamento").getString("descripcion"))
+                            startActivity(i)
                        }
                     }
 

@@ -2,6 +2,7 @@ package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -27,7 +28,11 @@ class ScannerVisitActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityScannerVisitBinding
     var id : String = ""
-
+    var nombre : String = ""
+    var placas : String = ""
+    var departamento : String = ""
+    private var mensajes: Mensajes? = Mensajes()
+    private lateinit var progresoScannerVisit : ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +40,73 @@ class ScannerVisitActivity : AppCompatActivity() {
         binding = ActivityScannerVisitBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        id =if (intent.getStringExtra("id_visita") == null) "" else intent.getStringExtra("id")!!
+        id =if (intent.getStringExtra("id_visita") == null) "" else intent.getStringExtra("id_visita")!!
+        nombre =if (intent.getStringExtra("nombre") == null) "" else intent.getStringExtra("nombre")!!
+        placas =if (intent.getStringExtra("placas") == null) "" else intent.getStringExtra("placas")!!
+        departamento =if (intent.getStringExtra("departamento") == null) "" else intent.getStringExtra("departamento")!!
 
-
+        binding.etName.setText(nombre)
+        binding.etDepartament.setText(departamento)
+        binding.etPlacas.setText(placas)
 
         binding.btnBack.setOnClickListener { finish() }
 
+        binding.btnEnter.setOnClickListener(View.OnClickListener {
+
+            try
+            {
+                var validado: Boolean = true
+                binding.btnEnter.isEnabled = false
+                progresoScannerVisit = ProgressDialog(this@ScannerVisitActivity)
+                progresoScannerVisit.setMessage("Registrando Entrada...")
+                progresoScannerVisit.setIndeterminate(false)
+                progresoScannerVisit.setCancelable(false)
+                progresoScannerVisit.show()
+
+                val params = RequestParams()
+                params.put("id_visitas", id)
+                params.put("email", VariablesGlobales.getUser())
+                params.put("password", VariablesGlobales.getPasw())
+                createEnter(params)
+
+
+            }catch (e : java.lang.Exception)
+            {
+                progresoScannerVisit.dismiss()
+                binding.btnEnter.isEnabled = true
+            }
+
+        })
+
+        binding.btnExit.setOnClickListener(View.OnClickListener {
+
+            try
+            {
+                var validado: Boolean = true
+                binding.btnEnter.isEnabled = false
+                progresoScannerVisit = ProgressDialog(this@ScannerVisitActivity)
+                progresoScannerVisit.setMessage("Registrando Entrada...")
+                progresoScannerVisit.setIndeterminate(false)
+                progresoScannerVisit.setCancelable(false)
+                progresoScannerVisit.show()
+
+                val params = RequestParams()
+                params.put("id_visitas", id)
+                params.put("email", VariablesGlobales.getUser())
+                params.put("password", VariablesGlobales.getPasw())
+                createExit(params)
+
+
+            }catch (e : java.lang.Exception)
+            {
+                progresoScannerVisit.dismiss()
+                binding.btnEnter.isEnabled = true
+            }
+
+        })
+
     }
+
     fun basicAlert(view: View) {
         val builder = AlertDialog.Builder(this)
         with(builder)
@@ -55,5 +120,112 @@ class ScannerVisitActivity : AppCompatActivity() {
         }
     }
 
+    fun createEnter(params: RequestParams?) {
+        val client = AsyncHttpClient()
+        //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
+
+        client.post(getString(R.string.urlDominio)+"/public/api/entradas", params, object : TextHttpResponseHandler() {
+            override fun onFailure(
+                statusCode: Int,
+                headers:Array<Header>,
+                responseString: String,
+                throwable: Throwable
+            ) {
+                progresoScannerVisit.dismiss()
+                binding.btnEnter.isEnabled = true
+                //var x = responseString
+
+                mensajes!!.mensajeAceptar("Mensaje",
+                    responseString,
+                    this@ScannerVisitActivity)
+
+            }
+
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<Header>,
+                responseString: String
+            ) {
+                // progresoCobro.dismiss()
+                var jsonObject: JSONObject? = null
+                try
+                {
+                    progresoScannerVisit.dismiss()
+                    binding.btnEnter.isEnabled = true
+                    jsonObject = JSONObject(responseString)
+                    if (jsonObject.getString("message") == "Entrada Registrada.")
+                    {
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",
+                            jsonObject.getString("message"),
+                            this@ScannerVisitActivity)
+                    }
+                    else
+                    {
+                        mensajes!!.mensajeAceptar("Mensaje",
+                            jsonObject.getString("message"),
+                            this@ScannerVisitActivity)
+                    }
+                } catch (e: JSONException) {
+                    progresoScannerVisit.dismiss()
+                    binding.btnEnter.isEnabled = true
+                    e.printStackTrace()
+                }
+            }
+        })
+    }
+
+    fun createExit(params: RequestParams?) {
+        val client = AsyncHttpClient()
+        //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
+
+        client.post(getString(R.string.urlDominio)+"/public/api/salidas", params, object : TextHttpResponseHandler() {
+            override fun onFailure(
+                statusCode: Int,
+                headers:Array<Header>,
+                responseString: String,
+                throwable: Throwable
+            ) {
+                progresoScannerVisit.dismiss()
+                binding.btnEnter.isEnabled = true
+                //var x = responseString
+
+                mensajes!!.mensajeAceptar("Mensaje",
+                    responseString,
+                    this@ScannerVisitActivity)
+
+            }
+
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<Header>,
+                responseString: String
+            ) {
+                // progresoCobro.dismiss()
+                var jsonObject: JSONObject? = null
+                try
+                {
+                    progresoScannerVisit.dismiss()
+                    binding.btnEnter.isEnabled = true
+                    jsonObject = JSONObject(responseString)
+                    if (jsonObject.getString("message") == "Salida correctamente.")
+                    {
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",
+                            jsonObject.getString("message"),
+                            this@ScannerVisitActivity)
+                    }
+                    else
+                    {
+                        mensajes!!.mensajeAceptar("Mensaje",
+                            jsonObject.getString("message"),
+                            this@ScannerVisitActivity)
+                    }
+                } catch (e: JSONException) {
+                    progresoScannerVisit.dismiss()
+                    binding.btnEnter.isEnabled = true
+                    e.printStackTrace()
+                }
+            }
+        })
+    }
 
 }

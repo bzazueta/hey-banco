@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
 //                binding.etUser.setText("calixto.pinon@hey.inc")//
 //                binding.etPassword.setText("calixto2022")//
 
-                binding.etUser.setText("usuario@hey.inc")//
-                binding.etPassword.setText("123456")//
+//                binding.etUser.setText("usuario@hey.inc")//
+//                binding.etPassword.setText("123456")//
 
                 if(binding.etUser.text.toString().equals(""))
                 {
