@@ -19,6 +19,7 @@ import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.data.models.Deparments
 import com.sycnos.heyvisitas.databinding.ActivityRegisterBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
@@ -34,6 +35,8 @@ class RegisterActivity : AppCompatActivity() {
     var mensajes : Mensajes = Mensajes()
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
+    private var conexion: Conexion? = Conexion()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,10 +49,15 @@ class RegisterActivity : AppCompatActivity() {
         progresoRegister.setCancelable(false)
         progresoRegister.show()
 
-        val params = RequestParams()
-        params.put("email", VariablesGlobales.getUser())
-        params.put("password",VariablesGlobales.getPasw())
-        getDepartments(params)
+        var conectado : Boolean = false
+        conectado = conexion!!.isOnline(this)
+        if(conectado)
+        {
+            val params = RequestParams()
+            params.put("email", VariablesGlobales.getUser())
+            params.put("password", VariablesGlobales.getPasw())
+            getDepartments(params)
+        }
 
         binding.btnBack.setOnClickListener { finish() }
 
@@ -63,24 +71,35 @@ class RegisterActivity : AppCompatActivity() {
             progresoRegister.setCancelable(false)
             progresoRegister.show()
 
-            if(binding.tvName.text.toString().equals(""))
+            var conectado : Boolean = false
+            conectado = conexion!!.isOnline(this)
+            if(conectado)
             {
+                if(binding.tvName.text.toString().equals(""))
+                {
+                    binding.btnRegister.isEnabled = true
+                    progresoRegister.dismiss()
+                    validado = false
+                    //Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre",this@RegisterActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                }
+
+                if(validado)
+                {
+                    val params = RequestParams()
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password",VariablesGlobales.getPasw())
+                    params.put("nombre",binding.etName.text.toString())
+                    params.put("departamento_id",arrayListIds.get(binding.spDepartaments.selectedItemPosition))
+                    params.put("asunto",binding.etAsunto.text.toString())
+                    crearRegistro(params)
+                }
+            }
+            else{
                 binding.btnRegister.isEnabled = true
                 progresoRegister.dismiss()
-                validado = false
-                //Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
-                mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre",this@RegisterActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
-            }
+                mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@RegisterActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
 
-            if(validado)
-            {
-                val params = RequestParams()
-                params.put("email", VariablesGlobales.getUser())
-                params.put("password",VariablesGlobales.getPasw())
-                params.put("nombre",binding.etName.text.toString())
-                params.put("departamento_id",arrayListIds.get(binding.spDepartaments.selectedItemPosition))
-                params.put("asunto",binding.etAsunto.text.toString())
-                crearRegistro(params)
             }
         })
 

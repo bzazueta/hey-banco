@@ -1,8 +1,12 @@
 package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -16,6 +20,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityMainBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
@@ -31,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private val TAG: String = MainActivity::class.java.getName()
     var token : String  = ""
+    private var conexion: Conexion? = Conexion()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -84,7 +91,10 @@ class MainActivity : AppCompatActivity() {
                 progresoLogin.setCancelable(false)
                 progresoLogin.show()
 
-//                binding.etUser.setText("guardia001@hey.inc")//calixto.pinon@hey.inc
+                var conectado : Boolean = false
+                conectado = conexion!!.isOnline(this)
+
+//                 binding.etUser.setText("guardia001@hey.inc")//calixto.pinon@hey.inc
 //                binding.etPassword.setText("123456")//calixto2022
 
 //                binding.etUser.setText("calixto.pinon@hey.inc")//
@@ -93,45 +103,55 @@ class MainActivity : AppCompatActivity() {
 //                binding.etUser.setText("usuario@hey.inc")//
 //                binding.etPassword.setText("123456")//
 
-                if(binding.etUser.text.toString().equals(""))
+                if(conectado)
                 {
-                    progresoLogin.dismiss()
-                    validado=false
-                    binding.btnLogin.isEnabled = true
-                    mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar el usuario",this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
-                }
-
-                if(validado) {
-                    if (binding.etPassword.text.toString().equals("")) {
+                    if(binding.etUser.text.toString().equals(""))
+                    {
                         progresoLogin.dismiss()
-                        validado = false
+                        validado=false
                         binding.btnLogin.isEnabled = true
-                        mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar la contraseña",this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                        mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar el usuario",this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                    }
+
+                    if(validado) {
+                        if (binding.etPassword.text.toString().equals("")) {
+                            progresoLogin.dismiss()
+                            validado = false
+                            binding.btnLogin.isEnabled = true
+                            mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar la contraseña",this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
 
 //                        Toast.makeText(
 //                            this@MainActivity,
 //                            "Favor de ingresar la contraseña",
 //                            Toast.LENGTH_SHORT
 //                        ).show()
+                        }
+                    }
+
+                    if(validado)
+                    {
+                        try
+                        {
+                            val params = RequestParams()
+                            params.put("email", binding.etUser.text.toString().trim())
+                            params.put("password", binding.etPassword.text.toString().trim())
+                            login(params)
+                        }catch (e: Exception)
+                        {
+                            binding.btnLogin.isEnabled = true
+                            progresoLogin.dismiss()
+                            mensajes!!.mensajeAceptar("Mensaje",e.toString(),this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                        }
                     }
                 }
+                else{
+                    binding.btnLogin.isEnabled = true
+                    progresoLogin.dismiss()
+                    mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
 
-                if(validado)
-                {
-                    try
-                    {
-                        val params = RequestParams()
-                        params.put("email", binding.etUser.text.toString().trim())
-                        params.put("password", binding.etPassword.text.toString().trim())
-                        login(params)
-                    }catch (e: Exception)
-                    {
-                        binding.btnLogin.isEnabled = true
-                        progresoLogin.dismiss()
-                        mensajes!!.mensajeAceptar("Mensaje",e.toString(),this@MainActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
-
-                    }
                 }
+
             }catch (e: Exception)
             {
                 binding.btnLogin.isEnabled = true
@@ -161,21 +181,26 @@ class MainActivity : AppCompatActivity() {
         //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
 
         client.post(getString(R.string.urlDominio)+"/public/api/app/login", params, object : TextHttpResponseHandler() {
+
                 override fun onFailure(
                     statusCode: Int,
-                    headers:Array<Header>,
+                    headers: Array<Header>,
                     responseString: String,
                     throwable: Throwable
                 ) {
+                    throwable.toString()
                     progresoLogin.dismiss()
                     binding.btnLogin.isEnabled = true
                     //var x = responseString
 
-                    mensajes!!.mensajeAceptar("Mensaje",
-                            responseString,
-                            this@MainActivity)
+                    mensajes!!.mensajeAceptar(
+                        "Mensaje",
+                        responseString,
+                        this@MainActivity
+                    )
 
                 }
+
 
                 override fun onSuccess(
                     statusCode: Int,
@@ -289,6 +314,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }
 
 //**guardar json en shared preferences***///

@@ -13,10 +13,13 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.ext.SdkExtensions
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,16 +38,23 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPickIdentificationProvidersBinding
     private val REQUEST_PERMISSION = 100
     private val REQUEST_IMAGE_CAPTURE = 1
+    private val IMAGE_CHOOSE = 1000;
     private val REQUEST_PICK_IMAGE = 2
     var mensajes : Mensajes = Mensajes()
     var formatoFechas : FormatoFechas = FormatoFechas()
     var identificacion: File? = null
     var selectedImageURI: Uri? = null
-
+    var flujo: String = ""
+    private val SELECT_PICTURE = 1
+    private val ANDROID_R_REQUIRED_EXTENSION_VERSION = 2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPickIdentificationProvidersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        checkCameraPermission()
+
+
 
         binding.btnBack.setOnClickListener { finish() }
 
@@ -52,6 +62,7 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
             openCamera()
         }
         binding.btnGalery.setOnClickListener {
+            checkCameraPermission()
             openGallery()
         }
 
@@ -62,16 +73,17 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        checkCameraPermission()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//
+//    }
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.CAMERA),
                 REQUEST_PERMISSION)
+
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
@@ -80,55 +92,115 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
                 REQUEST_PERMISSION)
         }
     }
+
     private fun openCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
-            intent.resolveActivity(packageManager)?.also {
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-            }
+
+        try {
+            flujo = "camara"
+            val camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(camera_intent, 123)
+        }catch(e : Exception)
+        {
+            e.toString()
         }
+//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+//            intent.resolveActivity(packageManager)?.also {
+//                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+//            }
+//        }
     }
     private fun openGallery() {
-        Intent(Intent.ACTION_GET_CONTENT).also { intent ->
-            intent.type = "image/*"
-            intent.resolveActivity(packageManager)?.also {
-                startActivityForResult(intent, REQUEST_PICK_IMAGE)
+
+        try
+        {
+
+            flujo="galeria"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if(isPhotoPickerAvailable()==true)
+                {
+                    val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+                    startActivityForResult(intent, 1)
+                }
+            } else {
+
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select Picture"),
+                    SELECT_PICTURE
+                )
             }
+
+
+//            Toast.makeText(this,"entro openGallery",Toast.LENGTH_LONG).show()
+
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            startActivityForResult(intent, IMAGE_CHOOSE)
+
+//           val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+//            startActivityForResult(intent, 1)
+
+
+
+        }catch (e :Exception)
+        {
+            binding.btnGalery.isEnabled = true
+//
+//                        Intent(Intent.ACTION_GET_CONTENT).also { intent ->
+//                intent.type = "image/*"
+//                intent.resolveActivity(packageManager)?.also {
+//                    startActivityForResult(intent, REQUEST_PICK_IMAGE)
+//                }
+//            }
+
+            Toast.makeText(this,"error entro a exception " +e.toString(), Toast.LENGTH_LONG).show()
+            e.toString()
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                val bitmap = data?.extras?.get("data") as Bitmap
-                binding.ivImage.setImageBitmap(bitmap)
-                //  val bitmap_: Bitmap = Utils.decodeBase64(bitmap)
-                try {
-                    val storageDir =
-                        getExternalFilesDir(Environment.DIRECTORY_DCIM+ "/HeyVisitas/Archivos/Imagenes/")
-                    identificacion = File.createTempFile(
-                        "imagenhey",  /* prefix */
-                        ".jpeg",  /* suffix */
-                        storageDir /* directory */
-                    )
-                    VariablesGlobales.setImagen(identificacion)
-                    //Convert bitmap to byte array
-                    val bos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
-                    val bitmapdata = bos.toByteArray()
+            if(flujo.equals("camara"))
+            {
+                if (requestCode == 123) {
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    binding.ivImage.setImageBitmap(bitmap)
+                    //  val bitmap_: Bitmap = Utils.decodeBase64(bitmap)
+                    try {
+                        val storageDir =
+                            getExternalFilesDir(Environment.DIRECTORY_DCIM + "/HeyVisitas/Archivos/Imagenes/")
+                        identificacion = File.createTempFile(
+                            "imagenhey",  /* prefix */
+                            ".jpeg",  /* suffix */
+                            storageDir /* directory */
+                        )
+                        VariablesGlobales.setImagen(identificacion)
+                        //Convert bitmap to byte array
+                        val bos = ByteArrayOutputStream()
+                        bitmap.compress(
+                            Bitmap.CompressFormat.PNG,
+                            0,
+                            bos
+                        ) // YOU can also save it in JPEG
+                        val bitmapdata = bos.toByteArray()
 
-                    //write the bytes in file
-                    val fos = FileOutputStream(identificacion)
-                    fos.write(bitmapdata)
-                    fos.flush()
-                    fos.close()
+                        //write the bytes in file
+                        val fos = FileOutputStream(identificacion)
+                        fos.write(bitmapdata)
+                        fos.flush()
+                        fos.close()
 
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                    Log.i(null, "Save file error!")
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                        Log.i(null, "Save file error!")
 
+                    }
                 }
             }
-            else if (requestCode == REQUEST_PICK_IMAGE) {
+            if(flujo.equals("galeria"))
+            {
                 try {
                     selectedImageURI = data!!.data
                     var picturePath : String? = getPath(this@PickIdentificationProvidersActivity, selectedImageURI!!)
@@ -143,6 +215,17 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
                 }
 
             }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun isPhotoPickerAvailable(): Boolean {
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> true
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                SdkExtensions.getExtensionVersion(Build.VERSION_CODES.R) >= ANDROID_R_REQUIRED_EXTENSION_VERSION
+            }
+            else -> false
         }
     }
     fun basicAlert(view: View) {

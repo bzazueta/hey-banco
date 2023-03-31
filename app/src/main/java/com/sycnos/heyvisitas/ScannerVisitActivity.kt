@@ -16,6 +16,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityScannerVisitBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
@@ -33,7 +34,7 @@ class ScannerVisitActivity : AppCompatActivity() {
     var departamento : String = ""
     private var mensajes: Mensajes? = Mensajes()
     private lateinit var progresoScannerVisit : ProgressDialog
-
+    private var conexion: Conexion? = Conexion()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,11 +64,22 @@ class ScannerVisitActivity : AppCompatActivity() {
                 progresoScannerVisit.setCancelable(false)
                 progresoScannerVisit.show()
 
-                val params = RequestParams()
-                params.put("id_visitas", id)
-                params.put("email", VariablesGlobales.getUser())
-                params.put("password", VariablesGlobales.getPasw())
-                createEnter(params)
+                var conectado : Boolean = false
+                conectado = conexion!!.isOnline(this)
+                if(conectado)
+                {
+                    val params = RequestParams()
+                    params.put("id_visitas", id)
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password", VariablesGlobales.getPasw())
+                    createEnter(params)
+                }
+                else{
+                    binding.btnEnter.isEnabled = true
+                    progresoScannerVisit.dismiss()
+                    mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@ScannerVisitActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                }
 
 
             }catch (e : java.lang.Exception)
@@ -90,11 +102,22 @@ class ScannerVisitActivity : AppCompatActivity() {
                 progresoScannerVisit.setCancelable(false)
                 progresoScannerVisit.show()
 
-                val params = RequestParams()
-                params.put("id_visitas", id)
-                params.put("email", VariablesGlobales.getUser())
-                params.put("password", VariablesGlobales.getPasw())
-                createExit(params)
+                var conectado : Boolean = false
+                conectado = conexion!!.isOnline(this)
+                if(conectado)
+                {
+                    val params = RequestParams()
+                    params.put("id_visitas", id)
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password", VariablesGlobales.getPasw())
+                    createExit(params)
+                }
+                else{
+                    binding.btnEnter.isEnabled = true
+                    progresoScannerVisit.dismiss()
+                    mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@ScannerVisitActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                }
 
 
             }catch (e : java.lang.Exception)

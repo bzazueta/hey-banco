@@ -22,6 +22,7 @@ import com.sycnos.heyvisitas.data.models.Messages
 import com.sycnos.heyvisitas.data.models.Notices
 import com.sycnos.heyvisitas.databinding.ActivityMessageBinding
 import com.sycnos.heyvisitas.desing.RecyclerTouchListener
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
@@ -35,6 +36,8 @@ class MessageActivity : AppCompatActivity() {
     var mensajes : Mensajes = Mensajes()
     private var arrayMessages : ArrayList<Messages> = ArrayList()
     private var mAdapter: MessageAdapter? = null
+    private var conexion: Conexion? = Conexion()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,8 +49,19 @@ class MessageActivity : AppCompatActivity() {
         progresoMessage.setIndeterminate(false)
         progresoMessage.setCancelable(false)
         progresoMessage.show()
-        val params = RequestParams()
-        getMessages(params)
+
+        var conectado : Boolean = false
+        conectado = conexion!!.isOnline(this)
+        if(conectado)
+        {
+            val params = RequestParams()
+            getMessages(params)
+        }
+        else
+        {
+            progresoMessage.dismiss()
+            mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@MessageActivity);
+        }
 
         binding.recycler.addOnItemTouchListener(
             RecyclerTouchListener(

@@ -13,6 +13,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityMessageHistoryBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
@@ -31,6 +32,7 @@ class MessageHistoryActivity : AppCompatActivity() {
     private lateinit var progresoFile : ProgressDialog
     private lateinit var progresoMessageHistory : ProgressDialog
     var mensajes : Mensajes = Mensajes()
+    private var conexion: Conexion? = Conexion()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,8 +48,18 @@ class MessageHistoryActivity : AppCompatActivity() {
         progresoFile.setIndeterminate(false)
         progresoFile.setCancelable(false)
         progresoFile.show()
-        val params = RequestParams()
-        getFilemessages(params)
+
+        var conectado : Boolean = false
+        conectado = conexion!!.isOnline(this)
+        if(conectado) {
+            val params = RequestParams()
+            getFilemessages(params)
+        }
+        else
+        {
+            progresoFile.dismiss()
+            mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@MessageHistoryActivity);
+        }
 
         binding.tvMessage.setText(titulo)
         binding.tvMessage2.setText(cuerpo)
@@ -69,26 +81,39 @@ class MessageHistoryActivity : AppCompatActivity() {
                 progresoMessageHistory.setCancelable(false)
                 progresoMessageHistory.show()
 
-                if(binding.txtMessage.text.toString().isNullOrEmpty())
+                var conectado : Boolean = false
+                conectado = conexion!!.isOnline(this)
+                if(conectado)
                 {
-                    validado = false
+                    if (binding.txtMessage.text.toString().isNullOrEmpty()) {
+                        validado = false
+                        binding.btnSend.isEnabled = true
+                        progresoMessageHistory.dismiss()
+                        mensajes!!.mensajeAceptar(
+                            "Mensaje",
+                            "Favor de ingresar el mensaje",
+                            this@MessageHistoryActivity
+                        );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    if (validado) {
+                        val sdf = SimpleDateFormat("yyyy-MM-dd")
+                        var fecha = sdf.format(Date())
+
+                        val params = RequestParams()
+                        params.put("mensaje", id)
+                        params.put("usuario", VariablesGlobales.getIdUser())
+                        params.put("fecha", fecha)
+                        params.put("respuesta", binding.txtMessage.text.toString())
+                        crearMessage(params)
+                    }
+                }
+                else
+                {
                     binding.btnSend.isEnabled = true
                     progresoMessageHistory.dismiss()
-                    mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar el mensaje",this@MessageHistoryActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
-
-                }
-
-                if(validado)
-                {
-                    val sdf = SimpleDateFormat("yyyy-MM-dd")
-                    var fecha = sdf.format(Date())
-
-                    val params = RequestParams()
-                    params.put("mensaje", id)
-                    params.put("usuario", VariablesGlobales.getIdUser())
-                    params.put("fecha", fecha)
-                    params.put("respuesta", binding.txtMessage.text.toString())
-                    crearMessage(params)
+                    mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@MessageHistoryActivity);
                 }
 
 
@@ -99,7 +124,6 @@ class MessageHistoryActivity : AppCompatActivity() {
             }
         }
 
-
         binding.btnFile.setOnClickListener {
 
             var validado :Boolean = true
@@ -108,7 +132,7 @@ class MessageHistoryActivity : AppCompatActivity() {
                 validado = false
                 mensajes!!.mensajeAceptar(
                     "Mensaje",
-                    "Este aviso no contiene archivo",
+                    "Este mensaje no contiene archivo",
                     this@MessageHistoryActivity)
             }
             if(validado) {
@@ -127,7 +151,7 @@ class MessageHistoryActivity : AppCompatActivity() {
                 validado = false
                 mensajes!!.mensajeAceptar(
                     "Mensaje",
-                    "Este aviso no contiene foto",
+                    "Este mensaje no contiene foto",
                     this@MessageHistoryActivity)
             }
             if(validado) {

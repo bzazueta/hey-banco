@@ -13,6 +13,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityForgotPasswordBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
@@ -23,6 +24,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityForgotPasswordBinding
     private lateinit var progresoForgotPassword: ProgressDialog
     private var mensajes: Mensajes? = Mensajes()
+    private var conexion: Conexion? = Conexion()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,30 +47,40 @@ class ForgotPasswordActivity : AppCompatActivity() {
             progresoForgotPassword.show()
            // binding.etUser.setText("calixto.pinon@hey.inc")
 
-            if(binding.etUser.text.toString().equals(""))
+            var conectado : Boolean = false
+            conectado = conexion!!.isOnline(this)
+            if(conectado)
+            {
+                if (binding.etUser.text.toString().equals("")) {
+                    progresoForgotPassword.dismiss()
+                    validado = false
+                    binding.btnRecoveryPassword.isEnabled = true
+                    mensajes!!.mensajeAceptar(
+                        "Mensaje",
+                        "Favor de ingresar el usuario",
+                        this@ForgotPasswordActivity
+                    );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(this@ForgotPasswordActivity,"Favor de ingresar el usuario", Toast.LENGTH_SHORT).show()
+                }
+
+                if (validado) {
+                    try {
+                        val params = RequestParams()
+                        params.put("email", binding.etUser.text.toString())
+                        forgotPassword(params)
+                    } catch (e: java.lang.Exception) {
+                        progresoForgotPassword.dismiss()
+                        binding.btnRecoveryPassword.isEnabled = true
+                        e.toString()
+                    }
+                }
+            }
+            else
             {
                 progresoForgotPassword.dismiss()
-                validado=false
                 binding.btnRecoveryPassword.isEnabled = true
-                mensajes!!.mensajeAceptar("Mensaje","Favor de ingresar el usuario",this@ForgotPasswordActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
-               // Toast.makeText(this@ForgotPasswordActivity,"Favor de ingresar el usuario", Toast.LENGTH_SHORT).show()
+                mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@ForgotPasswordActivity);
             }
-
-            if(validado)
-            {
-               try
-               {
-                   val params = RequestParams()
-                   params.put("email", binding.etUser.text.toString())
-                   forgotPassword(params)
-               }catch (e : java.lang.Exception)
-               {
-                   progresoForgotPassword.dismiss()
-                   binding.btnRecoveryPassword.isEnabled = true
-                   e.toString()
-               }
-            }
-
         })
 
     }

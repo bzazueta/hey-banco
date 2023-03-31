@@ -10,6 +10,7 @@ import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.data.models.Visits
 import com.sycnos.heyvisitas.databinding.ActivityPendingVisitsBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.SharedPref
 import com.sycnos.heyvisitas.util.VariablesGlobales
@@ -26,7 +27,7 @@ class PendingVisitsActivity : AppCompatActivity() {
     private var titleList: List<String>? = null
     val listData = HashMap<String, List<String>>()
     var sharedPref : SharedPref = SharedPref()
-
+    private var conexion: Conexion? = Conexion()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +50,18 @@ class PendingVisitsActivity : AppCompatActivity() {
 
 //            var user  = sharedPref.getUsuario(this@PendingVisitsActivity)
 //            var pasw  = sharedPref.getPass(this@PendingVisitsActivity)
-            val params = RequestParams()
-            params.put("email", VariablesGlobales.getUser())
-            params.put("password", VariablesGlobales.getPasw())
-            getPendingVisits(params)
+            var conectado : Boolean = false
+            conectado = conexion!!.isOnline(this)
+            if(conectado) {
+                val params = RequestParams()
+                params.put("email", VariablesGlobales.getUser())
+                params.put("password", VariablesGlobales.getPasw())
+                getPendingVisits(params)
+            }else{
+                progresoPendingVisits.dismiss()
+                mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@PendingVisitsActivity);
+
+            }
 
         }catch (e :java.lang.Exception)
         {
@@ -140,7 +149,7 @@ class PendingVisitsActivity : AppCompatActivity() {
         }
 
         expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-            listData.get("ghgh")?.get(childPosition)
+            //listData.get("ghgh")?.get(childPosition)
             false
         }
     }

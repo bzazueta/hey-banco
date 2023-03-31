@@ -19,6 +19,7 @@ import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.data.models.Visits
 import com.sycnos.heyvisitas.databinding.ListGroupBinding
 import com.sycnos.heyvisitas.databinding.ListItemBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.SharedPref
 import com.sycnos.heyvisitas.util.VariablesGlobales
@@ -39,6 +40,7 @@ class CustomExpandableListAdapter internal constructor(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private lateinit var groupBinding: ListGroupBinding
     private lateinit var itemBinding: ListItemBinding
+    private var conexion: Conexion? = Conexion()
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
         return this.dataList[this.titleList[listPosition]]!![expandedListPosition]
@@ -84,11 +86,20 @@ class CustomExpandableListAdapter internal constructor(
             progresoCreateVisits.setCancelable(false)
             progresoCreateVisits.show()
 
-            val params = RequestParams()
-            params.put("email", VariablesGlobales.getUser())
-            params.put("password", VariablesGlobales.getPasw())
-            params.put("id_visitas",idVisita)
-            createVisits(params)
+            var conectado : Boolean = false
+            conectado = conexion!!.isOnline(context)
+            if(conectado) {
+                val params = RequestParams()
+                params.put("email", VariablesGlobales.getUser())
+                params.put("password", VariablesGlobales.getPasw())
+                params.put("id_visitas", idVisita)
+                createVisits(params)
+            }
+            else{
+                progresoCreateVisits.dismiss()
+                mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",context);
+
+            }
         }catch (e : java.lang.Exception)
         {
             e.toString()

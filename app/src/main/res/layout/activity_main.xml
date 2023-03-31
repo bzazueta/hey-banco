@@ -57,13 +57,12 @@
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:hint="Usuario"
+        android:background="@drawable/border_edittext"
+        android:hint=" Usuario"
         android:textColor="@color/black"
-        android:background="@drawable/rounded_edit_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUser"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvUser" />
 
     <TextView
         android:id="@+id/tvPassword"
@@ -85,8 +84,8 @@
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/rounded_edit_text"
-        android:hint="Contraseña"
+        android:background="@drawable/border_edittext"
+        android:hint=" Contraseña"
         android:inputType="textPassword"
         android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"

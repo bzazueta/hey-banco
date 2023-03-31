@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    //compileSdkPreview "Tiramisu"
     namespace 'com.sycnos.heyvisitas'
     compileSdk 33
 
@@ -14,7 +15,7 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        //targetSdkPreview "Tiramisu"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

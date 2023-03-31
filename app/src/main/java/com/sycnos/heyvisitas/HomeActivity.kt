@@ -10,6 +10,7 @@ import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.data.models.Deparments
 import com.sycnos.heyvisitas.databinding.ActivityHomeBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.SharedPref
 import com.sycnos.heyvisitas.util.VariablesGlobales
@@ -24,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var progresoValidaVisita : ProgressDialog
     var mensajes : Mensajes = Mensajes()
     var sharedPref : SharedPref = SharedPref()
+    private var conexion: Conexion? = Conexion()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,15 +48,26 @@ class HomeActivity : AppCompatActivity() {
 
                 //var user  = sharedPref.getUsuario(this@HomeActivity)
                 //var pasw  = sharedPref.getPass(this@HomeActivity)
-                val params = RequestParams()
-                params.put("email", VariablesGlobales.getUser())
-                params.put("password",VariablesGlobales.getPasw())
-                validarUsuario(params)
+                var conectado : Boolean = false
+                conectado = conexion!!.isOnline(this)
+                if(conectado)
+                {
+                    val params = RequestParams()
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password",VariablesGlobales.getPasw())
+                    validarUsuario(params)
+                }
+                else
+                {
+                    binding.tvVisit.isEnabled = true
+                    progresoValidaVisita.dismiss()
+                    mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@HomeActivity);
+                }
 
             }catch (e : Exception)
             {
                 progresoValidaVisita.dismiss()
-                binding.tvVisit.isEnabled = false
+                binding.tvVisit.isEnabled = true
                   e.toString()
             }
 
@@ -76,14 +89,25 @@ class HomeActivity : AppCompatActivity() {
                 progresoValidaVisita.setCancelable(false)
                 progresoValidaVisita.show()
 
-                val params = RequestParams()
-                params.put("email", VariablesGlobales.getUser())
-                params.put("password",VariablesGlobales.getPasw())
-                validarProveedor(params)
+                var conectado : Boolean = false
+                conectado = conexion!!.isOnline(this)
+                if(conectado)
+                {
+                    val params = RequestParams()
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password",VariablesGlobales.getPasw())
+                    validarProveedor(params)
+                }
+                else
+                {
+                    binding.tvVisit.isEnabled = true
+                    progresoValidaVisita.dismiss()
+                    mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@HomeActivity);
+                }
             }catch (e : Exception)
             {
                 progresoValidaVisita.dismiss()
-                binding.tvVisit.isEnabled = false
+                binding.tvVisit.isEnabled = true
                 e.toString()
             }
         }

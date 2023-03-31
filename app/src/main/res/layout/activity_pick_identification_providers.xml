@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_drawable"
     tools:context=".PickIdentificationProvidersActivity">
 
     <Button
@@ -23,22 +24,23 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Hey Banco"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Hey Banco"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvVisit"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
         android:background="@drawable/home_border_radius"
-        android:gravity="right"
+        android:gravity="center|center_horizontal|center_vertical"
         android:padding="16dp"
         android:text="Proveedores"
         android:textColor="@color/white"
@@ -52,45 +54,49 @@
         android:id="@+id/ivCircle"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginLeft="95dp"
+        android:layout_marginLeft="16dp"
         android:src="@mipmap/provider_images"
+        app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
+        app:layout_constraintTop_toTopOf="@+id/tvVisit" />
 
 
     <Button
         android:id="@+id/btnGalery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textStyle="italic"
-        android:text="Galeria:"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/border_radius"
-        app:layout_constraintTop_toBottomOf="@+id/ivCircle"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
+        android:text="Galeria:"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="@+id/ivCircle"
+        app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
+
     <Button
         android:id="@+id/btnPick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Capturar"
-        android:textColor="@color/white"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/border_radius"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivCircle"/>
+        android:text="Capturar"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/tvVisit"
+        app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
+
     <ImageView
         android:id="@+id/ivImage"
-        android:layout_width="350dp"
-        android:layout_height="400dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:src="#dedede"
-        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAdd"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGalery"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnGalery" />
     />
 
     <Button
@@ -98,11 +104,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/border_radius"
         android:onClick="basicAlert"
         android:text="listo"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivImage" />

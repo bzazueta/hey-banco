@@ -14,10 +14,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityVisitsBinding
-import com.sycnos.heyvisitas.util.FormatoFechas
-import com.sycnos.heyvisitas.util.Mensajes
-import com.sycnos.heyvisitas.util.SharedPref
-import com.sycnos.heyvisitas.util.VariablesGlobales
+import com.sycnos.heyvisitas.util.*
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
@@ -38,6 +35,7 @@ class VisitsActivity : AppCompatActivity() {
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
     var sharedPref : SharedPref = SharedPref()
+    private var conexion: Conexion? = Conexion()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -99,91 +97,129 @@ class VisitsActivity : AppCompatActivity() {
             progresoCrearVisita.setCancelable(false)
             progresoCrearVisita.show()
 
-            if(binding.tvDate.text.toString().equals(""))
-            {
+            var conectado : Boolean = false
+            conectado = conexion!!.isOnline(this)
+            if(conectado) {
+                if (binding.tvDate.text.toString().equals("")) {
+                    binding.btnAdd.isEnabled = true
+                    progresoCrearVisita.dismiss()
+                    validado = false
+                    //Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
+                    mensajes!!.mensajeAceptar(
+                        "Mensaje",
+                        "Seleccione una fecha",
+                        this@VisitsActivity
+                    );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                }
+                if (validado) {
+                    if (binding.spDepartaments.selectedItem.toString().equals("Seleccionar")) {
+                        binding.btnAdd.isEnabled = true
+                        progresoCrearVisita.dismiss()
+                        validado = false
+                        mensajes!!.mensajeAceptar(
+                            "Mensaje",
+                            "Seleccione un departamento",
+                            this@VisitsActivity
+                        );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                if (validado) {
+                    if (binding.etName.text.toString().isNullOrEmpty()) {
+                        binding.btnAdd.isEnabled = true
+                        progresoCrearVisita.dismiss()
+                        validado = false
+                        mensajes!!.mensajeAceptar(
+                            "Mensaje",
+                            "Ingrese un nombre",
+                            this@VisitsActivity
+                        );
+                    }
+                }
+
+                if (validado) {
+                    if (binding.etPlacas.text.toString().isNullOrEmpty()) {
+                        binding.btnAdd.isEnabled = true
+                        progresoCrearVisita.dismiss()
+                        validado = false
+                        mensajes!!.mensajeAceptar(
+                            "Mensaje",
+                            "Ingrese una placa ",
+                            this@VisitsActivity
+                        );
+                    }
+                }
+
+                if (validado) {
+                    if (VariablesGlobales.getImagen() == null) {
+                        binding.btnAdd.isEnabled = true
+                        progresoCrearVisita.dismiss()
+                        validado = false
+                        mensajes!!.mensajeAceptar(
+                            "Mensaje",
+                            "Ingrese una indentificación ",
+                            this@VisitsActivity
+                        );
+                    }
+                }
+
+                if (validado) {
+                    try {
+                        var frecuently: String = ""
+                        if (!binding.cbFrecuently.isChecked) {
+                            frecuently = "0"
+                        }
+                        if (binding.cbFrecuently.isChecked) {
+                            frecuently = "1"
+                        }
+
+                        val params = RequestParams()
+                        params.put("email", VariablesGlobales.getUser())
+                        params.put("password", VariablesGlobales.getPasw())
+                        params.put(
+                            "placas",
+                            if (binding.etPlacas.text.toString()
+                                    .equals("")
+                            ) "" else binding.etPlacas.text.toString()
+                        )
+                        params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
+                        params.put(
+                            "departamento_id",
+                            arrayListIds.get(binding.spDepartaments.selectedItemPosition)
+                        )
+                        params.put(
+                            "nombre",
+                            if (binding.etName.text.toString()
+                                    .equals("")
+                            ) "" else binding.etName.text.toString()
+                        )
+                        params.put("frecuencia", frecuently)
+                        if (VariablesGlobales.getImagen() != null) {
+                            params.put("identificacion", VariablesGlobales.getImagen())
+                        }
+                        if (VariablesGlobales.getImagen() == null) {
+                            params.put("identificacion", "")
+                        }
+                        crearVisita(params)
+                    } catch (e: FileNotFoundException) {
+                        progresoCrearVisita.dismiss()
+                        binding.btnAdd.isEnabled = true
+                        e.toString();
+                    } catch (ex: Exception) {
+                        progresoCrearVisita.dismiss()
+                        binding.btnAdd.isEnabled = true
+                        ex.toString();
+                    }
+                }
+            }
+            else{
+
                 binding.btnAdd.isEnabled = true
                 progresoCrearVisita.dismiss()
-                validado = false
-                //Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
-                mensajes!!.mensajeAceptar("Mensaje","Seleccione una fecha",this@VisitsActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@VisitsActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
 
             }
-            if(validado) {
-                if (binding.spDepartaments.selectedItem.toString().equals("Seleccionar")) {
-                    binding.btnAdd.isEnabled = true
-                    progresoCrearVisita.dismiss()
-                    validado = false
-                    mensajes!!.mensajeAceptar("Mensaje","Seleccione un departamento",this@VisitsActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            if(validado) {
-                if (binding.etName.text.toString().isNullOrEmpty()) {
-                    binding.btnAdd.isEnabled = true
-                    progresoCrearVisita.dismiss()
-                    validado = false
-                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre",this@VisitsActivity);
-                }
-            }
-
-            if(validado) {
-                if (binding.etPlacas.text.toString().isNullOrEmpty()) {
-                    binding.btnAdd.isEnabled = true
-                    progresoCrearVisita.dismiss()
-                    validado = false
-                    mensajes!!.mensajeAceptar("Mensaje","Ingrese una placa ",this@VisitsActivity);
-                }
-            }
-
-            if(validado) {
-                if (VariablesGlobales.getImagen()==null) {
-                    binding.btnAdd.isEnabled = true
-                    progresoCrearVisita.dismiss()
-                    validado = false
-                    mensajes!!.mensajeAceptar("Mensaje","Ingrese una indentificación ",this@VisitsActivity);
-                }
-            }
-
-            if(validado)
-            {
-                try
-                {
-                    var frecuently : String = ""
-                    if (!binding.cbFrecuently.isChecked) {
-                        frecuently = "0"
-                    }
-                    if (binding.cbFrecuently.isChecked) {
-                        frecuently = "1"
-                    }
-
-                    val params = RequestParams()
-                    params.put("email", VariablesGlobales.getUser())
-                    params.put("password",VariablesGlobales.getPasw())
-                    params.put("placas",if( binding.etPlacas.text.toString().equals(""))"" else binding.etPlacas.text.toString())
-                    params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
-                    params.put("departamento_id", arrayListIds.get(binding.spDepartaments.selectedItemPosition))
-                    params.put("nombre", if( binding.etName.text.toString().equals(""))"" else binding.etName.text.toString())
-                    params.put("frecuencia", frecuently)
-                    if(VariablesGlobales.getImagen() != null)
-                    {
-                        params.put("identificacion", VariablesGlobales.getImagen())
-                    }
-                    if(VariablesGlobales.getImagen() == null)
-                    {
-                        params.put("identificacion", "")
-                    }
-                    crearVisita(params)
-               } catch(e : FileNotFoundException) {
-                   progresoCrearVisita.dismiss()
-                  binding.btnAdd.isEnabled = true
-                   e.toString();
-               } catch(ex : Exception) {
-                    progresoCrearVisita.dismiss()
-                    binding.btnAdd.isEnabled = true
-                 ex.toString();
-               }
-            }
-
         })
 
     }

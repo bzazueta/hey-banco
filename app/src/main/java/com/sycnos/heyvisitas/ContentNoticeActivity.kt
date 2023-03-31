@@ -13,6 +13,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityContentNoticeBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
@@ -28,6 +29,9 @@ class ContentNoticeActivity : AppCompatActivity() {
     private var id     : String = ""
     private lateinit var progresoFile : ProgressDialog
     var mensajes : Mensajes = Mensajes()
+    private var conexion: Conexion? = Conexion()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,8 +50,18 @@ class ContentNoticeActivity : AppCompatActivity() {
         progresoFile.setIndeterminate(false)
         progresoFile.setCancelable(false)
         progresoFile.show()
-        val params = RequestParams()
-        getFile(params)
+        var conectado : Boolean = false
+        conectado = conexion!!.isOnline(this)
+        if(conectado)
+        {
+            val params = RequestParams()
+            getFile(params)
+        }
+        else
+        {
+            progresoFile.dismiss()
+            mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@ContentNoticeActivity);
+        }
 
         binding.btnFile.setOnClickListener {
 

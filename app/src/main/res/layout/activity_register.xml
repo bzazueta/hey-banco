@@ -35,30 +35,31 @@
 
     <TextView
         android:id="@+id/tvVisit"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:gravity="right"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/home_border_radius"
+        android:gravity="center|center_horizontal|center_vertical"
         android:padding="16dp"
+        android:text="Registrarse"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:textColor="@color/white"
-        android:text="Registrarse"
-        android:layout_marginStart="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/home_border_radius"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@mipmap/visitas_img"        android:id="@+id/ivCircle"
+        android:id="@+id/ivCircle"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="90dp"
+        android:layout_marginLeft="16dp"
+        android:src="@mipmap/visitas_img"
+        app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
-        />
+        app:layout_constraintTop_toTopOf="@+id/tvVisit" />
 
 
 
@@ -79,15 +80,16 @@
 
     <Spinner
         android:id="@+id/spDepartaments"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="30dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/border_edittext"
         android:entries="@array/departaments"
         android:textColor="@color/black"
-        android:background="@drawable/rounded_edit_text"
-        app:layout_constraintTop_toBottomOf="@+id/tvDepartament"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvDepartament" />
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
@@ -105,16 +107,19 @@
 
     <EditText
         android:id="@+id/etName"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:hint="Nombre de visita"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/border_edittext"
+        android:hint=" Nombre de visita"
+        android:paddingLeft="8dp"
         android:textColor="@color/black"
-        android:background="@drawable/rounded_edit_text"        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvName"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
     <TextView
         android:id="@+id/tvAsunto"
@@ -133,16 +138,19 @@
 
     <EditText
         android:id="@+id/etAsunto"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:hint="Asunto breve"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/border_edittext"
+        android:hint=" Asunto breve"
+        android:paddingLeft="8dp"
         android:textColor="@color/black"
-        android:background="@drawable/rounded_edit_text"        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAsunto"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvAsunto" />
 
     <Button
         android:id="@+id/btnRegister"

@@ -13,10 +13,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.ext.SdkExtensions.getExtensionVersion
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -35,12 +38,16 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
+
 class PickIdentification : AppCompatActivity() {
 
+    private val ANDROID_R_REQUIRED_EXTENSION_VERSION = 2
+    private val SELECT_PICTURE = 1
     private lateinit var binding: ActivityPickIdentificationBinding
     private val REQUEST_PERMISSION = 100
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_PICK_IMAGE = 2
+    private val IMAGE_CHOOSE = 1000;
     var name :String =""
     var placas :String =""
     var date :String =""
@@ -51,6 +58,7 @@ class PickIdentification : AppCompatActivity() {
     var formatoFechas : FormatoFechas = FormatoFechas()
     var identificacion: File? = null
     var selectedImageURI: Uri? = null
+    var flujo: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +72,19 @@ class PickIdentification : AppCompatActivity() {
         date =if (intent.getStringExtra("date") == null) "" else intent.getStringExtra("date")!!
         frecuently= if (intent.getStringExtra("frecuently") == null) "" else intent.getStringExtra("frecuently")!!
 
-        binding.btnBack.setOnClickListener { finish() }
+        checkCameraPermission()
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
         binding.btnPick.setOnClickListener {
             openCamera()
         }
+
         binding.btnGalery.setOnClickListener {
+            //binding.btnGalery.isEnabled = false
+            checkCameraPermission()
             openGallery()
         }
 
@@ -114,10 +130,14 @@ class PickIdentification : AppCompatActivity() {
 //            }
         })
     }
-    override fun onResume() {
-        super.onResume()
-        checkCameraPermission()
-    }
+
+
+//    override fun onResume() {
+//        super.onResume()
+//        checkCameraPermission()
+//    }
+
+
     private fun checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED) {
@@ -131,56 +151,115 @@ class PickIdentification : AppCompatActivity() {
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 REQUEST_PERMISSION)
         }
+
     }
+
     private fun openCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
-            intent.resolveActivity(packageManager)?.also {
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-            }
-        }
+       // Toast.makeText(this,"entro openGallery",Toast.LENGTH_LONG).show()
+       try {
+           flujo = "camara"
+           val camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+           // Start the activity with camera_intent, and request pic id
+           // Start the activity with camera_intent, and request pic id
+           startActivityForResult(camera_intent, 123)
+//           Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+//               intent.resolveActivity(packageManager)?.also {
+//                   startActivityForResult(intent, 123)
+//               }
+//           }
+       }catch(e : Exception)
+           {
+           e.toString()
+       }
     }
     private fun openGallery() {
-        Intent(Intent.ACTION_GET_CONTENT).also { intent ->
-            intent.type = "image/*"
-            intent.resolveActivity(packageManager)?.also {
-                startActivityForResult(intent, REQUEST_PICK_IMAGE)
-            }
+        try
+        {
+
+            flujo="galeria"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if(isPhotoPickerAvailable()==true)
+                    {
+                           val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+                           startActivityForResult(intent, 1)
+                    }
+                } else {
+
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select Picture"),
+                    SELECT_PICTURE
+                )
+                }
+
+
+//            Toast.makeText(this,"entro openGallery",Toast.LENGTH_LONG).show()
+
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            startActivityForResult(intent, IMAGE_CHOOSE)
+
+//           val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+//            startActivityForResult(intent, 1)
+
+
+
+        }catch (e :Exception)
+        {
+           // binding.btnGalery.isEnabled = true
+//
+//                        Intent(Intent.ACTION_GET_CONTENT).also { intent ->
+//                intent.type = "image/*"
+//                intent.resolveActivity(packageManager)?.also {
+//                    startActivityForResult(intent, REQUEST_PICK_IMAGE)
+//                }
+//            }
+
+           // Toast.makeText(this,"error entro a exception " +e.toString(),Toast.LENGTH_LONG).show()
+            e.toString()
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        binding.btnGalery.isEnabled = true
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                val bitmap = data?.extras?.get("data") as Bitmap
-                binding.ivImage.setImageBitmap(bitmap)
-              //  val bitmap_: Bitmap = Utils.decodeBase64(bitmap)
-                try {
-                    val storageDir =
-                        getExternalFilesDir(Environment.DIRECTORY_DCIM+ "/HeyVisitas/Archivos/Imagenes/")
-                    identificacion = File.createTempFile(
-                        "imagenhey",  /* prefix */
-                        ".jpeg",  /* suffix */
-                        storageDir /* directory */
-                    )
-                     VariablesGlobales.setImagen(identificacion)
-                    //Convert bitmap to byte array
-                    val bos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
-                    val bitmapdata = bos.toByteArray()
 
-                    //write the bytes in file
-                    val fos = FileOutputStream(identificacion)
-                    fos.write(bitmapdata)
-                    fos.flush()
-                    fos.close()
+            if(flujo.equals("camara"))
+            {
+                if (requestCode == 123) {
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    binding.ivImage.setImageBitmap(bitmap)
+                    //  val bitmap_: Bitmap = Utils.decodeBase64(bitmap)
+                    try {
+                        val storageDir =
+                            getExternalFilesDir(Environment.DIRECTORY_DCIM+ "/HeyVisitas/Archivos/Imagenes/")
+                        identificacion = File.createTempFile(
+                            "imagenhey",  /* prefix */
+                            ".jpeg",  /* suffix */
+                            storageDir /* directory */
+                        )
+                        VariablesGlobales.setImagen(identificacion)
+                        //Convert bitmap to byte array
+                        val bos = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
+                        val bitmapdata = bos.toByteArray()
 
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                    Log.i(null, "Save file error!")
+                        //write the bytes in file
+                        val fos = FileOutputStream(identificacion)
+                        fos.write(bitmapdata)
+                        fos.flush()
+                        fos.close()
 
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                        Log.i(null, "Save file error!")
+
+                    }
                 }
             }
-            else if (requestCode == REQUEST_PICK_IMAGE) {
+            if(flujo.equals("galeria")) {
                 try {
                     selectedImageURI = data!!.data
                     var picturePath : String? = getPath(this@PickIdentification, selectedImageURI!!)
@@ -195,14 +274,31 @@ class PickIdentification : AppCompatActivity() {
                 }
 
             }
+//            else if (requestCode == IMAGE_CHOOSE) {
+//                try {
+//                    selectedImageURI = data!!.data
+//                    var picturePath : String? = getPath(this@PickIdentification, selectedImageURI!!)
+//                    val uri = data?.getData()
+//                    assert(picturePath != null)
+//                    identificacion = File(picturePath)
+//                    VariablesGlobales.setImagen(identificacion)
+//                    binding.ivImage.setImageURI(uri)
+//                }catch (e : Exception)
+//                {
+//                    e.toString()
+//                }
+//
+//            }
         }
     }
-    fun basicAlert(view: View) {
+    fun basicAlert(msj: String) {
         val builder = AlertDialog.Builder(this)
         with(builder)
         {
             setTitle("Atención")
-            val message = setMessage("Mensaje personalizado se puede personalizar desde la plataforma")
+            val message = setMessage(msj)
+
+//            val message = setMessage("Mensaje personalizado se puede personalizar desde la plataforma")
                 .setPositiveButton("Aceptar", DialogInterface.OnClickListener {
                         dialog, id ->
                 })
@@ -210,6 +306,16 @@ class PickIdentification : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun isPhotoPickerAvailable(): Boolean {
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> true
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                getExtensionVersion(Build.VERSION_CODES.R) >= ANDROID_R_REQUIRED_EXTENSION_VERSION
+            }
+            else -> false
+        }
+    }
     fun crearVisita(params: RequestParams?) {
         val client = AsyncHttpClient()
         //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");

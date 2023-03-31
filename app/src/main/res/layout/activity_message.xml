@@ -35,9 +35,11 @@
 
     <TextView
         android:id="@+id/tvVisit"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="40dp"
         android:background="@drawable/home_border_radius"
         android:gravity="center_horizontal|center_vertical"
         android:padding="16dp"
@@ -53,10 +55,11 @@
         android:id="@+id/ivCircle"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginLeft="64dp"
+        android:layout_marginLeft="16dp"
         android:src="@mipmap/avisos"
+        app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
+        app:layout_constraintTop_toTopOf="@+id/tvVisit" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

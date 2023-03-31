@@ -11,6 +11,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
 import com.sycnos.heyvisitas.databinding.ActivityScannerQractivityBinding
+import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
 import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
@@ -25,6 +26,7 @@ class ScannerQRActivity : AppCompatActivity() {
     private lateinit var progresoScannerVisit : ProgressDialog
     var mensajes : Mensajes = Mensajes()
     var idVisita : String = ""
+    private var conexion: Conexion? = Conexion()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,6 +38,7 @@ class ScannerQRActivity : AppCompatActivity() {
         }
         binding.btnAdd.setOnClickListener {
 
+            //val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
 //            val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
 //            i.putExtra("id_visita","id")
 //            i.putExtra("nombre","name")
@@ -43,7 +46,7 @@ class ScannerQRActivity : AppCompatActivity() {
 //            i.putExtra("responsable","id")
 //            i.putExtra("ticket","ticket")
 //            i.putExtra("tel_contacto","id")
-//            i.putExtra("trabajo","trabajo_realizar")
+//            i.putExtra("trabajo","trabajorealizar")
 //            i.putExtra("placas","placas")
 //            i.putExtra("departamento","departamento")
 //            startActivity(i)
@@ -69,8 +72,18 @@ class ScannerQRActivity : AppCompatActivity() {
                 progresoScannerVisit.setCancelable(false)
                 progresoScannerVisit.show()
 
-                val params = RequestParams()
-                getDetailVisits(params)
+                var conectado : Boolean = false
+                conectado = conexion!!.isOnline(this)
+                if(conectado)
+                {
+                    val params = RequestParams()
+                    getDetailVisits(params)
+                }
+                else{
+                    progresoScannerVisit.dismiss()
+                    mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",this@ScannerQRActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                }
 
 
 //                when(resp){

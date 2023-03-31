@@ -25,55 +25,60 @@
 
     <TextView
         android:id="@+id/tvScannerQR"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/home_border_radius"
         android:gravity="center"
-        android:layout_marginTop="10dp"
         android:padding="16dp"
+        android:text="Escanear QR"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:textColor="@color/white"
-        android:text="Escanear QR"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/home_border_radius"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@mipmap/image_visitas"        android:id="@+id/ivCircle"
+        android:id="@+id/ivCircle"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginLeft="8dp"
+        android:src="@mipmap/image_visitas"
+        app:layout_constraintBottom_toBottomOf="@+id/tvScannerQR"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
-        />
+        app:layout_constraintTop_toTopOf="@+id/tvScannerQR" />
 
 
     <TextView
         android:id="@+id/tvRegister"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
-        android:gravity="center"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="50dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/home_border_radius"
+        android:gravity="center"
         android:padding="16dp"
+        android:text="Registrarse"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:textColor="@color/white"
-        android:text="Registrarse"
-        app:layout_constraintTop_toBottomOf="@+id/tvScannerQR"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/home_border_radius"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvScannerQR" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:src="@mipmap/image_visitas"        android:id="@+id/ivCircleVisit"
+        android:id="@+id/ivCircleVisit"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/image_visitas"
+        app:layout_constraintBottom_toBottomOf="@+id/tvRegister"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvScannerQR"
-        />
+        app:layout_constraintTop_toTopOf="@+id/tvRegister" />
 
 
 

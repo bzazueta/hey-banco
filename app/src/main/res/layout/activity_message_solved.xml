@@ -57,21 +57,16 @@
         />
 
 
-
-
-
     <Button
         android:id="@+id/btnFile"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="36dp"
         android:background="@drawable/border_radius"
         android:text="ver archivo"
         android:textColor="@color/white"
         android:textSize="13sp"
-        android:layout_marginStart="50dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvMessage"
         app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
 
     <Button
@@ -79,13 +74,11 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="50dp"
         android:background="@drawable/border_radius"
         android:text="ver foto"
         android:textColor="@color/white"
         android:textSize="13sp"
-        android:layout_marginStart="50dp"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvMessage"
         app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
 
     <TextView
