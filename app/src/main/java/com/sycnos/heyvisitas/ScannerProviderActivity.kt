@@ -102,7 +102,7 @@ class ScannerProviderActivity : AppCompatActivity() {
                 var validado: Boolean = true
                 binding.btnEnter.isEnabled = false
                 progresoScannerProvider = ProgressDialog(this@ScannerProviderActivity)
-                progresoScannerProvider.setMessage("Registrando Entrada...")
+                progresoScannerProvider.setMessage("Registrando Salida...")
                 progresoScannerProvider.setIndeterminate(false)
                 progresoScannerProvider.setCancelable(false)
                 progresoScannerProvider.show()

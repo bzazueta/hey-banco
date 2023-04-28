@@ -97,7 +97,7 @@ class ScannerVisitActivity : AppCompatActivity() {
                 var validado: Boolean = true
                 binding.btnEnter.isEnabled = false
                 progresoScannerVisit = ProgressDialog(this@ScannerVisitActivity)
-                progresoScannerVisit.setMessage("Registrando Entrada...")
+                progresoScannerVisit.setMessage("Registrando Salida...")
                 progresoScannerVisit.setIndeterminate(false)
                 progresoScannerVisit.setCancelable(false)
                 progresoScannerVisit.show()

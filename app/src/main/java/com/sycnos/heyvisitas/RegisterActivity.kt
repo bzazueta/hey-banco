@@ -84,6 +84,15 @@ class RegisterActivity : AppCompatActivity() {
                     mensajes!!.mensajeAceptar("Mensaje","Ingrese un nombre",this@RegisterActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
                 }
 
+                if(binding.etTel.text.toString().isNullOrEmpty() && binding.etEmail.text.toString().isNullOrEmpty())
+                {
+                    binding.btnRegister.isEnabled = true
+                    progresoRegister.dismiss()
+                    validado = false
+                    //Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
+                    mensajes!!.mensajeAceptar("Mensaje","Ingrese un Teléfono o un Correo",this@RegisterActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                }
+
                 if(validado)
                 {
                     val params = RequestParams()
@@ -92,6 +101,8 @@ class RegisterActivity : AppCompatActivity() {
                     params.put("nombre",binding.etName.text.toString())
                     params.put("departamento_id",arrayListIds.get(binding.spDepartaments.selectedItemPosition))
                     params.put("asunto",binding.etAsunto.text.toString())
+                    params.put("tel_contacto",binding.etAsunto.text.toString())
+                    params.put("email_contacto",binding.etAsunto.text.toString())
                     crearRegistro(params)
                 }
             }

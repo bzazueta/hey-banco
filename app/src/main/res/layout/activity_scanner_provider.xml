@@ -49,7 +49,7 @@
             android:background="@drawable/home_border_radius"
             android:gravity="center_horizontal|center_vertical"
             android:padding="16dp"
-            android:text="Provedores"
+            android:text="Proveedores"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="italic"
