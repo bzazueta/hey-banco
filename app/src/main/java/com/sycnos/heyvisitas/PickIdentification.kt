@@ -34,9 +34,9 @@ import com.sycnos.heyvisitas.util.VariablesGlobales
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class PickIdentification : AppCompatActivity() {
@@ -83,7 +83,7 @@ class PickIdentification : AppCompatActivity() {
         }
 
         binding.btnGalery.setOnClickListener {
-            //binding.btnGalery.isEnabled = false
+            binding.btnGalery.isEnabled = false
             checkCameraPermission()
             openGallery()
         }
@@ -139,19 +139,43 @@ class PickIdentification : AppCompatActivity() {
 
 
     private fun checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.CAMERA),
-                REQUEST_PERMISSION)
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                REQUEST_PERMISSION)
-        }
 
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+//                != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+//                    REQUEST_PERMISSION
+//                )
+//            }
+//
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO)
+//                != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(Manifest.permission.READ_MEDIA_AUDIO),
+//                    REQUEST_PERMISSION
+//                )
+//            }
+//        }
+//        else
+//        {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    REQUEST_PERMISSION)
+            }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_PERMISSION)
+            }
+       // }
     }
 
     private fun openCamera() {
@@ -208,7 +232,7 @@ class PickIdentification : AppCompatActivity() {
 
         }catch (e :Exception)
         {
-           // binding.btnGalery.isEnabled = true
+           binding.btnGalery.isEnabled = true
 //
 //                        Intent(Intent.ACTION_GET_CONTENT).also { intent ->
 //                intent.type = "image/*"
@@ -217,7 +241,7 @@ class PickIdentification : AppCompatActivity() {
 //                }
 //            }
 
-           // Toast.makeText(this,"error entro a exception " +e.toString(),Toast.LENGTH_LONG).show()
+            Toast.makeText(this,"error entro a exception " +e.toString(),Toast.LENGTH_LONG).show()
             e.toString()
         }
     }
@@ -261,16 +285,66 @@ class PickIdentification : AppCompatActivity() {
             }
             if(flujo.equals("galeria")) {
                 try {
+
+
                     selectedImageURI = data!!.data
                     var picturePath : String? = getPath(this@PickIdentification, selectedImageURI!!)
                     val uri = data?.getData()
-                    assert(picturePath != null)
+                   // assert(picturePath != null)
                     identificacion = File(picturePath)
-                    VariablesGlobales.setImagen(identificacion)
+                   // VariablesGlobales.setImagen(identificacion)
                     binding.ivImage.setImageURI(uri)
-                }catch (e : Exception)
+                    ///
+                    val selectedImageUri = data.data
+                    val selectedImageBitmap: Bitmap
+                    try {
+                        selectedImageBitmap = MediaStore.Images.Media.getBitmap(
+                            this.contentResolver,
+                            selectedImageUri
+                        )
+                        try {
+                            val calendar = Calendar.getInstance()
+                            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                            val strdate = simpleDateFormat.format(calendar.time)
+                            val fyh = strdate.toString()
+                            val storageDir =
+                                getExternalFilesDir(Environment.DIRECTORY_DCIM+ "/HeyVisitas/Archivos/Imagenes/")
+                            identificacion = File.createTempFile(
+                                "imagenhey"+fyh,  /* prefix */
+                                ".jpeg",  /* suffix */
+                                storageDir /* directory */
+                            )
+                            VariablesGlobales.setImagen(identificacion)
+                            //Convert bitmap to byte array
+                            val bos = ByteArrayOutputStream()
+                            selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
+                            val bitmapdata = bos.toByteArray()
+
+                            //write the bytes in file
+                            val fos = FileOutputStream(identificacion)
+                            fos.write(bitmapdata)
+                            fos.flush()
+                            fos.close()
+
+                        } catch (e: java.lang.Exception) {
+                            e.printStackTrace()
+                            Log.i(null, "Save file error!")
+
+                        }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    ///
+                }
+                catch (e : FileNotFoundException)
                 {
                     e.toString()
+                    mensajes!!.mensajeAceptar("Mensaje",e.toString(),this@PickIdentification);
+                }
+                catch (e : Exception)
+                {
+                    e.toString()
+                    mensajes!!.mensajeAceptar("Mensaje",e.toString(),this@PickIdentification);
                 }
 
             }
@@ -290,7 +364,24 @@ class PickIdentification : AppCompatActivity() {
 //
 //            }
         }
+        else
+        {
+            binding.btnGalery.isEnabled = true
+        }
     }
+
+
+    fun getPathUri(uri: Uri?): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(uri!!, projection, null, null, null) ?: return null
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val s = cursor.getString(column_index)
+        cursor.close()
+        return s
+    }
+
+
     fun basicAlert(msj: String) {
         val builder = AlertDialog.Builder(this)
         with(builder)
@@ -372,6 +463,7 @@ class PickIdentification : AppCompatActivity() {
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 
         // DocumentProvider
+
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
 
             // ExternalStorageProvider

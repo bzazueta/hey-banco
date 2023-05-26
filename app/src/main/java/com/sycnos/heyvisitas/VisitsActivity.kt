@@ -1,14 +1,18 @@
 package com.sycnos.heyvisitas
 
 import android.R
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
@@ -26,6 +30,7 @@ import kotlin.collections.ArrayList
 
 class VisitsActivity : AppCompatActivity() {
 
+    var qr : String = ""
     private lateinit var binding: ActivityVisitsBinding
     private lateinit var progresoCrearVisita : ProgressDialog
     var mensajes : Mensajes = Mensajes()
@@ -99,7 +104,8 @@ class VisitsActivity : AppCompatActivity() {
 
             var conectado : Boolean = false
             conectado = conexion!!.isOnline(this)
-            if(conectado) {
+            if(conectado)
+            {
                 if (binding.tvDate.text.toString().equals("")) {
                     binding.btnAdd.isEnabled = true
                     progresoCrearVisita.dismiss()
@@ -203,6 +209,8 @@ class VisitsActivity : AppCompatActivity() {
                         }
                         crearVisita(params)
                     } catch (e: FileNotFoundException) {
+                        mensajes!!.mensajeAceptar("Mensaje",e.toString(),this@VisitsActivity);                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
                         progresoCrearVisita.dismiss()
                         binding.btnAdd.isEnabled = true
                         e.toString();
@@ -266,13 +274,23 @@ class VisitsActivity : AppCompatActivity() {
                 binding.btnAdd.isEnabled = true
                 var jsonObject: JSONObject? = null
                 try {
+                    qr=""
                     progresoCrearVisita.dismiss()
                     jsonObject = JSONObject(responseString)
                     if (jsonObject.getString("message") == "Datos correctos.")
                     {
-                        mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
+//                        binding.etName.setText("")
+//                        binding.etPlacas.setText("")
+//                        binding.tvDate.setText("")
+                        qr = jsonObject.getString("qr")
+
+                        //mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
+                        mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity)
                     }
                     else{
+//                        qr = jsonObject.getString("message")
+//                        mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity)
+
                         mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
                     }
                 } catch (e: JSONException) {
@@ -284,4 +302,44 @@ class VisitsActivity : AppCompatActivity() {
         })
     }
 
+    fun mensajeCompartirAceptar(titulo: String ,mensaje : String,activity : Activity) {
+        val builder = AlertDialog.Builder(activity)
+        with(builder)
+        {
+            setTitle(titulo)
+            setCancelable(false);
+            val message = setMessage(mensaje)
+                .setPositiveButton("Aceptar", DialogInterface.OnClickListener {
+                        dialog, id ->
+                    activity.finish()
+                })
+            show()
+            val message2 = setMessage(mensaje)
+                .setNegativeButton("Compartir Link", DialogInterface.OnClickListener {
+                        dialog, id ->
+                    shareLinkQr()
+                })
+            show()
+        }
+    }
+
+    private fun shareLinkQr(){
+        // val pm: PackageManager = getPackageManager()
+        try {
+            val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text = " ${qr}"
+            // val info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
+            //Check if package exists or not. If not then code
+            //in catch block will be called
+            //waIntent.setPackage("com.whatsapp")
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            //waIntent.putExtra(Intent.EXTRA_SUBJECT, "Visita generada SYGER de acceso residencial")
+
+            startActivity(Intent.createChooser(waIntent, "Compartir Por"))
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(this@VisitsActivity, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
 }

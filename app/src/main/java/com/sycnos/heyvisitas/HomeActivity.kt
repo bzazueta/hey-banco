@@ -155,10 +155,11 @@ class HomeActivity : AppCompatActivity() {
                     VariablesGlobales.arrayListDeptos.clear()
                     if (jsonObject.getString("message").equals("Datos correctos."))
                     {
-                        val deptos : Deparments = Deparments()
+
                         //jsonArray = JSONArray(jsonObject.getJSONArray("Departamentos"))
                         for (i in 0 until jsonObject.getJSONArray("Departamentos").length())
                         {
+                            val deptos : Deparments = Deparments()
                             deptos.id = jsonObject.getJSONArray("Departamentos").getJSONObject(i).getString("Id")
                             deptos.descripcion = jsonObject.getJSONArray("Departamentos").getJSONObject(i).getString("Descripcion")
                             VariablesGlobales.arrayListDeptos.add(deptos)

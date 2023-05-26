@@ -66,8 +66,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         try{
             data.toString();
-            String title = data.get("title").toString();
-            String body = data.get("message").toString();
+            String title = data.get("title").toString()==  null ? "" : data.get("title");
+            String body = data.get("message").toString()==  null ? "" : data.get("message");
             String imagenUrl = data.get("image") ==  null ? "" : data.get("image");
 
             Bitmap iconBitMap = null;
@@ -79,10 +79,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String NOTIFICATION_CHANNEL_ID = getString(R.string.default_notification_channel_id);
             //
             Intent intent = new Intent(this,MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("result", title + body);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("result", "title + body");
+            PendingIntent pendingIntent = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+            }
+            else {
+                pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT );
+            }
 
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -156,8 +163,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+
+        PendingIntent pendingIntent = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+        }
+        else {
+            pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT );
+        }
+
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+//                PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //

@@ -1,10 +1,12 @@
 package com.sycnos.heyvisitas
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -29,6 +31,7 @@ class ProvidersActivity : AppCompatActivity() {
     private lateinit var progresoProviders: ProgressDialog
     var mensajes : Mensajes = Mensajes()
     var date : String = ""
+    var qr : String = ""
     var formatoFechas : FormatoFechas = FormatoFechas()
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
@@ -320,11 +323,16 @@ class ProvidersActivity : AppCompatActivity() {
                 {
                     progresoProviders.dismiss()
                     binding.btnAdd.isEnabled = true
+                    qr=""
                     jsonObject = JSONObject(responseString)
                     if (jsonObject.getString("message") == "Datos correctos.")
                     {
                         var proveedor : String = jsonObject.getJSONObject("proveedor").getString("name")
-                        mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
+                        qr = jsonObject.getString("qr")
+                        //mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
+
+                        mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
+
 
                     }
                    else{
@@ -344,5 +352,45 @@ class ProvidersActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    fun mensajeCompartirAceptar(titulo: String ,mensaje : String,activity : Activity) {
+        val builder = AlertDialog.Builder(activity)
+        with(builder)
+        {
+            setTitle(titulo)
+            val message = setMessage(mensaje)
+                .setPositiveButton("Aceptar", DialogInterface.OnClickListener {
+                        dialog, id ->
+                    activity.finish()
+                })
+            show()
+            val message2 = setMessage(mensaje)
+                .setNegativeButton("Compartir Link", DialogInterface.OnClickListener {
+                        dialog, id ->
+                    shareLinkQr()
+                })
+            show()
+        }
+    }
+
+    private fun shareLinkQr(){
+        // val pm: PackageManager = getPackageManager()
+        try {
+            val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text = "${qr}"
+            // val info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
+            //Check if package exists or not. If not then code
+            //in catch block will be called
+            //waIntent.setPackage("com.whatsapp")
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            //waIntent.putExtra(Intent.EXTRA_SUBJECT, "Visita generada SYGER de acceso residencial")
+
+            startActivity(Intent.createChooser(waIntent, "Compartir Por"))
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(this@ProvidersActivity, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 }

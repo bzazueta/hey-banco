@@ -31,6 +31,8 @@ import com.sycnos.heyvisitas.util.VariablesGlobales
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class PickIdentificationProvidersActivity : AppCompatActivity() {
@@ -62,6 +64,7 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
             openCamera()
         }
         binding.btnGalery.setOnClickListener {
+            binding.btnGalery.isEnabled=false
             checkCameraPermission()
             openGallery()
         }
@@ -207,14 +210,56 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
                     val uri = data?.getData()
                     assert(picturePath != null)
                     identificacion = File(picturePath)
-                    VariablesGlobales.setImagen(identificacion)
+                   // VariablesGlobales.setImagen(identificacion)
                     binding.ivImage.setImageURI(uri)
+                    binding.btnGalery.isEnabled = true
+                    val selectedImageUri = data.data
+                    val selectedImageBitmap: Bitmap
+                    try {
+                            selectedImageBitmap = MediaStore.Images.Media.getBitmap(
+                                this.contentResolver,
+                                selectedImageUri
+                            )
+
+                            val calendar = Calendar.getInstance()
+                            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                            val strdate = simpleDateFormat.format(calendar.time)
+                            val fyh = strdate.toString()
+                            val storageDir =
+                                getExternalFilesDir(Environment.DIRECTORY_DCIM+ "/HeyVisitas/Archivos/Imagenes/")
+                            identificacion = File.createTempFile(
+                                "imagenhey"+fyh,  /* prefix */
+                                ".jpeg",  /* suffix */
+                                storageDir /* directory */
+                            )
+                            VariablesGlobales.setImagen(identificacion)
+                            //Convert bitmap to byte array
+                            val bos = ByteArrayOutputStream()
+                            selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
+                            val bitmapdata = bos.toByteArray()
+
+                            //write the bytes in file
+                            val fos = FileOutputStream(identificacion)
+                            fos.write(bitmapdata)
+                            fos.flush()
+                            fos.close()
+
+                        } catch (e: java.lang.Exception) {
+                            e.printStackTrace()
+                            Log.i(null, "Save file error!")
+
+                        }
                 }catch (e : Exception)
                 {
                     e.toString()
+                    binding.btnGalery.isEnabled = true
                 }
 
             }
+        }
+        else
+        {
+            binding.btnGalery.isEnabled=true
         }
     }
 
