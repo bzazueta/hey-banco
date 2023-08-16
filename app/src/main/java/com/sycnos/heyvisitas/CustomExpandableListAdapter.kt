@@ -3,7 +3,9 @@ package com.sycnos.heyvisitas
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +33,8 @@ import org.json.JSONObject
 class CustomExpandableListAdapter internal constructor(
     private val context: Activity,
     private val titleList: List<String>,
-    private val dataList: HashMap<String, List<String>>
+    private val dataList: HashMap<String, List<String>>,
+    private val qrList: ArrayList<String>
 ) : BaseExpandableListAdapter() {
 
     var sharedPref : SharedPref = SharedPref()
@@ -65,6 +68,7 @@ class CustomExpandableListAdapter internal constructor(
             holder = ItemViewHolder()
             holder.label = itemBinding.expandedListItem
             holder.btnAdd = itemBinding.btnBack
+            holder.btnCompartirQr = itemBinding.btnCompartirQr
             holder.spHours = itemBinding.spHours
             holder.spMinutes = itemBinding.spMinutes
             convertView.tag = holder
@@ -109,6 +113,15 @@ class CustomExpandableListAdapter internal constructor(
         }
 
 
+        })
+
+        holder.btnCompartirQr?.setOnClickListener(View.OnClickListener {
+
+//            val res = getChild(listPosition, expandedListPosition) as String
+//            var qr_split = res.toString().split("|")val qr = qrList.get(listPosition)
+
+            var qr = qrList.get(listPosition)
+            shareLinkQr(qr)
         })
         return convertView
     }
@@ -163,6 +176,7 @@ class CustomExpandableListAdapter internal constructor(
     inner class ItemViewHolder {
         internal var label: TextView? = null
         internal var btnAdd: Button? = null
+        internal var btnCompartirQr: Button? = null
         internal var spHours : Spinner? = null
         internal var spMinutes : Spinner? = null
     }
@@ -170,6 +184,7 @@ class CustomExpandableListAdapter internal constructor(
     inner class GroupViewHolder {
         internal var label: TextView? = null
         internal var btnAdd: Button? = null
+        internal var btnCompartirQr: Button? = null
     }
 
     fun createVisits(params: RequestParams?) {
@@ -219,5 +234,25 @@ class CustomExpandableListAdapter internal constructor(
                 }
             }
         })
+    }
+
+    private fun shareLinkQr(qr :String){
+        // val pm: PackageManager = getPackageManager()
+        try {
+            val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text = "${qr}"
+            // val info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
+            //Check if package exists or not. If not then code
+            //in catch block will be called
+            //waIntent.setPackage("com.whatsapp")
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            // waIntent.putExtra(Intent.EXTRA_SUBJECT, "Visita generada SYGER de acceso residencial")
+
+            context.startActivity(Intent.createChooser(waIntent, "Compartir Por"))
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(context, "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 }

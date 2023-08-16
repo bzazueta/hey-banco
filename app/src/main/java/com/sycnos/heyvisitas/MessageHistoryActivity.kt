@@ -2,6 +2,7 @@ package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -160,6 +161,30 @@ class MessageHistoryActivity : AppCompatActivity() {
                 i.putExtra("url_archivo", VariablesGlobales.getUrlFotoMessage())
                 startActivity(i)
             }
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedPrefRoles: SharedPreferences =
+            this@MessageHistoryActivity.getSharedPreferences(
+                "usuario", MODE_PRIVATE
+            )
+        val sharedPrefTemp: SharedPreferences =
+            this@MessageHistoryActivity.getSharedPreferences(
+                "temp", MODE_PRIVATE
+            )
+        var stringJsonTemp = sharedPrefTemp.getString("temp", "")
+        val stringJsonUsuario = sharedPrefRoles.getString("usuario", "")
+        if(!stringJsonUsuario.equals(""))
+        {
+            val jsonUsuario = JSONObject(stringJsonUsuario)
+            /** seteamos las variables que vamos a ocupar en todas las pantallas*****///
+            VariablesGlobales.setIdUser(jsonUsuario.getJSONObject("user").getString("id"))
+            VariablesGlobales.setUser(jsonUsuario.getJSONObject("user").getString("email"))
+            VariablesGlobales.setPasw(stringJsonTemp)
+            /****fin variables*****/
         }
 
     }

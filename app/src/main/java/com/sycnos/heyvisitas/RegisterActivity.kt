@@ -4,6 +4,7 @@ import android.R
 import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -117,6 +118,29 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        val sharedPrefRoles: SharedPreferences =
+            this@RegisterActivity.getSharedPreferences(
+                "usuario", MODE_PRIVATE
+            )
+        val sharedPrefTemp: SharedPreferences =
+            this@RegisterActivity.getSharedPreferences(
+                "temp", MODE_PRIVATE
+            )
+        var stringJsonTemp = sharedPrefTemp.getString("temp", "")
+        val stringJsonUsuario = sharedPrefRoles.getString("usuario", "")
+        if(!stringJsonUsuario.equals(""))
+        {
+            val jsonUsuario = JSONObject(stringJsonUsuario)
+            /** seteamos las variables que vamos a ocupar en todas las pantallas*****///
+            VariablesGlobales.setIdUser(jsonUsuario.getJSONObject("user").getString("id"))
+            VariablesGlobales.setUser(jsonUsuario.getJSONObject("user").getString("email"))
+            VariablesGlobales.setPasw(stringJsonTemp)
+            /****fin variables*****/
+        }
+
+    }
     fun basicAlert(view: View) {
         val builder = AlertDialog.Builder(this)
         with(builder)

@@ -24,6 +24,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
+import java.lang.invoke.VarHandle
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -157,18 +158,18 @@ class VisitsActivity : AppCompatActivity() {
                     }
                 }
 
-                if (validado) {
-                    if (VariablesGlobales.getImagen() == null) {
-                        binding.btnAdd.isEnabled = true
-                        progresoCrearVisita.dismiss()
-                        validado = false
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Ingrese una indentificación ",
-                            this@VisitsActivity
-                        );
-                    }
-                }
+//                if (validado) {
+//                    if (VariablesGlobales.getImagen() == null) {
+//                        binding.btnAdd.isEnabled = true
+//                        progresoCrearVisita.dismiss()
+//                        validado = false
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese una indentificación ",
+//                            this@VisitsActivity
+//                        );
+//                    }
+//                }
 
                 if (validado) {
                     try {
@@ -231,6 +232,31 @@ class VisitsActivity : AppCompatActivity() {
         })
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedPrefRoles: SharedPreferences =
+            this@VisitsActivity.getSharedPreferences(
+                "usuario", MODE_PRIVATE
+            )
+        val sharedPrefTemp: SharedPreferences =
+            this@VisitsActivity.getSharedPreferences(
+                "temp", MODE_PRIVATE
+            )
+        var stringJsonTemp = sharedPrefTemp.getString("temp", "")
+        val stringJsonUsuario = sharedPrefRoles.getString("usuario", "")
+        if(!stringJsonUsuario.equals(""))
+        {
+            val jsonUsuario = JSONObject(stringJsonUsuario)
+            /** seteamos las variables que vamos a ocupar en todas las pantallas*****///
+            VariablesGlobales.setIdUser(jsonUsuario.getJSONObject("user").getString("id"))
+            VariablesGlobales.setUser(jsonUsuario.getJSONObject("user").getString("email"))
+            VariablesGlobales.setPasw(stringJsonTemp)
+            /****fin variables*****/
+        }
+
+    }
+
     private fun showDatePickerDialog() {
 
         val newFragment = DatePickerDialogFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -283,7 +309,7 @@ class VisitsActivity : AppCompatActivity() {
 //                        binding.etPlacas.setText("")
 //                        binding.tvDate.setText("")
                         qr = jsonObject.getString("qr")
-
+                        VariablesGlobales.setImagen(null)
                         //mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
                         mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity)
                     }

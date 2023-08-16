@@ -90,7 +90,6 @@
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/black"
             android:editable="false"
-            android:hint="Ventas"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
 
@@ -117,7 +116,6 @@
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/black"
             android:editable="false"
-            android:hint="Fausto Nieto"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etDepartament" />
 
@@ -144,7 +142,7 @@
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/black"
             android:enabled="false"
-            android:hint="Hey banco"
+            android:textColor="@color/black"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etName" />
 
@@ -172,7 +170,7 @@
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/black"
             android:enabled="false"
-            android:hint="Juan de las cuerdas"
+            android:textColor="@color/black"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etBussines" />
 
@@ -199,7 +197,7 @@
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/black"
             android:enabled="false"
-            android:hint="123456789"
+            android:textColor="@color/black"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etResponsable" />
 
@@ -226,7 +224,7 @@
             android:layout_marginRight="8dp"
             android:backgroundTint="@color/black"
             android:enabled="false"
-            android:hint="123456789"
+            android:textColor="@color/black"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etTicket" />
 

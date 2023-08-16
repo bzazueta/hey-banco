@@ -149,19 +149,19 @@ class ProvidersActivity : AppCompatActivity() {
                     }
                 }
 
-                if (validado) {
-                    if (VariablesGlobales.getImagen() == null) {
-                        progresoProviders.dismiss()
-                        validado = false
-                        binding.btnAdd.isEnabled = true
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Seleccione una INE o GAFETE",
-                            this@ProvidersActivity
-                        );
-                        //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
-                    }
-                }
+//                if (validado) {
+//                    if (VariablesGlobales.getImagen() == null) {
+//                        progresoProviders.dismiss()
+//                        validado = false
+//                        binding.btnAdd.isEnabled = true
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Seleccione una INE o GAFETE",
+//                            this@ProvidersActivity
+//                        );
+//                        //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
 
                 if (validado) {
                     if (binding.etResponsable.text.toString().equals("")) {
@@ -267,6 +267,31 @@ class ProvidersActivity : AppCompatActivity() {
 
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedPrefRoles: SharedPreferences =
+            this@ProvidersActivity.getSharedPreferences(
+                "usuario", MODE_PRIVATE
+            )
+        val sharedPrefTemp: SharedPreferences =
+            this@ProvidersActivity.getSharedPreferences(
+                "temp", MODE_PRIVATE
+            )
+        var stringJsonTemp = sharedPrefTemp.getString("temp", "")
+        val stringJsonUsuario = sharedPrefRoles.getString("usuario", "")
+        if(!stringJsonUsuario.equals(""))
+        {
+            val jsonUsuario = JSONObject(stringJsonUsuario)
+            /** seteamos las variables que vamos a ocupar en todas las pantallas*****///
+            VariablesGlobales.setIdUser(jsonUsuario.getJSONObject("user").getString("id"))
+            VariablesGlobales.setUser(jsonUsuario.getJSONObject("user").getString("email"))
+            VariablesGlobales.setPasw(stringJsonTemp)
+            /****fin variables*****/
+        }
+
+    }
+
     private fun showDatePickerDialog() {
 
         val newFragment = DatePickerDialogFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -330,7 +355,7 @@ class ProvidersActivity : AppCompatActivity() {
                         var proveedor : String = jsonObject.getJSONObject("proveedor").getString("name")
                         qr = jsonObject.getString("qr")
                         //mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
-
+                        VariablesGlobales.setImagen(null)
                         mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
 
 

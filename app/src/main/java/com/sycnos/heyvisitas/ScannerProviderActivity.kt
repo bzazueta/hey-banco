@@ -2,6 +2,7 @@ package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -45,7 +46,7 @@ class ScannerProviderActivity : AppCompatActivity() {
         empresa =if (intent.getStringExtra("empresa") == null) "" else intent.getStringExtra("empresa")!!
         responsable =if (intent.getStringExtra("responsable") == null) "" else intent.getStringExtra("responsable")!!
         ticket =if (intent.getStringExtra("ticket") == null) "" else intent.getStringExtra("ticket")!!
-        telContacto =if (intent.getStringExtra("telContacto") == null) "" else intent.getStringExtra("telContacto")!!
+        telContacto =if (intent.getStringExtra("tel_contacto") == null) "" else intent.getStringExtra("tel_contacto")!!
         trabajo =if (intent.getStringExtra("trabajo") == null) "" else intent.getStringExtra("trabajo")!!
 
 
@@ -139,6 +140,30 @@ class ScannerProviderActivity : AppCompatActivity() {
             finish()
         })
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedPrefRoles: SharedPreferences =
+            this@ScannerProviderActivity.getSharedPreferences(
+                "usuario", MODE_PRIVATE
+            )
+        val sharedPrefTemp: SharedPreferences =
+            this@ScannerProviderActivity.getSharedPreferences(
+                "temp", MODE_PRIVATE
+            )
+        var stringJsonTemp = sharedPrefTemp.getString("temp", "")
+        val stringJsonUsuario = sharedPrefRoles.getString("usuario", "")
+        if(!stringJsonUsuario.equals(""))
+        {
+            val jsonUsuario = JSONObject(stringJsonUsuario)
+            /** seteamos las variables que vamos a ocupar en todas las pantallas*****///
+            VariablesGlobales.setIdUser(jsonUsuario.getJSONObject("user").getString("id"))
+            VariablesGlobales.setUser(jsonUsuario.getJSONObject("user").getString("email"))
+            VariablesGlobales.setPasw(stringJsonTemp)
+            /****fin variables*****/
+        }
 
     }
     fun basicAlert(view: View) {

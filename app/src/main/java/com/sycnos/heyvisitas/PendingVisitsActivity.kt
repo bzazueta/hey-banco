@@ -28,6 +28,7 @@ class PendingVisitsActivity : AppCompatActivity() {
     val listData = HashMap<String, List<String>>()
     var sharedPref : SharedPref = SharedPref()
     private var conexion: Conexion? = Conexion()
+    val qrList = ArrayList<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,6 +113,8 @@ class PendingVisitsActivity : AppCompatActivity() {
                                 val visitList = ArrayList<String>()
                                 visits.id_visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("id_visita")
                                 visits.Nombre_Visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("Nombre_Visita")
+                                visits.qrLink= getString(R.string.urlDominio) +"/public/api/qr/"+ jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("qrlink")
+                                qrList.add(visits.qrLink)
                                 visitList.add(visits.id_visita)
                                 //visitList.add(visits.Nombre_Visita)
                                 listData[visits.Nombre_Visita] = visitList
@@ -137,7 +140,7 @@ class PendingVisitsActivity : AppCompatActivity() {
         val expandableListView = binding.expandableListView
         val listData_ = listData
         titleList = ArrayList(listData_.keys)
-        adapter = CustomExpandableListAdapter(this@PendingVisitsActivity, titleList as ArrayList<String>, listData)
+        adapter = CustomExpandableListAdapter(this@PendingVisitsActivity, titleList as ArrayList<String>, listData,qrList)
         expandableListView.setAdapter(adapter)
 
         expandableListView.setOnGroupExpandListener { groupPosition ->

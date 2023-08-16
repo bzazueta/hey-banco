@@ -11,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/btnBack"
@@ -31,10 +30,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
+            android:text="Hey Banco"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="italic"
-            android:text="Hey Banco"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -88,6 +87,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
             android:backgroundTint="@color/black"
             android:editable="false"
             android:hint="Ventas"
@@ -99,14 +99,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            android:text="Nombre"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="italic"
-            android:text="Nombre"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etDepartament"
             app:layout_constraintLeft_toLeftOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/etDepartament" />
 
         <EditText
             android:id="@+id/etName"
@@ -114,27 +112,24 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:hint="Fausto Nieto"
-            android:editable="false"
             android:layout_marginEnd="10dp"
             android:backgroundTint="@color/black"
+            android:editable="false"
+            android:hint="Fausto Nieto"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDepartament"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/etDepartament" />
 
         <TextView
             android:id="@+id/tvPlacas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            android:text="Placas"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="italic"
-            android:text="Placas"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etName"
             app:layout_constraintLeft_toLeftOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/etName" />
 
         <EditText
             android:id="@+id/etPlacas"
@@ -142,41 +137,39 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:hint="AB 98745 A"
-            android:enabled="false"
+            android:layout_marginRight="10dp"
             android:backgroundTint="@color/black"
-            android:layout_marginEnd="10dp"
+            android:enabled="false"
+            android:textColor="@color/black"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etName"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/etName" />
 
         <Button
             android:id="@+id/btnEnter"
-            android:layout_width="130dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Entrada"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="30dp"
-            android:textColor="@color/white"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="300dp"
             android:backgroundTint="@color/button_background_color"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:onClick="basicAlert"
-            app:layout_constraintTop_toBottomOf="@+id/tvPlacas"/>
+            android:text="Entrada"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPlacas" />
 
         <Button
             android:id="@+id/btnExit"
-            android:layout_width="130dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Salida"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:textColor="@color/white"
+            android:layout_marginRight="30dp"
             android:backgroundTint="#BD7100"
             android:onClick="basicAlert"
+            android:text="Salida"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/btnEnter"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPlacas"/>
-
-
+            app:layout_constraintTop_toTopOf="@+id/btnEnter"
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

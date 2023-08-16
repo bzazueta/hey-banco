@@ -4,4 +4,5 @@ class Visits {
 
     var id_visita = ""
     var Nombre_Visita = ""
+    var qrLink = ""
 }

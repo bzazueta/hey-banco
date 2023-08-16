@@ -9,70 +9,85 @@
     app:layout_constraintTop_toTopOf="parent" >
 
     <RelativeLayout
-    android:layout_width="230dp"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <TextView
-        android:id="@+id/expandedListItem"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:text="texto"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Spinner
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="30dp"
-            android:id="@+id/spHours"
-            android:textColor="@color/black"
-            android:background="@color/white"
-            android:layout_width="70dp"
+        <TextView
+            android:id="@+id/expandedListItem"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:entries="@array/hours"
-        />
-        <Spinner
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="30dp"
-            android:id="@+id/spMinutes"
-            android:textColor="@color/black"
-            android:background="@color/white"
-            android:layout_width="70dp"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="texto"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/minutes"
-            />
+            android:gravity="center_horizontal">
+
+            <Spinner
+                android:id="@+id/spHours"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/white"
+                android:entries="@array/hours"
+                android:textColor="@color/black" />
+
+            <Spinner
+                android:id="@+id/spMinutes"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/white"
+                android:entries="@array/minutes"
+                android:textColor="@color/black" />
 
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="20dp"
-        >
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnBack"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registrar Salida"
-            android:background="@drawable/border_radius"
-            android:textColor="@android:color/white"
-            />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal|center_vertical">
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/border_radius"
+                android:text="Registrar Salida"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/btnCompartirQr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_radius"
+                android:text="Compartir QR"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

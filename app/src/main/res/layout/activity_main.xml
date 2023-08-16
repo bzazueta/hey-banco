@@ -14,14 +14,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Hey Banco"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Hey Banco"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -29,12 +28,11 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@mipmap/image_visitas"
-        app:civ_border_width="2dp"
         app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
     <TextView
         android:id="@+id/tvUser"
@@ -42,14 +40,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Usuario"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Usuario"
-        app:layout_constraintTop_toBottomOf="@+id/ivCircle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
 
     <EditText
         android:id="@+id/etUser"
@@ -71,13 +68,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Contraseña"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Contraseña"
-        app:layout_constraintTop_toBottomOf="@+id/etUser"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etUser" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -93,17 +90,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
+
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textColor="@color/white"
         android:layout_marginTop="30dp"
         android:background="@drawable/border_radius"
+        android:text="Login"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"/>
+        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
     <TextView
         android:id="@+id/tvForgetPassword"
@@ -111,12 +109,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="No recuerdo la contraseña"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="No recuerdo la contraseña"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

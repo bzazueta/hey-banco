@@ -101,7 +101,7 @@ class ScannerQRActivity : AppCompatActivity() {
 //                    startActivity(i)
 //                }
 //                }
-                Toast.makeText(this, "El valor escaneado es: " + result.contents, Toast.LENGTH_LONG).show()
+               // Toast.makeText(this, "El valor escaneado es: " + result.contents, Toast.LENGTH_LONG).show()
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -144,7 +144,7 @@ class ScannerQRActivity : AppCompatActivity() {
                     jsonObject = JSONObject(responseString)
 
                     var tipoVisita = jsonObject.getString("tipo")
-
+                    //tipoVisita= 2.toString()
                     when(tipoVisita)
                     {
                         "1" ->
@@ -155,7 +155,7 @@ class ScannerQRActivity : AppCompatActivity() {
                             i.putExtra("empresa",jsonObject.getString("empresa"))
                             i.putExtra("responsable",jsonObject.getString("id"))
                             i.putExtra("ticket",jsonObject.getString("ticket"))
-                            i.putExtra("tel_contacto",jsonObject.getString("id"))
+                            i.putExtra("tel_contacto",jsonObject.getString("tel_contacto"))
                             i.putExtra("trabajo",jsonObject.getString("trabajo_realizar"))
                             i.putExtra("placas",jsonObject.getString("placas"))
                             i.putExtra("departamento",jsonObject.getJSONObject("departamento").getString("descripcion"))

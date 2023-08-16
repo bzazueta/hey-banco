@@ -1,16 +1,16 @@
 package com.sycnos.heyvisitas
 
+import android.Manifest
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -37,11 +37,65 @@ class MainActivity : AppCompatActivity() {
     private val TAG: String = MainActivity::class.java.getName()
     var token : String  = ""
     private var conexion: Conexion? = Conexion()
-
+    private val NOTIFICATION_PERMISSION_CODE = 123
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(this,Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1);
+
+            }
+            else {
+
+            }
+        }
+
+
+        /***** obtenemos los datos del usuario  */
+        val sharedPrefRoles: SharedPreferences =
+            this@MainActivity.getSharedPreferences(
+                "usuario", MODE_PRIVATE
+            )
+        val sharedPrefTemp: SharedPreferences =
+            this@MainActivity.getSharedPreferences(
+                "temp", MODE_PRIVATE
+            )
+        //obtener json guardado en shared preferences
+        var stringJsonTemp = sharedPrefTemp.getString("temp", "")
+        val stringJsonUsuario = sharedPrefRoles.getString("usuario", "")
+        if(!stringJsonUsuario.equals(""))
+        {
+            val jsonUsuario = JSONObject(stringJsonUsuario)
+            if (jsonUsuario.getString("status") == "true")
+            {
+                /** seteamos las variables que vamos a ocupar en todas las pantallas*****///
+                VariablesGlobales.setIdUser(jsonUsuario.getJSONObject("user").getString("id"))
+                VariablesGlobales.setUser(jsonUsuario.getJSONObject("user").getString("email"))
+                VariablesGlobales.setPasw(stringJsonTemp)
+                /****fin variables*****/
+
+                var idRol = jsonUsuario.getJSONObject("user").getString("rol")
+                when(idRol){
+                    "2" -> {
+                        val i = Intent(this@MainActivity, HomeLobbyActivity::class.java)
+                        startActivity(i)}
+                    "1" -> {
+                        val i = Intent(this@MainActivity, HomeActivity::class.java)
+                        startActivity(i)
+                    }else -> {
+                    val i = Intent(this@MainActivity, HomeActivity::class.java)
+                    startActivity(i)
+                    }
+                }
+            }
+        }
+        /***** fin sahredpreferences  */
+
         //*** Obtain the FirebaseAnalytics instance.***//
         firebaseAnalytics = Firebase.analytics
         val bundle = Bundle()
@@ -83,6 +137,7 @@ class MainActivity : AppCompatActivity() {
 
             try
             {
+                var url = getString(R.string.urlDominio)+"/public/api/app/login"
                 var validado :Boolean = true
                 binding.btnLogin.isEnabled = false
                 progresoLogin = ProgressDialog(this@MainActivity)
@@ -216,13 +271,42 @@ class MainActivity : AppCompatActivity() {
                         jsonObject = JSONObject(responseString)
                         if (jsonObject.getString("status") == "true")
                         {
-                            //****seteamos las variables que vamos a ocupar en todas las pantallas*****///
+                            /** seteamos las variables que vamos a ocupar en todas las pantallas*****///
                             VariablesGlobales.setIdUser(jsonObject.getJSONObject("user").getString("id"))
                             VariablesGlobales.setUser(jsonObject.getJSONObject("user").getString("email"))
                             VariablesGlobales.setPasw( binding.etPassword.text.toString().trim())
-                            //****fin variables*****///
+                            /****fin variables*****///
 
-                            //****enviamos el token*****///
+                            /***** guardar los datos de usuario  */
+                            val sharedPrefRoles: SharedPreferences =
+                                this@MainActivity.getSharedPreferences(
+                                    "usuario", MODE_PRIVATE
+                                )
+                            val editorRoles = sharedPrefRoles.edit()
+                            editorRoles.putString("usuario", jsonObject.toString())
+                            editorRoles.commit()
+
+                            val sharedPrefTemp: SharedPreferences =
+                                this@MainActivity.getSharedPreferences(
+                                    "temp", MODE_PRIVATE
+                                )
+                            val temp = sharedPrefTemp.edit()
+                            temp.putString("temp", binding.etPassword.text.toString().trim())
+                            temp.commit()
+
+                            //obtener json guardado en shared preferences
+                            val stringJsonUsuario = sharedPrefRoles.getString("usuario", "")
+                            val jsonUsuario = JSONObject(stringJsonUsuario)
+                            jsonUsuario.length()
+
+                            var stringJsontemp = sharedPrefTemp.getString("temp", "")
+
+                            if (stringJsontemp != null) {
+                                stringJsontemp.length
+                            }
+                            /***** fin sahredpreferences  */
+
+                            /****enviamos el token*****///
                             try
                             {
                                 var iduser = jsonObject.getJSONObject("user").getString("id")
@@ -235,7 +319,7 @@ class MainActivity : AppCompatActivity() {
                                 binding.btnLogin.isEnabled = true
                                 progresoLogin.dismiss()
                             }
-                            //****fin token*****///
+                            /****fin token*****///
 
                             var idRol = jsonObject.getJSONObject("user").getString("rol")
                             when(idRol){
@@ -318,19 +402,3 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-//**guardar json en shared preferences***///
-//                            val sharedPref: SharedPreferences =
-//                                this@MainActivity.getSharedPreferences(
-//                                    "user", MODE_PRIVATE
-//                                )
-//                            val editor = sharedPref.edit()
-//                            editor.putString("user", jsonObject.toString())
-//                            editor.commit()
-//                            val pass = sharedPref.edit()
-//                            pass.putString("password", binding.etPassword.text.toString())
-//                            pass.commit()
-//
-//                            //****obtener json guardado en shared preferences*****///
-//                            val stringJson = sharedPref.getString("user", "")
-//                            val json = JSONObject(stringJson)
-//                            json.length()
