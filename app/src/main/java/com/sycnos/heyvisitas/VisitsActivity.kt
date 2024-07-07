@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
@@ -65,6 +66,8 @@ class VisitsActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spDepartaments.setAdapter(adapter)
 
+
+
         binding.tvDate.setOnClickListener{
             showDatePickerDialog()
         }
@@ -74,13 +77,23 @@ class VisitsActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.cbFrecuently.setOnClickListener{
+            if (!binding.cbFrecuently.isChecked) {
+                binding.spWeeks.isVisible = false
+            }
+            if (binding.cbFrecuently.isChecked) {
+                binding.spWeeks.isVisible = true
+            }
+        }
+
         binding.btnSelect.setOnClickListener {
             var frecuently : String = ""
             if (!binding.cbFrecuently.isChecked) {
-                frecuently = "false"
+                frecuently = "0"  //false
             }
             if (binding.cbFrecuently.isChecked) {
                 frecuently = "true"
+                frecuently = binding.spWeeks.selectedItem.toString()
             }
             val i = Intent(this@VisitsActivity, PickIdentification::class.java)
             i.putExtra("date",date)
@@ -201,7 +214,22 @@ class VisitsActivity : AppCompatActivity() {
                                     .equals("")
                             ) "" else binding.etName.text.toString()
                         )
-                        params.put("frecuencia", frecuently)
+                        if(!binding.cbFrecuently.isChecked){
+                            params.put("frecuente", "0")
+                        }
+                        else if(binding.spWeeks.selectedItem.toString().equals("1 Semana"))
+                        {
+                            params.put("frecuente", "1")
+                        }
+                        else if(binding.spWeeks.selectedItem.toString().equals("2 Semanas")){
+                            params.put("frecuente", "2")
+                        }
+                        else if(binding.spWeeks.selectedItem.toString().equals("3 Semanas")){
+                            params.put("frecuente", "3")
+                        }
+                        else if(binding.spWeeks.selectedItem.toString().equals("4 Semanas")){
+                            params.put("frecuente", "4")
+                        }
                         if (VariablesGlobales.getImagen() != null) {
                             params.put("identificacion", VariablesGlobales.getImagen())
                         }

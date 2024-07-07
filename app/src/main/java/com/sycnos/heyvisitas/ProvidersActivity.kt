@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.ui.AppBarConfiguration
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
@@ -62,6 +63,16 @@ class ProvidersActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spDepartaments.setAdapter(adapter)
 
+        binding.chkBoxFrecuenteProviders.setOnClickListener{
+            if (!binding.chkBoxFrecuenteProviders.isChecked) {
+                binding.tvWeek.isVisible = false
+                binding.spWeeksProviders.isVisible = false
+            }
+            if (binding.chkBoxFrecuenteProviders.isChecked) {
+                binding.tvWeek.isVisible = true
+                binding.spWeeksProviders.isVisible = true
+            }
+        }
 
         binding.btnBack.setOnClickListener {
             VariablesGlobales.setImagen(null)
@@ -244,6 +255,23 @@ class ProvidersActivity : AppCompatActivity() {
                         params.put("tel_contacto", binding.etTel.text.toString())
                         params.put("frecuencia", "0")
                         params.put("trabajo_realizar", binding.etWork.text.toString())
+                        if(!binding.chkBoxFrecuenteProviders.isChecked){
+                            params.put("frecuente", "0")
+                        }
+                        else if(binding.spWeeksProviders.selectedItem.toString().equals("1 Semana"))
+                        {
+                            params.put("frecuente", "1")
+                        }
+                        else if(binding.spWeeksProviders.selectedItem.toString().equals("2 Semanas")){
+                            params.put("frecuente", "2")
+                        }
+                        else if(binding.spWeeksProviders.selectedItem.toString().equals("3 Semanas")){
+                            params.put("frecuente", "3")
+                        }
+                        else if(binding.spWeeksProviders.selectedItem.toString().equals("4 Semanas")){
+                            params.put("frecuente", "4")
+                        }
+
                         createProviders(params)
                     } catch (e: FileNotFoundException) {
                         progresoProviders.dismiss()

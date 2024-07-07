@@ -30,14 +30,52 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            >
+
+            <TextView
+                android:id="@+id/lblHours"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:text="Horas"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblMinutes"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:text="Minutos"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="0dp"
+            >
 
             <Spinner
                 android:id="@+id/spHours"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
                 android:background="@color/white"
                 android:entries="@array/hours"
                 android:textColor="@color/black" />
@@ -46,8 +84,9 @@
                 android:id="@+id/spMinutes"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
                 android:background="@color/white"
                 android:entries="@array/minutes"
                 android:textColor="@color/black" />
@@ -61,31 +100,83 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="130dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="20dp"
             android:gravity="center_horizontal|center_vertical">
 
             <Button
                 android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/border_radius"
                 android:text="Registrar Salida"
                 android:textColor="@android:color/white"
+
                 android:textSize="10sp" />
+
+<!--            <Button-->
+<!--                android:id="@+id/btnCompartirQr"-->
+<!--                android:layout_width="120dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/border_radius"-->
+<!--                android:text="Compartir QR"-->
+<!--                android:textAllCaps="true"-->
+<!--                android:textColor="@android:color/white"-->
+
+<!--                android:textSize="10sp" />-->
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="190dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal|center_vertical">
 
             <Button
                 android:id="@+id/btnCompartirQr"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/border_radius"
                 android:text="Compartir QR"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:textSize="10sp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="250dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal|center_vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEliminar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/border_red"
+                android:text="Eliminar"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
 
         </LinearLayout>
 

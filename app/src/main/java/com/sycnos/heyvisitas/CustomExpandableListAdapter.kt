@@ -37,13 +37,14 @@ class CustomExpandableListAdapter internal constructor(
     private val qrList: ArrayList<String>
 ) : BaseExpandableListAdapter() {
 
-    var sharedPref : SharedPref = SharedPref()
-    private lateinit var progresoCreateVisits : ProgressDialog
-    var mensajes : Mensajes = Mensajes()
+    var sharedPref: SharedPref = SharedPref()
+    private lateinit var progresoCreateVisits: ProgressDialog
+    var mensajes: Mensajes = Mensajes()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private lateinit var groupBinding: ListGroupBinding
     private lateinit var itemBinding: ListItemBinding
     private var conexion: Conexion? = Conexion()
+    var deleteIdVisit : Int =0
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
         return this.dataList[this.titleList[listPosition]]!![expandedListPosition]
@@ -69,6 +70,7 @@ class CustomExpandableListAdapter internal constructor(
             holder.label = itemBinding.expandedListItem
             holder.btnAdd = itemBinding.btnBack
             holder.btnCompartirQr = itemBinding.btnCompartirQr
+            holder.btnEliminar = itemBinding.btnEliminar
             holder.spHours = itemBinding.spHours
             holder.spMinutes = itemBinding.spMinutes
             convertView.tag = holder
@@ -79,49 +81,93 @@ class CustomExpandableListAdapter internal constructor(
         holder.label!!.text = expandedListText
         holder.label!!.visibility = View.GONE
         holder.btnAdd!!.setOnClickListener(View.OnClickListener {
-        try {
-            val idVisita = getChild(listPosition, expandedListPosition) as String
-            val spnHour = holder.spHours!!.selectedItem.toString()
-            val spnMinutes = holder.spMinutes!!.selectedItem.toString()
-           // Toast.makeText(context, idVisita + "-" + spnHour + "-" + spnMinutes, Toast.LENGTH_SHORT).show()
-            progresoCreateVisits = ProgressDialog(context)
-            progresoCreateVisits.setMessage("Registrando salida...")
-            progresoCreateVisits.setIndeterminate(false)
-            progresoCreateVisits.setCancelable(false)
-            progresoCreateVisits.show()
+            try {
+                val idVisita = getChild(listPosition, expandedListPosition) as String
+                var id_visit = idVisita.toString().split("|") //val qr = qrList.get(listPosition)
 
-            var conectado : Boolean = false
-            conectado = conexion!!.isOnline(context)
-            if(conectado) {
-                val params = RequestParams()
-                params.put("email", VariablesGlobales.getUser())
-                params.put("password", VariablesGlobales.getPasw())
-                params.put("id_visitas", idVisita)
-                createVisits(params)
+                deleteIdVisit = id_visit[0].toInt()
+                val spnHour = holder.spHours!!.selectedItem.toString()
+                val spnMinutes = holder.spMinutes!!.selectedItem.toString()
+                // Toast.makeText(context, idVisita + "-" + spnHour + "-" + spnMinutes, Toast.LENGTH_SHORT).show()
+                progresoCreateVisits = ProgressDialog(context)
+                progresoCreateVisits.setMessage("Registrando salida...")
+                progresoCreateVisits.setIndeterminate(false)
+                progresoCreateVisits.setCancelable(false)
+                progresoCreateVisits.show()
+
+                var conectado: Boolean = false
+                conectado = conexion!!.isOnline(context)
+                if (conectado) {
+                    val params = RequestParams()
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password", VariablesGlobales.getPasw())
+                    params.put("id_visitas",deleteIdVisit)
+                    createVisits(params)
+                } else {
+                    progresoCreateVisits.dismiss()
+                    mensajes!!.mensajeAceptar(
+                        "Mensaje",
+                        "Enciende tu conexión a internet",
+                        context
+                    );
+
+                }
+            } catch (e: java.lang.Exception) {
+                e.toString()
+                Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT)
+                    .show()
+
             }
-            else{
-                progresoCreateVisits.dismiss()
-                mensajes!!.mensajeAceptar("Mensaje","Enciende tu conexión a internet",context);
-
-            }
-        }catch (e : java.lang.Exception)
-        {
-            e.toString()
-            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT)
-                .show()
-
-        }
 
 
         })
 
         holder.btnCompartirQr?.setOnClickListener(View.OnClickListener {
 
-//            val res = getChild(listPosition, expandedListPosition) as String
-//            var qr_split = res.toString().split("|")val qr = qrList.get(listPosition)
+            val res = getChild(listPosition, expandedListPosition) as String
+            var qr_split = res.toString().split("|") //val qr = qrList.get(listPosition)
 
-            var qr = qrList.get(listPosition)
-            shareLinkQr(qr)
+            // qr = qrList.get(listPosition)
+            shareLinkQr(qr_split[1])
+        })
+
+        holder.btnEliminar?.setOnClickListener(View.OnClickListener {
+            try {
+                val idVisit = getChild(listPosition, expandedListPosition) as String
+                var id_visit = idVisit.toString().split("|") //val qr = qrList.get(listPosition)
+
+                deleteIdVisit = id_visit[0].toInt()
+                val spnHour = holder.spHours!!.selectedItem.toString()
+                val spnMinutes = holder.spMinutes!!.selectedItem.toString()
+                // Toast.makeText(context, idVisita + "-" + spnHour + "-" + spnMinutes, Toast.LENGTH_SHORT).show()
+                progresoCreateVisits = ProgressDialog(context)
+                progresoCreateVisits.setMessage("Eliminando salida...")
+                progresoCreateVisits.setIndeterminate(false)
+                progresoCreateVisits.setCancelable(false)
+                progresoCreateVisits.show()
+
+                var conectado: Boolean = false
+                conectado = conexion!!.isOnline(context)
+                if (conectado) {
+                    val params = RequestParams()
+                    params.put("email", VariablesGlobales.getUser())
+                    params.put("password", VariablesGlobales.getPasw())
+                    deleteVisits(params)
+                } else {
+                    progresoCreateVisits.dismiss()
+                    mensajes!!.mensajeAceptar(
+                        "Mensaje",
+                        "Enciende tu conexión a internet",
+                        context
+                    );
+
+                }
+            } catch (e: java.lang.Exception) {
+                e.toString()
+                Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT)
+                    .show()
+
+            }
         })
         return convertView
     }
@@ -177,8 +223,9 @@ class CustomExpandableListAdapter internal constructor(
         internal var label: TextView? = null
         internal var btnAdd: Button? = null
         internal var btnCompartirQr: Button? = null
-        internal var spHours : Spinner? = null
-        internal var spMinutes : Spinner? = null
+        internal var btnEliminar: Button? = null
+        internal var spHours: Spinner? = null
+        internal var spMinutes: Spinner? = null
     }
 
     inner class GroupViewHolder {
@@ -191,7 +238,64 @@ class CustomExpandableListAdapter internal constructor(
         val client = AsyncHttpClient()
         //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
 
-        client.post(context.getString(com.sycnos.heyvisitas.R.string.urlDominio)+"/public/api/salidas", params, object : TextHttpResponseHandler() {
+        client.post(
+            context.getString(com.sycnos.heyvisitas.R.string.urlDominio) + "/public/api/salidas",
+            params,
+            object : TextHttpResponseHandler() {
+                override fun onFailure(
+                    statusCode: Int,
+                    headers: Array<Header>,
+                    responseString: String,
+                    throwable: Throwable
+                ) {
+                    progresoCreateVisits.dismiss()
+                    var x = responseString
+
+                    mensajes!!.mensajeAceptarExpandableList(
+                        "Mensaje",
+                        responseString,
+                        context
+                    )
+
+                }
+
+                override fun onSuccess(
+                    statusCode: Int,
+                    headers: Array<Header>,
+                    responseString: String
+                ) {
+
+                    var jsonObject: JSONObject? = null
+                    try {
+                        progresoCreateVisits.dismiss()
+                        jsonObject = JSONObject(responseString)
+                        if (jsonObject.getString("message") == "Salida correctamente.") {
+                            mensajes!!.mensajeAceptarCerrar(
+                                "Mensaje",
+                                jsonObject.getString("message"),
+                                context
+                            );
+                        } else {
+                            mensajes!!.mensajeAceptar(
+                                "Mensaje",
+                                jsonObject.getString("message"),
+                                context
+                            );
+                        }
+
+                    } catch (e: JSONException) {
+                        progresoCreateVisits.dismiss()
+                        e.printStackTrace()
+                    }
+                }
+            })
+    }
+
+    fun deleteVisits(params: RequestParams?) {
+        val client = AsyncHttpClient()
+        //client.addHeader("Cookie", "XSRF-TOKEN=eyJpdiI6IjZuXC90b3BVcU1tbmtDXC9hR2ZzUGJCdz09IiwidmFsdWUiOiJCVGNZYmRoK2hDMVBUUDAzdDM5WDNcL2RNaGtRMUZzS1FibVV4NXpzbkhSNzNES0xXM1RGRUlSOGxkQVwvNm83Z3QiLCJtYWMiOiIyZDgwYjU5ZWJkNDQ5NGMyMzM5ZDg1NzZiYTJjZGI0MGQ5YjllYWJhNTJhMzk2NzhlMzFjMjljZWIxZTBlZDdjIn0%3D; heybanco_session=eyJpdiI6IlU1RDk3SXZ4YVk0cEd2ZkdUTlRvVXc9PSIsInZhbHVlIjoiMkZhZ28wY0JYb1BLalZ6Zk9CZmRqK3F0WTg3cThpZE1OY0dmb2JJSDl6dWRtcjkxMUhQOW0wVFhZM0lzdk5cL1ciLCJtYWMiOiIyZjY5NThhZTdkODllZWVjYmRlNzc4YWE2OGNmOWI1MWU4OTViMzdkODZlZTA4N2I4MWFlODZkOTYxOTExMWE3In0%3D");
+
+        client.get(context.getString(com.sycnos.heyvisitas.R.string.urlDominio)+"/public/api/eliminar/${deleteIdVisit}", params, object : TextHttpResponseHandler() {
             override fun onFailure(
                 statusCode: Int,
                 headers:Array<Header>,
@@ -220,7 +324,7 @@ class CustomExpandableListAdapter internal constructor(
                 {
                     progresoCreateVisits.dismiss()
                     jsonObject = JSONObject(responseString)
-                    if (jsonObject.getString("message") == "Salida correctamente.")
+                    if (jsonObject.getString("message") == "Visita Eliminada.")
                     {
                         mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),context);
                     }

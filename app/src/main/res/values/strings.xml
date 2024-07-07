@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hey Visitas</string>
+    <string name="app_name">Visitas Regional</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -139,5 +139,17 @@
         <item>Mars</item>
     </string-array>
 
+    <string-array name="weeks">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 
+    <string-array name="weeks_providers">
+        <item>1 Semana</item>
+        <item>2 Semanas</item>
+        <item>3 Semanas</item>
+        <item>4 Semanas</item>
+    </string-array>
 </resources>

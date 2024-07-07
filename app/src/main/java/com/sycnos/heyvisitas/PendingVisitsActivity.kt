@@ -106,6 +106,7 @@ class PendingVisitsActivity : AppCompatActivity() {
                     if (jsonObject.has("status")) {
                         if (jsonObject.getString("status").equals("true"))
                         {
+                            qrList.clear()
                             listData.clear()
                             val visits : Visits = Visits()
                             for (i in 0 until jsonObject.getJSONArray("Visitas Pendientes").length())
@@ -115,7 +116,7 @@ class PendingVisitsActivity : AppCompatActivity() {
                                 visits.Nombre_Visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("Nombre_Visita")
                                 visits.qrLink= getString(R.string.urlDominio) +"/public/api/qr/"+ jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("qrlink")
                                 qrList.add(visits.qrLink)
-                                visitList.add(visits.id_visita)
+                                visitList.add(visits.id_visita +"|"+ visits.qrLink)
                                 //visitList.add(visits.Nombre_Visita)
                                 listData[visits.Nombre_Visita] = visitList
                                 // VariablesGlobales.arrayListDeptos.add(visits)

@@ -25,10 +25,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Regional"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Hey Banco"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -161,6 +161,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPlacas" />
+
     <CheckBox
         android:id="@+id/cbFrecuently"
         android:layout_width="wrap_content"
@@ -168,13 +169,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="Frecuente"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPlacas"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/etPlacas" />
     <TextView
         android:id="@+id/tvIdentification"
         android:layout_width="wrap_content"
@@ -186,19 +186,21 @@
         android:textStyle="italic"
         android:text="Identificación:"
         android:layout_marginLeft="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/cbFrecuently"
+        app:layout_constraintTop_toBottomOf="@+id/spWeeks"
         app:layout_constraintLeft_toLeftOf="parent"
         />
+
     <Button
         android:id="@+id/btnSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seleccionar"
-        android:textColor="@color/white"
         android:layout_marginRight="15dp"
         android:background="@drawable/border_radius"
+        android:text="Seleccionar"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIdentification"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cbFrecuently"/>
+        app:layout_constraintTop_toTopOf="@+id/tvIdentification" />
 
     <Button
         android:id="@+id/btnAdd"
@@ -211,6 +213,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSelect"/>
+
+    <Spinner
+        android:id="@+id/spWeeks"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:background="@drawable/border_edittext"
+        android:entries="@array/weeks_providers"
+        android:paddingLeft="8dp"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbFrecuently" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

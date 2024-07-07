@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Hey Banco"
+            android:text="Regional"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="italic"
@@ -298,6 +298,21 @@
             app:layout_constraintTop_toBottomOf="@+id/etTicket" />
 
         <TextView
+            android:id="@+id/tvWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Semanas:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chkBoxFrecuenteProviders" />
+
+        <TextView
             android:id="@+id/tvWork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -309,7 +324,7 @@
             android:textSize="24sp"
             android:textStyle="italic"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etTel" />
+            app:layout_constraintTop_toBottomOf="@+id/tvWeek" />
 
         <EditText
             android:id="@+id/etWork"
@@ -346,6 +361,30 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etWork" />
+
+        <Spinner
+            android:id="@+id/spWeeksProviders"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border_edittext"
+            android:entries="@array/weeks_providers"
+            android:padding="0dp"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tvWeek"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvWeek" />
+
+        <CheckBox
+            android:id="@+id/chkBoxFrecuenteProviders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Frecuente"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTel" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
