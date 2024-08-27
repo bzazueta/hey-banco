@@ -121,8 +121,8 @@
     </string-array>
     <string name="true_tick">\u2713 solucionado</string>
     <string name="back">\u003c</string>
-    <string name="urlDominio_">https://sycnos.com/heybanco</string>
-    <string name="urlDominio">https://sycnos.com/heybanco_qa</string>
+    <string name="urlDominio">https://sycnos.com/heybanco</string>
+    <string name="urlDominio_">https://sycnos.com/heybanco_qa</string> <!--produccion-->
     <string name="urlArchivo">https://sycnos.com/heybanco_qa/public/storage/</string>
     <string name="default_notification_channel_id">default chanel</string>
     <string name="msg_token_fmt">tokenFirebase</string>
