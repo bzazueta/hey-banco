@@ -149,20 +149,27 @@ class ScannerQRActivity : AppCompatActivity() {
                     {
                         "1" ->
                         {
+                            finish()
                             val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
                             i.putExtra("id_visita",jsonObject.getString("id"))
                             i.putExtra("nombre",jsonObject.getString("name"))
                             i.putExtra("empresa",jsonObject.getString("empresa"))
-                            i.putExtra("responsable",jsonObject.getString("id"))
                             i.putExtra("ticket",jsonObject.getString("ticket"))
                             i.putExtra("tel_contacto",jsonObject.getString("tel_contacto"))
                             i.putExtra("trabajo",jsonObject.getString("trabajo_realizar"))
                             i.putExtra("placas",jsonObject.getString("placas"))
                             i.putExtra("departamento",jsonObject.getJSONObject("departamento").getString("descripcion"))
+                            i.putExtra("identificacion",jsonObject.getString("identificacion"))
+                            i.putExtra("fecha_inicio",jsonObject.getString("fecha_inicio"))
+                            i.putExtra("fecha_final",jsonObject.getString("fecha_final"))
+                            i.putExtra("trabajo_realizar",jsonObject.getString("trabajo_realizar"))
+                            i.putExtra("responsable",jsonObject.getString("responsable"))
                             startActivity(i)
                         }
                         "2" ->
                         {
+                            finish()
+                            //val i = Intent(this@ScannerQRActivity, ScannerProviderActivity::class.java)
                             val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
                             i.putExtra("id_visita",jsonObject.getString("id"))
                             i.putExtra("nombre",jsonObject.getString("name"))
@@ -173,8 +180,14 @@ class ScannerQRActivity : AppCompatActivity() {
                             i.putExtra("trabajo",jsonObject.getString("trabajo_realizar"))
                             i.putExtra("placas",jsonObject.getString("placas"))
                             i.putExtra("departamento",jsonObject.getJSONObject("departamento").getString("descripcion"))
+                            i.putExtra("identificacion",jsonObject.getString("identificacion"))
+                            i.putExtra("fecha_inicio",jsonObject.getString("fecha_inicio"))
+                            i.putExtra("fecha_final",jsonObject.getString("fecha_final"))
+                            i.putExtra("trabajo_realizar",jsonObject.getString("trabajo_realizar"))
+
                             startActivity(i)
                         }else -> {
+                            finish()
                             val i = Intent(this@ScannerQRActivity, ScannerVisitActivity::class.java)
                             i.putExtra("id_visita",jsonObject.getString("id"))
                             i.putExtra("nombre",jsonObject.getString("name"))
@@ -185,7 +198,12 @@ class ScannerQRActivity : AppCompatActivity() {
                             i.putExtra("trabajo",jsonObject.getString("trabajo_realizar"))
                             i.putExtra("placas",jsonObject.getString("placas"))
                             i.putExtra("departamento",jsonObject.getJSONObject("departamento").getString("descripcion"))
-                            startActivity(i)
+                            i.putExtra("identificacion",jsonObject.getString("identificacion"))
+                            i.putExtra("fecha_inicio",jsonObject.getString("fecha_inicio"))
+                            i.putExtra("fecha_final",jsonObject.getString("fecha_final"))
+                            i.putExtra("trabajo_realizar",jsonObject.getString("trabajo_realizar"))
+
+                        startActivity(i)
                        }
                     }
 

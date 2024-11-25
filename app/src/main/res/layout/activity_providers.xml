@@ -5,7 +5,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_drawable"
+    android:background="#03a9f4"
     tools:context=".ProvidersActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,14 +14,33 @@
         android:layout_height="match_parent"
         android:background="@drawable/gradient_drawable">
 
-        <Button
+        <EditText
+            android:id="@+id/etAsunto"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/border_edittext"
+            android:hint=" ASUNTO"
+            android:paddingLeft="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spWeeksProviders" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBack"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/border_radius"
-            android:text="@string/back"
+            android:background="@drawable/border_radius_orange"
+            android:text="REGRESAR"
+            android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,10 +50,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Regional"
-            android:textColor="@color/white"
+            android:text="REGIONAL"
+            android:textColor="@color/label_visitas_regional"
             android:textSize="24sp"
-            android:textStyle="italic"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,15 +62,14 @@
             android:id="@+id/tvVisit"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="32dp"
             android:background="@drawable/home_border_radius"
-            android:gravity="center_horizontal|center_vertical"
-            android:padding="16dp"
-            android:text="Proveedores"
+            android:gravity="center"
+            android:text="PROVEEDORES"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="italic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -59,8 +77,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivCircle"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="32dp"
             android:src="@mipmap/provider_images"
             app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
@@ -78,24 +96,30 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
 
         <EditText
             android:id="@+id/tvDate"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
             android:clickable="true"
+            android:drawableStart="@drawable/baseline_calendar_month_24"
             android:focusable="false"
-            android:hint=" Fecha"
+            android:hint="DD-MM-YYYY"
             android:inputType="date"
             android:maxLines="1"
             android:paddingLeft="8dp"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
 
         <TextView
@@ -109,21 +133,24 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
         <Spinner
             android:id="@+id/spDepartaments"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
             android:entries="@array/departaments"
             android:padding="0dp"
             android:textColor="@color/black"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tvDate"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
         <TextView
@@ -137,22 +164,27 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spDepartaments" />
 
         <EditText
             android:id="@+id/etName"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
-            android:hint=" Nombre"
+            android:hint=" NOMBRE VISITA"
             android:paddingLeft="8dp"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spDepartaments" />
 
         <TextView
@@ -166,23 +198,28 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etName" />
 
         <EditText
             android:id="@+id/etBussines"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
-            android:hint=" Empresa"
+            android:hint=" EMPRESA"
             android:paddingLeft="8dp"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etName" />
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etAsunto" />
 
         <TextView
             android:id="@+id/tvIdentification"
@@ -195,20 +232,21 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etBussines" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSelect"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/border_radius"
-            android:text="Seleccionar"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/border_green"
+            android:text="IDENTIFICACION"
             android:textColor="@color/white"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etBussines" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etResponsable" />
 
         <TextView
             android:id="@+id/tvResponsable"
@@ -221,23 +259,27 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnSelect" />
 
         <EditText
             android:id="@+id/etResponsable"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
-            android:hint=" Placas"
+            android:hint=" RESPONSABLE"
             android:paddingLeft="8dp"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvIdentification" />
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chkBoxFrecuenteProviders" />
 
         <TextView
             android:id="@+id/tvTicket"
@@ -250,23 +292,27 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etResponsable" />
 
         <EditText
             android:id="@+id/etTicket"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
-            android:hint=" Ticket"
+            android:hint=" TICKET"
             android:paddingLeft="8dp"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etResponsable" />
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etBussines" />
 
         <TextView
             android:id="@+id/tvTel"
@@ -279,23 +325,28 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etTicket" />
 
         <EditText
             android:id="@+id/etTel"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
-            android:hint=" Número de contacto"
+            android:hint=" TELEFONO DE CONTACTO"
             android:paddingLeft="8dp"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etTicket" />
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etMail" />
 
         <TextView
             android:id="@+id/tvWeek"
@@ -323,58 +374,64 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvWeek" />
 
         <EditText
             android:id="@+id/etWork"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="50dp"
             android:background="@drawable/border_edittext"
             android:gravity="top|start"
-            android:hint=" Trabajo a realizar"
+            android:hint="RESPONSABLE"
             android:lines="8"
             android:maxLines="10"
             android:minLines="2"
             android:paddingLeft="4dp"
             android:scrollbars="vertical"
             android:textColor="@color/black"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvWork" />
+            app:layout_constraintTop_toBottomOf="@+id/chkBoxFrecuenteProviders" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/border_radius"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/border_orange"
             android:onClick="basicAlert"
-            android:text="Crear Proveedor"
+            android:text="CREAR"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etWork" />
+            app:layout_constraintEnd_toEndOf="@+id/btnSelect"
+            app:layout_constraintStart_toStartOf="@+id/btnSelect"
+            app:layout_constraintTop_toBottomOf="@+id/btnSelect" />
 
         <Spinner
             android:id="@+id/spWeeksProviders"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/border_edittext"
             android:entries="@array/weeks_providers"
             android:padding="0dp"
             android:textColor="@color/black"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/tvWeek"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvWeek" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etTel" />
 
         <CheckBox
             android:id="@+id/chkBoxFrecuenteProviders"
@@ -382,9 +439,28 @@
             android:layout_height="wrap_content"
             android:text="Frecuente"
             android:textSize="20sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTel" />
+
+        <EditText
+            android:id="@+id/etMail"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/border_edittext"
+            android:ems="10"
+            android:hint=" CORREO DE CONTACTO"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etName" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,8 @@ android {
         applicationId "com.sycnos.heyvisitas"
         minSdk 24
         targetSdk 34  //33
-        versionCode 9 //8
-        versionName "1.0.9"
+        versionCode 11 //9
+        versionName "1.0.11"
         //targetSdkPreview "Tiramisu"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,4 +67,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation 'androidx.work:work-runtime:2.7.0-alpha05'
+
+
 }

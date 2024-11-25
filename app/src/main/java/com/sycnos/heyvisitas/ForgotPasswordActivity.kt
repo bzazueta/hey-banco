@@ -1,12 +1,13 @@
 package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.loopj.android.http.AsyncHttpClient
@@ -38,6 +39,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
         binding.btnRecoveryPassword.setOnClickListener(View.OnClickListener {
 
+
             var validado :Boolean = true
             binding.btnRecoveryPassword.isEnabled = false
             progresoForgotPassword = ProgressDialog(this@ForgotPasswordActivity)
@@ -55,11 +57,12 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     progresoForgotPassword.dismiss()
                     validado = false
                     binding.btnRecoveryPassword.isEnabled = true
-                    mensajes!!.mensajeAceptar(
-                        "Mensaje",
-                        "Favor de ingresar el usuario",
-                        this@ForgotPasswordActivity
-                    );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+                    basicAlert("Mensaje","Favor de ingresar el usuario")
+//                    mensajes!!.mensajeAceptar(
+//                        "Mensaje",
+//                        "Favor de ingresar el usuario",
+//                        this@ForgotPasswordActivity
+//                    );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
                     // Toast.makeText(this@ForgotPasswordActivity,"Favor de ingresar el usuario", Toast.LENGTH_SHORT).show()
                 }
 
@@ -85,7 +88,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     }
 
-    fun basicAlert(view: View) {
+    fun basicAlert_(view: View) {
         val builder = AlertDialog.Builder(this)
         with(builder)
         {
@@ -97,6 +100,31 @@ class ForgotPasswordActivity : AppCompatActivity() {
             show()
         }
     }
+
+    fun basicAlert(titulo: String ,mensaje : String) {
+
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@ForgotPasswordActivity)
+        val inflater = this@ForgotPasswordActivity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView = inflater.inflate(R.layout.dialog_custom, null, false)
+
+        builder.setView(customView)
+        builder.setCancelable(false)
+        val lblReglamento =  customView.findViewById<View>(R.id.lblReglamento) as TextView
+        val lblAceptar = customView.findViewById<View>(R.id.lblAceptar) as TextView
+        val lblTexto = customView.findViewById<View>(R.id.lblTexto) as TextView
+        lblReglamento.text = titulo
+        lblTexto.text= mensaje
+        lblTexto.setMovementMethod(ScrollingMovementMethod())
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+        lblAceptar.setOnClickListener {
+
+            alertDialog.dismiss()
+
+        }
+    }
+
 
     fun forgotPassword(params: RequestParams?) {
         val client = AsyncHttpClient()
@@ -133,11 +161,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     jsonObject = JSONObject(responseString)
                     if (jsonObject.getString("status") == "true")
                     {
-                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("msg"),this@ForgotPasswordActivity);
+                        //mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("msg"),this@ForgotPasswordActivity);
+                        basicAlert("Actividad",jsonObject.getString("msg"))
                     }
                     if (jsonObject.getString("status") == "false") {
                         binding.btnRecoveryPassword.isEnabled = true
-                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("msg"),this@ForgotPasswordActivity);
+                        basicAlert("Actividad",jsonObject.getString("msg"))
+                        //mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("msg"),this@ForgotPasswordActivity);
                     }
                 } catch (e: JSONException) {
                     binding.btnRecoveryPassword.isEnabled = true

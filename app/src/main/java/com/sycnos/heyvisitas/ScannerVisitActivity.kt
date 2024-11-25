@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
+import com.sycnos.SeeFilePendingVisitActivity
 import com.sycnos.heyvisitas.databinding.ActivityScannerVisitBinding
 import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
@@ -33,6 +34,11 @@ class ScannerVisitActivity : AppCompatActivity() {
     var nombre : String = ""
     var placas : String = ""
     var departamento : String = ""
+    var fecha_final : String = ""
+    var trabajo_realizar : String = ""
+    var identificacion : String = ""
+    var imagen : String = ""
+
     private var mensajes: Mensajes? = Mensajes()
     private lateinit var progresoScannerVisit : ProgressDialog
     private var conexion: Conexion? = Conexion()
@@ -46,10 +52,15 @@ class ScannerVisitActivity : AppCompatActivity() {
         nombre =if (intent.getStringExtra("nombre") == null) "" else intent.getStringExtra("nombre")!!
         placas =if (intent.getStringExtra("placas") == null) "" else intent.getStringExtra("placas")!!
         departamento =if (intent.getStringExtra("departamento") == null) "" else intent.getStringExtra("departamento")!!
+        fecha_final =if (intent.getStringExtra("fecha_final") == null) "" else intent.getStringExtra("fecha_final")!!
+        trabajo_realizar =if (intent.getStringExtra("trabajo_realizar") == null) "" else intent.getStringExtra("trabajo_realizar")!!
+        imagen =if (intent.getStringExtra("identificacion") == null) "" else intent.getStringExtra("identificacion")!!
 
-        binding.etName.setText(nombre)
-        binding.etDepartament.setText(departamento)
-        binding.etPlacas.setText(placas)
+        binding.txtValido.setText(fecha_final)
+        binding.txtNombre.setText(nombre)
+        binding.txtDepto.setText(departamento)
+        binding.txtEjecutivo.setText(departamento)
+        binding.txtAsuntoV.setText(trabajo_realizar)
 
         binding.btnBack.setOnClickListener { finish() }
 
@@ -128,6 +139,25 @@ class ScannerVisitActivity : AppCompatActivity() {
             }
 
         })
+
+        binding.btnId.setOnClickListener {
+                var validado :Boolean = true
+                if(imagen.equals("") || imagen.equals("null"))
+                {
+                    validado = false
+                    mensajes!!.mensajeAceptar(
+                        "Mensaje",
+                        "Este mensaje no contiene identificación",
+                        this@ScannerVisitActivity)
+                }
+                if(validado) {
+                    val i = Intent(this@ScannerVisitActivity, SeeFilePendingVisitActivity::class.java)
+                    i.putExtra("id", id)
+                    i.putExtra("url_archivo", imagen)
+                    startActivity(i)
+                }
+
+        }
 
     }
 
@@ -209,7 +239,7 @@ class ScannerVisitActivity : AppCompatActivity() {
                     }
                     else
                     {
-                        mensajes!!.mensajeAceptar("Mensaje",
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",
                             jsonObject.getString("message"),
                             this@ScannerVisitActivity)
                     }
@@ -263,7 +293,7 @@ class ScannerVisitActivity : AppCompatActivity() {
                     }
                     else
                     {
-                        mensajes!!.mensajeAceptar("Mensaje",
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",
                             jsonObject.getString("message"),
                             this@ScannerVisitActivity)
                     }

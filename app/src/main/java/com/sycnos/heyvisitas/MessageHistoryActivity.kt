@@ -10,9 +10,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
+import com.sycnos.heyvisitas.adapters.ChatAdapter
+import com.sycnos.heyvisitas.data.models.Messages
 import com.sycnos.heyvisitas.databinding.ActivityMessageHistoryBinding
 import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
@@ -34,6 +37,10 @@ class MessageHistoryActivity : AppCompatActivity() {
     private lateinit var progresoMessageHistory : ProgressDialog
     var mensajes : Mensajes = Mensajes()
     private var conexion: Conexion? = Conexion()
+
+    private val messageList = mutableListOf<Messages>()
+    private lateinit var adapter: ChatAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -163,6 +170,7 @@ class MessageHistoryActivity : AppCompatActivity() {
             }
         }
 
+
     }
 
     override fun onResume() {
@@ -277,6 +285,27 @@ class MessageHistoryActivity : AppCompatActivity() {
                 {
                     progresoFile.dismiss()
                     jsonObject = JSONObject(responseString)
+                       messageList.clear()
+                        jsonArray = jsonObject.getJSONArray("respuestas")
+                        if(jsonArray!!.length() > 0) {
+                            for (i in 0 until jsonArray!!.length())
+                            {
+                                val datos = jsonArray.getJSONObject(i)
+                                 val mensajes = Messages()
+                                 mensajes.id= datos.getString("user_id")
+                                 mensajes.cuerpo = datos.getString("cuerpo")
+                                // mensajes.telefono.setText(datos.getString("telefono"))
+                                messageList.add(mensajes)
+                            }
+                        }
+
+                    // Configurar RecyclerView
+                    adapter = ChatAdapter(this@MessageHistoryActivity,messageList)
+                    binding.recyclerM.layoutManager = LinearLayoutManager(this@MessageHistoryActivity)
+                    binding.recyclerM.adapter = adapter
+
+                    adapter.notifyItemInserted(messageList.size - 1)
+                    binding.recyclerM.scrollToPosition(messageList.size - 1)
 
                     VariablesGlobales.setUrlArchivoMessage(jsonObject.getString("archivo"))
                     VariablesGlobales.setUrlFotoMessage(jsonObject.getString("foto"))

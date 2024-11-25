@@ -1,26 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
-    android:background="@drawable/gradient_drawable"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#03a9f4"
     tools:context=".ScannerVisitActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:id="@+id/viewContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_drawable">
 
-        <Button
+        <TextView
+            android:id="@+id/txtValido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="VALIDO"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/etHasta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etHasta"
+            app:layout_constraintTop_toTopOf="@+id/etHasta" />
+
+        <TextView
+            android:id="@+id/txtDepto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="DEPTO"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/lblEjecutivo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblDepartament"
+            app:layout_constraintTop_toTopOf="@+id/lblDepartament"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="NOMBRE"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblName"
+            app:layout_constraintTop_toTopOf="@+id/lblName" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBack"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/border_radius"
-            android:text="@string/back"
+            android:background="@drawable/border_radius_orange"
+            android:text="REGRESAR"
+            android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,146 +85,199 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Regional"
-            android:textColor="@color/white"
+            android:text="REGIONAL"
+            android:textColor="@color/label_visitas_regional"
             android:textSize="24sp"
-            android:textStyle="italic"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/tvVisit"
+            android:id="@+id/textView3"
             android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="60dp"
-            android:background="@drawable/home_border_radius"
-            android:gravity="center_horizontal|center_vertical"
-            android:padding="16dp"
-            android:text="Visita"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="italic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="VISITA"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivCircle"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="24dp"
-            android:src="@mipmap/visitas_img"
-            app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvVisit" />
-
+        <TextView
+            android:id="@+id/etHasta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            android:padding="8dp"
+            android:text="VALIDA HASTA:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
-            android:id="@+id/tvDepartament"
+            android:id="@+id/lblName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
-            android:text="Departamento"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:padding="8dp"
+            android:text="NOMBRE:"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
-
-        <EditText
-            android:id="@+id/etDepartament"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/black"
-            android:editable="false"
-            android:hint="Ventas"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etHasta" />
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/lblDepartament"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Nombre"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:padding="8dp"
+            android:text="DEPARTAMENTO:"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDepartament" />
-
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/black"
-            android:editable="false"
-            android:hint="Fausto Nieto"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDepartament" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblName" />
 
         <TextView
-            android:id="@+id/tvPlacas"
+            android:id="@+id/lblEjecutivo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Placas"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:padding="8dp"
+            android:text="EJECUTIVO:"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etName" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblDepartament" />
 
-        <EditText
-            android:id="@+id/etPlacas"
-            android:layout_width="200dp"
+        <TextView
+            android:id="@+id/txtEjecutivo"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/black"
-            android:enabled="false"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="EJECUTIVO"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etName" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/lblEjecutivo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblEjecutivo"
+            app:layout_constraintTop_toTopOf="@+id/lblEjecutivo" />
 
-        <Button
-            android:id="@+id/btnEnter"
-            android:layout_width="wrap_content"
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnId"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="300dp"
-            android:backgroundTint="@color/button_background_color"
-            android:onClick="basicAlert"
-            android:text="Entrada"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="132dp"
+            android:layout_marginBottom="32dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/border_green"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="IDENTIFICACION"
             android:textColor="@color/white"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPlacas" />
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnEnter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtAsuntoV" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnExit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/border_orange"
+            android:text="SALIDA"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnEnter"
+            app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnEnter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/border_green"
+            android:text="ENTRADA"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/btnId"
+            app:layout_constraintEnd_toStartOf="@id/btnExit"
+            app:layout_constraintStart_toEndOf="@+id/btnId"
+            app:layout_constraintTop_toTopOf="@+id/btnId" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPlacas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_orange"
+            android:text="PLACAS"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="287dp"
+            tools:layout_editor_absoluteY="485dp" />
+
+        <TextView
+            android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:backgroundTint="#BD7100"
-            android:onClick="basicAlert"
-            android:text="Salida"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/btnEnter"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnEnter"
-            app:layout_constraintVertical_bias="0.0" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:text="ASUNTO:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblEjecutivo" />
+
+        <TextView
+            android:id="@+id/txtAsuntoV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toTopOf="@+id/textView9" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

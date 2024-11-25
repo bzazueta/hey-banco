@@ -51,7 +51,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getData().size() > 0) {
             Log.d("TAG", "Message data payload: " + remoteMessage.getData());
-            showNotification(remoteMessage.getData());
+            String mensaje=remoteMessage.getNotification().getTitle();
+            String body=remoteMessage.getNotification().getBody();
+            showNotification(remoteMessage.getData(),mensaje,body);
         }
 
         if (remoteMessage.getData().size() == 0) {
@@ -62,12 +64,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void showNotification(Map<String, String> data) {
+    private void showNotification(Map<String, String> data,String msj,String body_) {
 
         try{
             data.toString();
-            String title = data.get("title").toString()==  null ? "" : data.get("title");
-            String body = data.get("message").toString()==  null ? "" : data.get("message");
+            String title = msj;//data.get("title").toString()==  null ? "" : data.get("title");
+            String body = body_;//data.get("message").toString()==  null ? "" : data.get("message");
             String imagenUrl = data.get("image") ==  null ? "" : data.get("image");
 
             Bitmap iconBitMap = null;

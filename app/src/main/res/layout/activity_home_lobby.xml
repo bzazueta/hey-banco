@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Regional"
-        android:textColor="@color/white"
+        android:text="REGIONAL"
+        android:textColor="@color/label_visitas_regional"
         android:textSize="24sp"
-        android:textStyle="italic"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,9 +33,9 @@
         android:background="@drawable/home_border_radius"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Escanear QR"
+        android:text="ESCANEAR QR"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -44,8 +44,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivCircle"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="8dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="4dp"
         android:src="@mipmap/image_visitas"
         app:layout_constraintBottom_toBottomOf="@+id/tvScannerQR"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -62,9 +62,9 @@
         android:background="@drawable/home_border_radius"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Registrarse"
+        android:text="REGISTRARSE"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -73,12 +73,27 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivCircleVisit"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginRight="8dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="4dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/image_visitas"
         app:layout_constraintBottom_toBottomOf="@+id/tvRegister"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvRegister" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnExit"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/border_radius_orange"
+        android:text="SALIR"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRegister" />
 
 
 

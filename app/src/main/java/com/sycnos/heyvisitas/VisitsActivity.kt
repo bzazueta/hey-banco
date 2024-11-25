@@ -4,13 +4,18 @@ import android.R
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -25,9 +30,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
-import java.lang.invoke.VarHandle
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class VisitsActivity : AppCompatActivity() {
@@ -37,19 +40,22 @@ class VisitsActivity : AppCompatActivity() {
     private lateinit var progresoCrearVisita : ProgressDialog
     var mensajes : Mensajes = Mensajes()
     var date : String = ""
+    var dateTime : String = ""
     var formatoFechas : FormatoFechas = FormatoFechas()
     var identificacion: File? = null
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
     var sharedPref : SharedPref = SharedPref()
     private var conexion: Conexion? = Conexion()
+    var selectedDate =""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityVisitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        arrayListIds.add("Seleccionar")
-        arrayListDescripcion.add("Seleccionar")
+        arrayListIds.add("DEPARTAMENTO")
+        arrayListDescripcion.add("DEPARTAMENTO")
         for (i in 0 until VariablesGlobales.arrayListDeptos.size)
         {
             var descripcion = VariablesGlobales.arrayListDeptos.get(i).descripcion
@@ -65,7 +71,6 @@ class VisitsActivity : AppCompatActivity() {
         )
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spDepartaments.setAdapter(adapter)
-
 
 
         binding.tvDate.setOnClickListener{
@@ -125,23 +130,26 @@ class VisitsActivity : AppCompatActivity() {
                     progresoCrearVisita.dismiss()
                     validado = false
                     //Toast.makeText(this@VisitsActivity,"Seleccione una fecha", Toast.LENGTH_SHORT).show()
-                    mensajes!!.mensajeAceptar(
-                        "Mensaje",
-                        "Seleccione una fecha",
-                        this@VisitsActivity
-                    );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+//                    mensajes!!.mensajeAceptar(
+//                        "Mensaje",
+//                        "Seleccione una fecha",
+//                        this@VisitsActivity
+//                    );
+                      basicAlert("Mensaje","Seleccione una fecha")
+                //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
 
                 }
                 if (validado) {
-                    if (binding.spDepartaments.selectedItem.toString().equals("Seleccionar")) {
+                    if (binding.spDepartaments.selectedItem.toString().equals("DEPARTAMENTO")) {
                         binding.btnAdd.isEnabled = true
                         progresoCrearVisita.dismiss()
                         validado = false
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Seleccione un departamento",
-                            this@VisitsActivity
-                        );                    //Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Seleccione un departamento",
+//                            this@VisitsActivity
+//                        );
+                        basicAlert("Mensaje","Seleccione un departamento")//Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -150,11 +158,58 @@ class VisitsActivity : AppCompatActivity() {
                         binding.btnAdd.isEnabled = true
                         progresoCrearVisita.dismiss()
                         validado = false
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Ingrese un nombre",
-                            this@VisitsActivity
-                        );
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese un nombre",
+//                            this@VisitsActivity
+//                        );
+                        basicAlert("Mensaje","Ingrese un nombre")//Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+
+                if (validado) {
+                    if (binding.etMail.text.toString().isNullOrEmpty()) {
+                        binding.btnAdd.isEnabled = true
+                        progresoCrearVisita.dismiss()
+                        validado = false
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese un nombre",
+//                            this@VisitsActivity
+//                        );
+                        basicAlert("Mensaje","Ingrese un correo")//Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+
+                if (validado) {
+                    if (binding.etPhone.text.toString().isNullOrEmpty()) {
+                        binding.btnAdd.isEnabled = true
+                        progresoCrearVisita.dismiss()
+                        validado = false
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese un nombre",
+//                            this@VisitsActivity
+//                        );
+                        basicAlert("Mensaje","Ingrese un teléfono")//Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+
+                if (validado) {
+                    if (binding.etAsunto.text.toString().isNullOrEmpty()) {
+                        binding.btnAdd.isEnabled = true
+                        progresoCrearVisita.dismiss()
+                        validado = false
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese un nombre",
+//                            this@VisitsActivity
+//                        );
+                        basicAlert("Mensaje","Ingrese un asunto")//Toast.makeText(this@MainActivity,"Favor de ingresar el usuario",Toast.LENGTH_SHORT).show()
+
                     }
                 }
 
@@ -197,13 +252,16 @@ class VisitsActivity : AppCompatActivity() {
                         val params = RequestParams()
                         params.put("email", VariablesGlobales.getUser())
                         params.put("password", VariablesGlobales.getPasw())
+                        params.put("tel_contacto", binding.etPhone.text.toString())
+                        params.put("asunto", binding.etAsunto.text.toString())
+                        params.put("email_contacto", binding.etMail.text.toString())
                         params.put(
                             "placas",
                             if (binding.etPlacas.text.toString()
                                     .equals("")
                             ) "" else binding.etPlacas.text.toString()
                         )
-                        params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
+                        params.put("fecha_registro", dateTime)
                         params.put(
                             "departamento_id",
                             arrayListIds.get(binding.spDepartaments.selectedItemPosition)
@@ -214,21 +272,21 @@ class VisitsActivity : AppCompatActivity() {
                                     .equals("")
                             ) "" else binding.etName.text.toString()
                         )
-                        if(!binding.cbFrecuently.isChecked){
-                            params.put("frecuente", "0")
+                        if(binding.spWeeks.selectedItem.toString().equals("FRECUENCIA")){
+                            params.put("frecuencia", "0")
                         }
                         else if(binding.spWeeks.selectedItem.toString().equals("1 Semana"))
                         {
-                            params.put("frecuente", "1")
+                            params.put("frecuencia", "1")
                         }
                         else if(binding.spWeeks.selectedItem.toString().equals("2 Semanas")){
-                            params.put("frecuente", "2")
+                            params.put("frecuencia", "2")
                         }
                         else if(binding.spWeeks.selectedItem.toString().equals("3 Semanas")){
-                            params.put("frecuente", "3")
+                            params.put("frecuencia", "3")
                         }
                         else if(binding.spWeeks.selectedItem.toString().equals("4 Semanas")){
-                            params.put("frecuente", "4")
+                            params.put("frecuencia", "4")
                         }
                         if (VariablesGlobales.getImagen() != null) {
                             params.put("identificacion", VariablesGlobales.getImagen())
@@ -287,14 +345,32 @@ class VisitsActivity : AppCompatActivity() {
 
     private fun showDatePickerDialog() {
 
-        val newFragment = DatePickerDialogFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            // +1 because January is zero
-            val selectedDate = day.toString() + " / " + (month + 1) + " / " + year
-            date = year.toString() + "-" + (month + 1) + "-" + day.toString()
-            binding.tvDate.setText(selectedDate)
-        })
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        newFragment.show(supportFragmentManager, "datePicker")
+        DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            selectedDate = day.toString() + " / " + (month + 1) + " / " + year
+            date = year.toString() + "-" + (month + 1) + "-" + day.toString()
+            //dateTime =  year.toString() + "-" + (month + 1) + "-" + day.toString()
+            binding.tvDate.setText(selectedDate)
+            showDateTimePickerDialog()
+        }, year, month, day).show()
+
+    }
+
+
+    private fun showDateTimePickerDialog() {
+
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(this, { _, selectedHour, selectedMinute ->
+            binding.tvDate.setText(selectedDate+String.format(" %02d:%02d", selectedHour, selectedMinute))
+            dateTime = date+String.format(" %02d:%02d", selectedHour, selectedMinute)
+        }, hour, minute, true).show()
     }
 
     fun crearVisita(params: RequestParams?) {
@@ -339,13 +415,15 @@ class VisitsActivity : AppCompatActivity() {
                         qr = jsonObject.getString("qr")
                         VariablesGlobales.setImagen(null)
                         //mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
-                        mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity)
+                       // mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity)
+                        basicAlert2("Mensaje",jsonObject.getString("message"))
                     }
                     else{
 //                        qr = jsonObject.getString("message")
 //                        mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity)
 
-                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
+                        //mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@VisitsActivity);
+                        basicAlert("Mensaje",jsonObject.getString("message"))
                     }
                 } catch (e: JSONException) {
                     binding.btnAdd.isEnabled = true
@@ -396,4 +474,60 @@ class VisitsActivity : AppCompatActivity() {
                 .show()
         }
     }
+
+    fun basicAlert(titulo: String ,mensaje : String) {
+
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@VisitsActivity)
+        val inflater = this@VisitsActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView = inflater.inflate(com.sycnos.heyvisitas.R.layout.dialog_custom, null, false)
+
+        builder.setView(customView)
+        builder.setCancelable(false)
+        val lblReglamento =  customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblReglamento) as TextView
+        val lblAceptar = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblAceptar) as TextView
+        val lblTexto = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblTexto) as TextView
+        lblReglamento.text = titulo
+        lblTexto.text= mensaje
+        lblTexto.setMovementMethod(ScrollingMovementMethod())
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+        lblAceptar.setOnClickListener {
+
+            alertDialog.dismiss()
+
+        }
+    }
+
+    fun basicAlert2(titulo: String ,mensaje : String) {
+
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@VisitsActivity)
+        val inflater = this@VisitsActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView = inflater.inflate(com.sycnos.heyvisitas.R.layout.dialog_custom2, null, false)
+
+        builder.setView(customView)
+        builder.setCancelable(false)
+        val lblReglamento =  customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblReglamento) as TextView
+        val lblAceptar = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblAceptar) as TextView
+        val lblLink = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblLink) as TextView
+        val lblTexto = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblTexto) as TextView
+        lblReglamento.text = titulo
+        lblTexto.text= mensaje
+        lblTexto.setMovementMethod(ScrollingMovementMethod())
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+        lblAceptar.setOnClickListener {
+
+            alertDialog.dismiss()
+            finish()
+
+        }
+        lblLink.setOnClickListener {
+
+            shareLinkQr()
+
+        }
+    }
+
 }

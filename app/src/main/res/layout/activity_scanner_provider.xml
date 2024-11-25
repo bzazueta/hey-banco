@@ -1,27 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
-    android:background="@drawable/gradient_drawable"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProvidersActivity">
+    android:background="#03a9f4"
+    tools:context=".ScannerProviderActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:id="@+id/viewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:background="@drawable/gradient_drawable">
 
-        <Button
+        <TextView
+            android:id="@+id/txtResponsable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp"
+            android:text="RESPONSABLE"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/lblResponsable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblResponsable"
+            app:layout_constraintTop_toTopOf="@+id/lblResponsable" />
+
+        <TextView
+            android:id="@+id/lblResponsable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:text="RESPONSABLE:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblEmpresa" />
+
+        <TextView
+            android:id="@+id/txtEmpresa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp"
+            android:text="EMPRESA:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblEmpresa"
+            app:layout_constraintTop_toTopOf="@+id/lblEmpresa" />
+
+        <TextView
+            android:id="@+id/txtValido"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="VALIDO"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/etHasta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etHasta"
+            app:layout_constraintTop_toTopOf="@+id/etHasta" />
+
+        <TextView
+            android:id="@+id/txtDepto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="DEPTO"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/lblDepartament"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblDepartament"
+            app:layout_constraintTop_toTopOf="@+id/lblDepartament" />
+
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="NOMBRE"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblName"
+            app:layout_constraintTop_toTopOf="@+id/lblName" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBack"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/border_radius"
-            android:text="@string/back"
+            android:background="@drawable/border_radius_orange"
+            android:text="REGRESAR"
+            android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,259 +128,213 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Regional"
-            android:textColor="@color/white"
+            android:text="REGIONAL"
+            android:textColor="@color/label_visitas_regional"
             android:textSize="24sp"
-            android:textStyle="italic"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/tvVisit"
+            android:id="@+id/textView3"
             android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="24dp"
-            android:background="@drawable/home_border_radius"
-            android:gravity="center_horizontal|center_vertical"
-            android:padding="16dp"
-            android:text="Proveedores"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="italic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivCircle"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="16dp"
-            android:src="@mipmap/provider_images"
-            app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvVisit" />
-
-
-        <TextView
-            android:id="@+id/tvDepartament"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:padding="16dp"
-            android:text="Departamento"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
-
-        <EditText
-            android:id="@+id/etDepartament"
-            android:layout_width="185dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:backgroundTint="@color/black"
-            android:editable="false"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:text="Nombre"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etDepartament"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="185dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:backgroundTint="@color/black"
-            android:editable="false"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDepartament" />
-
-        <TextView
-            android:id="@+id/tvBussines"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:text="Empresa"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etName"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <EditText
-            android:id="@+id/etBussines"
-            android:layout_width="185dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:backgroundTint="@color/black"
-            android:enabled="false"
-            android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etName" />
-
-
-        <TextView
-            android:id="@+id/tvResponsable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:text="Responsable"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etBussines"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <EditText
-            android:id="@+id/etResponsable"
-            android:layout_width="185dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:backgroundTint="@color/black"
-            android:enabled="false"
-            android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etBussines" />
-
-        <TextView
-            android:id="@+id/tvTicket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:text="Ticket"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etResponsable"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <EditText
-            android:id="@+id/etTicket"
-            android:layout_width="185dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:backgroundTint="@color/black"
-            android:enabled="false"
-            android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etResponsable" />
-
-        <TextView
-            android:id="@+id/tvTel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:text="Tel.Contacto"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etTicket"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <EditText
-            android:id="@+id/etTel"
-            android:layout_width="185dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:backgroundTint="@color/black"
-            android:enabled="false"
-            android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etTicket" />
-
-        <TextView
-            android:id="@+id/tvWork"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:text="Trabajo a realizar"
-            android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/etTel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <EditText
-            android:id="@+id/etWork"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-
-            android:backgroundTint="@color/black"
             android:gravity="center"
-            android:hint="Lorem ipsum dolor sit amet consectetur adipiscing elit maecenas leo justo convallis, dapibus en."
+            android:padding="8dp"
+            android:text="PROVEEDORES"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvWork" />
-        <Button
-            android:id="@+id/btnEnter"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
+
+        <TextView
+            android:id="@+id/etHasta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Entrada"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="30dp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/button_background_color"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:onClick="basicAlert"
-            app:layout_constraintTop_toBottomOf="@+id/etWork"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            android:padding="8dp"
+            android:text="VALIDA HASTA:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <Button
+        <TextView
+            android:id="@+id/lblName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:padding="8dp"
+            android:text="NOMBRE:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etHasta" />
+
+        <TextView
+            android:id="@+id/lblDepartament"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:text="DEPARTAMENTO:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTicket" />
+
+        <TextView
+            android:id="@+id/lblTicket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:text="TICKET:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblResponsable" />
+
+        <TextView
+            android:id="@+id/txtTicket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="TICKET"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/lblTicket"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblTicket"
+            app:layout_constraintTop_toTopOf="@+id/lblTicket" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="132dp"
+            android:layout_marginBottom="32dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/border_green"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="IDENTIFICACION"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnEnter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnExit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/border_orange"
+            android:text="SALIDA"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnEnter"
+            app:layout_constraintTop_toTopOf="@+id/btnEnter" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnEnter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/border_green"
+            android:text="ENTRADA"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/btnId"
+            app:layout_constraintEnd_toStartOf="@id/btnExit"
+            app:layout_constraintStart_toEndOf="@+id/btnId"
+            app:layout_constraintTop_toTopOf="@+id/btnId" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPlacas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_orange"
+            android:text="PLACAS"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="287dp"
+            tools:layout_editor_absoluteY="576dp" />
+
+        <TextView
+            android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Salida"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/button_background_color_yellow"
-            android:onClick="basicAlert"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etWork"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:text="ASUNTO:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblDepartament" />
 
+        <TextView
+            android:id="@+id/txtAsunto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/txtDepto" />
 
+        <TextView
+            android:id="@+id/lblEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:text="EMPRESA:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblName" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

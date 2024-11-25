@@ -1,9 +1,14 @@
 package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ExpandableListAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
@@ -28,8 +33,12 @@ class PendingVisitsActivity : AppCompatActivity() {
     val listData = HashMap<String, List<String>>()
     var sharedPref : SharedPref = SharedPref()
     private var conexion: Conexion? = Conexion()
-    val qrList = ArrayList<String>()
-
+    val qrListActivas = ArrayList<String>()
+    val qrListPendientes = ArrayList<String>()
+    val spinnerList = ArrayList<String>()
+    val spinnerListPendientes = ArrayList<String>()
+    val listPendientes = ArrayList<String>()
+    val listactivos = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +48,16 @@ class PendingVisitsActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener { finish() }
         //setupExpandableListView()
 
+
+
+
+
+
+    }
+
+    override fun onResume() {
+        spinnerList.clear()
+        spinnerListPendientes.clear()
         try
         {
             var validado: Boolean = true
@@ -68,6 +87,7 @@ class PendingVisitsActivity : AppCompatActivity() {
         {
             e.toString()
         }
+        super.onResume()
     }
 
     fun getPendingVisits(params: RequestParams?) {
@@ -106,23 +126,104 @@ class PendingVisitsActivity : AppCompatActivity() {
                     if (jsonObject.has("status")) {
                         if (jsonObject.getString("status").equals("true"))
                         {
-                            qrList.clear()
+                            qrListActivas.clear()
+                            qrListPendientes.clear()
                             listData.clear()
                             val visits : Visits = Visits()
-                            for (i in 0 until jsonObject.getJSONArray("Visitas Pendientes").length())
-                            {
-                                val visitList = ArrayList<String>()
-                                visits.id_visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("id_visita")
-                                visits.Nombre_Visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("Nombre_Visita")
-                                visits.qrLink= getString(R.string.urlDominio) +"/public/api/qr/"+ jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("qrlink")
-                                qrList.add(visits.qrLink)
-                                visitList.add(visits.id_visita +"|"+ visits.qrLink)
-                                //visitList.add(visits.Nombre_Visita)
-                                listData[visits.Nombre_Visita] = visitList
-                                // VariablesGlobales.arrayListDeptos.add(visits)
+                            spinnerList.add("VISITAS ACTIVAS")
+                            listactivos.add("VISITAS ACTIVAS")
+                            qrListActivas.add("VISITAS ACTIVAS")
+                             if(jsonObject.has("Visitas Activas")){
+                                 for (i in 0 until jsonObject.getJSONArray("Visitas Activas").length())
+                                 {
+                                     val visitList = ArrayList<String>()
+                                     visits.id_visita = jsonObject.getJSONArray("Visitas Activas").getJSONObject(i).getString("id_visita")
+                                     visits.Nombre_Visita = jsonObject.getJSONArray("Visitas Activas").getJSONObject(i).getString("Nombre_Visita")
+                                     visits.qrLink= getString(R.string.urlDominio) +"/public/api/qr/"+ jsonObject.getJSONArray("Visitas Activas").getJSONObject(i).getString("qrlink")
+                                     qrListActivas.add(visits.qrLink)
+                                     visitList.add(visits.id_visita +"|"+ visits.qrLink)
+                                     listactivos.add(visits.id_visita)
+                                     //visitList.add(visits.Nombre_Visita)
+                                     listData[visits.Nombre_Visita] = visitList
+                                     // VariablesGlobales.arrayListDeptos.add(visits)
+                                     spinnerList.add(visits.Nombre_Visita)
+
+                                 }
+                             }
+
+                            spinnerListPendientes.add("VISITAS PENDIENTES")
+                            listPendientes.add("VISITAS PENDIENTES")
+                            qrListPendientes.add("VISITAS PENDIENTES")
+                            if(jsonObject.has("Visitas Pendientes")){
+                                for (i in 0 until jsonObject.getJSONArray("Visitas Pendientes").length())
+                                {
+                                    val visitList = ArrayList<String>()
+                                    visits.id_visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("id_visita")
+                                    visits.Nombre_Visita = jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("Nombre_Visita")
+                                    visits.qrLink= getString(R.string.urlDominio) +"/public/api/qr/"+ jsonObject.getJSONArray("Visitas Pendientes").getJSONObject(i).getString("qrlink")
+                                    qrListPendientes.add(visits.qrLink)
+                                    visitList.add(visits.id_visita +"|"+ visits.qrLink)
+                                    listPendientes.add(visits.id_visita)
+                                    //visitList.add(visits.Nombre_Visita)
+                                    listData[visits.Nombre_Visita] = visitList
+                                    // VariablesGlobales.arrayListDeptos.add(visits)
+                                    spinnerListPendientes.add(visits.Nombre_Visita)
+
+                                }
                             }
+
                             listData.size
-                            setupExpandableListView()
+
+                            val adapter = ArrayAdapter(this@PendingVisitsActivity, android.R.layout.simple_spinner_item, spinnerList)
+
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            binding.spinner.adapter = adapter
+
+                            binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                                    // Obtén el elemento seleccionado
+                                    val selectedItem = listactivos.get(position).toString()
+                                    val selectedQr = qrListActivas.get(position).toString()
+                                    //Toast.makeText(this@PendingVisitsActivity, "Selected: $selectedItem", Toast.LENGTH_SHORT).show()
+                                    if(!selectedItem.equals("VISITAS ACTIVAS")){
+                                        val intent  = Intent(this@PendingVisitsActivity,PendingVisitsDetailActivity::class.java)
+                                        intent.putExtra("idVisita",selectedItem)
+                                        intent.putExtra("qr",selectedQr)
+                                        startActivity(intent)
+                                    }
+
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>) {
+                                    // Maneja el caso donde nada es seleccionado
+                                }
+                            }
+
+                            val adapter2 = ArrayAdapter(this@PendingVisitsActivity, android.R.layout.simple_spinner_item, spinnerListPendientes)
+
+                            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            binding.spinnerVisitas.adapter = adapter2
+
+                            binding.spinnerVisitas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                                    // Obtén el elemento seleccionado
+                                    val selectedItem =  listPendientes.get(position).toString()
+                                    val selectedQr = qrListPendientes.get(position).toString()
+                                    //Toast.makeText(this@PendingVisitsActivity, "Selected: $selectedItem", Toast.LENGTH_SHORT).show()
+                                    if(!selectedItem.equals("VISITAS PENDIENTES")){
+                                        val intent  = Intent(this@PendingVisitsActivity,PendingVisitsDetailActivity::class.java)
+                                        intent.putExtra("idVisita",selectedItem)
+                                        intent.putExtra("qr",selectedQr)
+                                        startActivity(intent)
+                                    }
+
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>) {
+                                    // Maneja el caso donde nada es seleccionado
+                                }
+                            }
+                            //setupExpandableListView()
                         }
                     }
                     else{
@@ -141,7 +242,7 @@ class PendingVisitsActivity : AppCompatActivity() {
         val expandableListView = binding.expandableListView
         val listData_ = listData
         titleList = ArrayList(listData_.keys)
-        adapter = CustomExpandableListAdapter(this@PendingVisitsActivity, titleList as ArrayList<String>, listData,qrList)
+        adapter = CustomExpandableListAdapter(this@PendingVisitsActivity, titleList as ArrayList<String>, listData,qrListActivas)
         expandableListView.setAdapter(adapter)
 
         expandableListView.setOnGroupExpandListener { groupPosition ->

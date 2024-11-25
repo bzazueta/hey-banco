@@ -10,5 +10,10 @@
     <color name="background">#4F1497</color>
     <color name="solved">#00E07B</color>
 
+    <color name="label_visitas_regional">#4caf50</color>
+    <color name="button_green">#4caf50</color>
+    <color name="button_blue">#1c7ce2</color>
+    <color name="color_orange">#ff9e22</color>
+    <color name="color_grey">#CDCDCD</color>
 
 </resources>

@@ -12,27 +12,35 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
 
-
     <application
         android:allowBackup="true"
-        android:largeHeap="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
-        android:icon="@drawable/appstore"
+        android:icon="@drawable/regional_logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.HeyVisitas"
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
+        <activity
+            android:name="com.sycnos.SeeFilePendingVisitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PendingVisitsDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.HeyVisitas.NoActionBar" />
+        <activity
+            android:name=".SeefilePendingVisitsActivity"
+            android:exported="false" />
         <activity
             android:name=".PickIdentificationProvidersActivity"
             android:exported="false"
@@ -47,110 +55,110 @@
         <activity
             android:name=".ScannerProviderActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_canner_provider"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".ScannerQRActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_scanner_qractivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_register"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".HomeLobbyActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_home_lobby"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".MessageSolvedActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_messageolved"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".MessageHistoryActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_message_history"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".MessageActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_message"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".SeeFileActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_see_file"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".ContentNoticeActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_content_notice"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".NoticesActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_notices"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".NoticesmessagesActvity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_noticesmessages_actvity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".ProvidersActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_providers"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".PendingVisitsActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_pending_visits"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".PickIdentification"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_pick_identification"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".VisitsActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_visits"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".HomeActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_forgot_password"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HeyVisitas.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

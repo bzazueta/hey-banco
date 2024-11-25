@@ -1,21 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#03a9f4"
+    tools:context=".HomeActivity">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/viewContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_drawable"
     tools:context=".VisitsActivity">
 
-    <Button
+    <EditText
+        android:id="@+id/etPlacas"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/border_edittext"
+        android:hint="PLACAS"
+        android:paddingLeft="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAsunto" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/border_edittext"
+        android:hint="NOMBRE VISITA"
+        android:paddingLeft="8dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+    <EditText
+        android:id="@+id/etMail"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/border_edittext"
+        android:hint="CORREO DE CONTACTO"
+        android:paddingLeft="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnBack"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_radius"
-        android:text="@string/back"
+        android:background="@drawable/border_radius_orange"
+        android:text="Regresar"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,10 +90,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Regional"
-        android:textColor="@color/white"
+        android:text="REGIONAL"
+        android:textColor="@color/label_visitas_regional"
         android:textSize="24sp"
-        android:textStyle="italic"
+        android:textStyle="normal|bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,9 +108,9 @@
         android:background="@drawable/home_border_radius"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Visitas"
+        android:text="VISITAS"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -53,9 +118,9 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivCircle"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="24dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="48dp"
         android:src="@mipmap/image_visitas"
         app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -63,19 +128,23 @@
 
     <EditText
         android:id="@+id/tvDate"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/border_edittext"
         android:clickable="true"
+        android:drawableStart="@drawable/baseline_calendar_month_24"
         android:focusable="false"
-        android:hint=" Fecha"
+        android:hint="DD-MM-YYYY"
         android:inputType="date"
         android:maxLines="1"
         android:paddingLeft="8dp"
         android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
 
     <TextView
@@ -84,54 +153,62 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Departamento"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Departamento"
-        app:layout_constraintTop_toBottomOf="@+id/tvDate"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
     <Spinner
         android:id="@+id/spDepartaments"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:background="@drawable/border_edittext"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/bordes_spinner"
         android:entries="@array/departaments"
         android:paddingLeft="8dp"
         android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDepartament" />
+
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Nombre"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Nombre"
-        app:layout_constraintTop_toBottomOf="@+id/spDepartaments"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/spDepartaments" />
 
     <EditText
-        android:id="@+id/etName"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+        android:id="@+id/etPhone"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/border_edittext"
-        android:hint=" Nombre"
+        android:hint="TELEFONO DE CONTACTO"
         android:paddingLeft="8dp"
         android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etMail" />
 
     <TextView
         android:id="@+id/tvPlacas"
@@ -139,28 +216,33 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Placas"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Placas"
-        app:layout_constraintTop_toBottomOf="@+id/etName"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/etPhone" />
 
     <EditText
-        android:id="@+id/etPlacas"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+        android:id="@+id/etAsunto"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="50dp"
         android:background="@drawable/border_edittext"
-        android:hint=" Placas"
+        android:hint="ASUNTO"
         android:paddingLeft="8dp"
         android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPlacas" />
+        app:layout_constraintTop_toBottomOf="@+id/spWeeks" />
 
     <CheckBox
         android:id="@+id/cbFrecuently"
@@ -172,60 +254,69 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPlacas" />
+
     <TextView
         android:id="@+id/tvIdentification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
         android:gravity="center"
         android:padding="16dp"
+        android:text="Identificación:"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:text="Identificación:"
-        android:layout_marginLeft="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/spWeeks"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/spWeeks" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSelect"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/border_radius"
-        android:text="Seleccionar"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border_green"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="IDENTIFICACION"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdentification"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvIdentification" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPlacas" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/border_orange"
         android:text="Crear Visita"
-        android:layout_marginTop="30dp"
         android:textColor="@color/white"
-        android:background="@drawable/border_radius"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSelect"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSelect" />
 
     <Spinner
         android:id="@+id/spWeeks"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="50dp"
         android:background="@drawable/border_edittext"
         android:entries="@array/weeks_providers"
         android:paddingLeft="8dp"
         android:textColor="@color/black"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cbFrecuently" />
+        app:layout_constraintTop_toBottomOf="@+id/etPhone" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

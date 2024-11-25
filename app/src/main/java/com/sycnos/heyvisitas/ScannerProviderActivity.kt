@@ -2,6 +2,7 @@ package com.sycnos.heyvisitas
 
 import android.app.ProgressDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
+import com.sycnos.SeeFilePendingVisitActivity
 import com.sycnos.heyvisitas.databinding.ActivityScannerProviderBinding
 import com.sycnos.heyvisitas.util.Conexion
 import com.sycnos.heyvisitas.util.Mensajes
@@ -32,6 +34,10 @@ class ScannerProviderActivity : AppCompatActivity() {
     var ticket : String = ""
     var telContacto : String = ""
     var trabajo: String = ""
+    var fecha_final : String = ""
+    var identificacion : String = ""
+    var placas : String = ""
+    var imagen = ""
     private var conexion: Conexion? = Conexion()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,16 +54,16 @@ class ScannerProviderActivity : AppCompatActivity() {
         ticket =if (intent.getStringExtra("ticket") == null) "" else intent.getStringExtra("ticket")!!
         telContacto =if (intent.getStringExtra("tel_contacto") == null) "" else intent.getStringExtra("tel_contacto")!!
         trabajo =if (intent.getStringExtra("trabajo") == null) "" else intent.getStringExtra("trabajo")!!
+        fecha_final =if (intent.getStringExtra("fecha_final") == null) "" else intent.getStringExtra("fecha_final")!!
+        imagen =if (intent.getStringExtra("identificacion") == null) "" else intent.getStringExtra("identificacion")!!
 
-
-        binding.etName.setText(nombre)
-        binding.etDepartament.setText(departamento)
-        binding.etName.setText(nombre)
-        binding.etBussines.setText(empresa)
-        binding.etResponsable.setText(responsable)
-        binding.etTicket.setText(ticket)
-        binding.etTel.setText(telContacto)
-        binding.etWork.setText(trabajo)
+        binding.txtNombre.setText(nombre)
+        binding.txtDepto.setText(departamento)
+        binding.txtEmpresa.setText(empresa)
+        binding.txtResponsable.setText(responsable)
+        binding.txtTicket.setText(ticket)
+        binding.txtValido.setText(fecha_final)
+        binding.txtAsunto.setText(trabajo)
 
         binding.btnEnter.setOnClickListener(View.OnClickListener {
 
@@ -140,7 +146,23 @@ class ScannerProviderActivity : AppCompatActivity() {
             finish()
         })
 
-
+        binding.btnId.setOnClickListener {
+            var validado :Boolean = true
+            if(imagen.equals("") || imagen.equals("null"))
+            {
+                validado = false
+                mensajes!!.mensajeAceptar(
+                    "Mensaje",
+                    "Este mensaje no contiene identificación",
+                    this@ScannerProviderActivity)
+            }
+            if(validado) {
+                val i = Intent(this@ScannerProviderActivity, SeeFilePendingVisitActivity::class.java)
+                i.putExtra("id", id)
+                i.putExtra("url_archivo", imagen)
+                startActivity(i)
+            }
+        }
     }
 
     override fun onResume() {
@@ -220,7 +242,7 @@ class ScannerProviderActivity : AppCompatActivity() {
                     }
                     else
                     {
-                        mensajes!!.mensajeAceptar("Mensaje",
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",
                             jsonObject.getString("message"),
                             this@ScannerProviderActivity)
                     }
@@ -274,7 +296,7 @@ class ScannerProviderActivity : AppCompatActivity() {
                     }
                     else
                     {
-                        mensajes!!.mensajeAceptar("Mensaje",
+                        mensajes!!.mensajeAceptarCerrar("Mensaje",
                             jsonObject.getString("message"),
                             this@ScannerProviderActivity)
                     }

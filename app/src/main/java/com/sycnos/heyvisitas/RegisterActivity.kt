@@ -1,12 +1,16 @@
 package com.sycnos.heyvisitas
 
 import android.R
+import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
@@ -27,6 +31,7 @@ import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.Calendar
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -37,6 +42,9 @@ class RegisterActivity : AppCompatActivity() {
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
     private var conexion: Conexion? = Conexion()
+    var selectedDate =""
+    var date : String = ""
+    var dateTime : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +68,17 @@ class RegisterActivity : AppCompatActivity() {
             getDepartments(params)
         }
 
+        binding.btnIdentificacion.setOnClickListener {
+
+            val i = Intent(this@RegisterActivity, PickIdentification::class.java)
+            i.putExtra("date","date")
+            i.putExtra("deparment",binding.spDepartaments.selectedItem.toString())
+            i.putExtra("name",binding.etName.text.toString())
+            i.putExtra("placas",binding.etTel.text.toString())
+            i.putExtra("frecuently",binding.spEjecutivo.selectedItem.toString())
+            startActivity(i)
+        }
+
         binding.btnBack.setOnClickListener { finish() }
 
         binding.btnRegister.setOnClickListener(View.OnClickListener {
@@ -76,7 +95,7 @@ class RegisterActivity : AppCompatActivity() {
             conectado = conexion!!.isOnline(this)
             if(conectado)
             {
-                if(binding.tvName.text.toString().equals(""))
+                if(binding.etName.text.toString().equals(""))
                 {
                     binding.btnRegister.isEnabled = true
                     progresoRegister.dismiss()
@@ -114,6 +133,12 @@ class RegisterActivity : AppCompatActivity() {
 
             }
         })
+
+        binding.txtFecha.setOnClickListener{
+            val imm = this@RegisterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.txtFecha.windowToken, 0)
+            showDatePickerDialog()
+        }
 
 
     }
@@ -282,5 +307,33 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun showDatePickerDialog() {
+
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            selectedDate = day.toString() + " / " + (month + 1) + " / " + year
+            date = year.toString() + "-" + (month + 1) + "-" + day.toString()
+            dateTime =  year.toString() + "-" + (month + 1) + "-" + day.toString() +" "+  Calendar.HOUR_OF_DAY +":"+ Calendar.MINUTE
+            binding.txtFecha.setText(selectedDate)
+            showDateTimePickerDialog()
+        }, year, month, day).show()
+
+    }
+    private fun showDateTimePickerDialog() {
+
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(this, { _, selectedHour, selectedMinute ->
+            binding.txtFecha.setText(selectedDate+String.format(" %02d:%02d", selectedHour, selectedMinute))
+        }, hour, minute, true).show()
+    }
+
 
 }

@@ -8,14 +8,15 @@
     android:background="@drawable/gradient_drawable"
     tools:context=".ScannerQRActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnBack"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_radius"
-        android:text="@string/back"
+        android:background="@drawable/border_radius_orange"
+        android:text="REGRESAR"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,10 +26,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Regional"
-        android:textColor="@color/white"
+        android:text="REGIONAL"
+        android:textColor="@color/label_visitas_regional"
         android:textSize="24sp"
-        android:textStyle="italic"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,9 +44,9 @@
         android:background="@drawable/home_border_radius"
         android:gravity="center_horizontal|center_vertical"
         android:padding="16dp"
-        android:text="Escaner QR"
+        android:text="ESCANEAR QR"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -54,25 +55,25 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivCircle"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_marginLeft="16dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="18dp"
         android:src="@mipmap/provider_images"
         app:layout_constraintBottom_toBottomOf="@+id/tvVisit"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvVisit" />
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Escanear"
         android:layout_marginTop="30dp"
+        android:background="@drawable/border_orange"
+        android:text="Escanear"
         android:textColor="@color/white"
-        android:background="@drawable/border_radius"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivCircle"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

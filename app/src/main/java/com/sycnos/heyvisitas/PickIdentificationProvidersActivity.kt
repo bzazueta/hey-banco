@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.sycnos.heyvisitas.databinding.ActivityPickIdentificationBinding
 import com.sycnos.heyvisitas.databinding.ActivityPickIdentificationProvidersBinding
 import com.sycnos.heyvisitas.util.FormatoFechas
@@ -49,6 +50,9 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
     var flujo: String = ""
     private val SELECT_PICTURE = 1
     private val ANDROID_R_REQUIRED_EXTENSION_VERSION = 2
+    private lateinit var filePath: Uri
+    var photoFile: File? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPickIdentificationProvidersBinding.inflate(layoutInflater)
@@ -100,8 +104,20 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
 
         try {
             flujo = "camara"
-            val camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(camera_intent, 123)
+//            val camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//            startActivityForResult(camera_intent, 123)
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePictureIntent.resolveActivity(this@PickIdentificationProvidersActivity.packageManager) != null) {
+                // Crear el archivo donde se guardará la foto
+                photoFile = createImageFile(this@PickIdentificationProvidersActivity)
+
+                // Continuar solo si el archivo fue creado correctamente
+                photoFile?.also {
+                    filePath = getUriFromFile(this@PickIdentificationProvidersActivity, it)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, filePath)
+                    startActivityForResult(takePictureIntent, SELECT_PICTURE)
+                }
+            }
         }catch(e : Exception)
         {
             e.toString()
@@ -162,38 +178,61 @@ class PickIdentificationProvidersActivity : AppCompatActivity() {
             e.toString()
         }
     }
+
+    fun createImageFile(context: Context): File {
+        val storageDir: File? = this@PickIdentificationProvidersActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        if (!storageDir?.exists()!! == true) {
+            storageDir.mkdirs()
+        }
+        return File.createTempFile(
+            "JPEG_${System.currentTimeMillis()}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        )
+    }
+
+    fun getUriFromFile(context: Context, file: File): Uri {
+        return FileProvider.getUriForFile(
+            context,
+            "${context.packageName}",
+            file
+        )
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
             if(flujo.equals("camara"))
             {
-                if (requestCode == 123) {
-                    val bitmap = data?.extras?.get("data") as Bitmap
-                    binding.ivImage.setImageBitmap(bitmap)
+                if (requestCode == 1) {
+//                    val bitmap = data?.extras?.get("data") as Bitmap
+//                    binding.ivImage.setImageBitmap(bitmap)
                     //  val bitmap_: Bitmap = Utils.decodeBase64(bitmap)
                     try {
-                        val storageDir =
-                            getExternalFilesDir(Environment.DIRECTORY_DCIM + "/HeyVisitas/Archivos/Imagenes/")
-                        identificacion = File.createTempFile(
-                            "imagenhey",  /* prefix */
-                            ".jpeg",  /* suffix */
-                            storageDir /* directory */
-                        )
-                        VariablesGlobales.setImagen(identificacion)
-                        //Convert bitmap to byte array
-                        val bos = ByteArrayOutputStream()
-                        bitmap.compress(
-                            Bitmap.CompressFormat.PNG,
-                            0,
-                            bos
-                        ) // YOU can also save it in JPEG
-                        val bitmapdata = bos.toByteArray()
-
-                        //write the bytes in file
-                        val fos = FileOutputStream(identificacion)
-                        fos.write(bitmapdata)
-                        fos.flush()
-                        fos.close()
+                        binding.ivImage.setImageURI(filePath)
+                        identificacion = File(filePath.path )
+                        VariablesGlobales.setImagen(photoFile)
+//                        val storageDir =
+//                            getExternalFilesDir(Environment.DIRECTORY_DCIM + "/HeyVisitas/Archivos/Imagenes/")
+//                        identificacion = File.createTempFile(
+//                            "imagenhey",  /* prefix */
+//                            ".jpeg",  /* suffix */
+//                            storageDir /* directory */
+//                        )
+//                        VariablesGlobales.setImagen(identificacion)
+//                        //Convert bitmap to byte array
+//                        val bos = ByteArrayOutputStream()
+//                        bitmap.compress(
+//                            Bitmap.CompressFormat.PNG,
+//                            0,
+//                            bos
+//                        ) // YOU can also save it in JPEG
+//                        val bitmapdata = bos.toByteArray()
+//
+//                        //write the bytes in file
+//                        val fos = FileOutputStream(identificacion)
+//                        fos.write(bitmapdata)
+//                        fos.flush()
+//                        fos.close()
 
                     } catch (e: java.lang.Exception) {
                         e.printStackTrace()

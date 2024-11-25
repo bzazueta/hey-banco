@@ -1,9 +1,21 @@
 package com.sycnos.heyvisitas
 
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ListView
+import android.widget.Spinner
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -38,6 +50,13 @@ class MessageActivity : AppCompatActivity() {
     private var mAdapter: MessageAdapter? = null
     private var conexion: Conexion? = Conexion()
 
+    var textview: TextView? = null
+    var arrayList: ArrayList<String>? = null
+    var dialog: Dialog? = null
+    private lateinit var spinner: Spinner
+    private lateinit var adapter: ArrayAdapter<String>
+    private val items = listOf("Apple", "Banana", "Cherry", "Date", "Grapes", "Mango", "Orange")
+    val newListEmpty: MutableList<String> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -94,6 +113,66 @@ class MessageActivity : AppCompatActivity() {
 //            startActivity(i)
 //        }
         binding.btnBack.setOnClickListener { finish() }
+
+        textview=findViewById(R.id.text);
+
+        textview!!.setOnClickListener(View.OnClickListener {
+            // Initialize dialog
+            dialog = Dialog(this@MessageActivity)
+
+            // set custom dialog
+            dialog!!.setContentView(R.layout.dialog_searchable_spinner)
+
+            // set custom height and width
+            dialog!!.getWindow()?.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, 800)
+
+            // set transparent background
+            dialog!!.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            // show dialog
+            dialog!!.show()
+
+            // Initialize and assign variable
+            val editText: EditText = dialog!!.findViewById(R.id.edit_text)
+            val listView: ListView = dialog!!.findViewById(R.id.list_view)
+
+            // Initialize array adapter
+            val adapter: ArrayAdapter<Any?> =
+                ArrayAdapter<Any?>(this@MessageActivity, android.R.layout.simple_list_item_1,newListEmpty as List<Any?>)
+
+            // set adapter
+            listView.adapter = adapter
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    adapter.filter.filter(s)
+                }
+
+                override fun afterTextChanged(s: Editable) {}
+            })
+            listView.onItemClickListener =
+                AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
+                    // set selected item on textView
+                    textview!!.text = adapter.getItem(position).toString()
+
+                    val  messages : Messages = arrayMessages.get(position)
+                    messages.titulo
+                    val i = Intent(this@MessageActivity, MessageHistoryActivity::class.java)
+                    i.putExtra("titulo",messages.titulo)
+                    i.putExtra("cuerpo",messages.cuerpo)
+                    i.putExtra("id",messages.id)
+                    startActivity(i)
+                    // Dismiss dialog
+                    dialog!!.dismiss()
+                }
+        })
     }
 
     fun getMessages(params: RequestParams?) {
@@ -144,6 +223,7 @@ class MessageActivity : AppCompatActivity() {
                             messages.activo = jsonArray.getJSONObject(i).getString("activo")
                             messages.estatus = jsonArray.getJSONObject(i).getString("estatus")
                             arrayMessages.add(messages)
+                            newListEmpty.add(messages.titulo.toString())
                         }
                         arrayMessages.size
                         mAdapter =

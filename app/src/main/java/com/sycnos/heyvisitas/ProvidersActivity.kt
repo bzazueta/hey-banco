@@ -3,13 +3,18 @@ package com.sycnos.heyvisitas
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +29,7 @@ import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.FileNotFoundException
+import java.util.Calendar
 
 class ProvidersActivity : AppCompatActivity() {
 
@@ -32,12 +38,14 @@ class ProvidersActivity : AppCompatActivity() {
     private lateinit var progresoProviders: ProgressDialog
     var mensajes : Mensajes = Mensajes()
     var date : String = ""
+    var dateTime : String = ""
     var qr : String = ""
     var formatoFechas : FormatoFechas = FormatoFechas()
     var arrayListDescripcion : ArrayList<String> = ArrayList()
     var arrayListIds : ArrayList<String> = ArrayList()
     var sharedPref : SharedPref = SharedPref()
     private var conexion: Conexion? = Conexion()
+    var selectedDate =""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +53,8 @@ class ProvidersActivity : AppCompatActivity() {
         binding = ActivityProvidersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        arrayListIds.add("Seleccionar")
-        arrayListDescripcion.add("Seleccionar")
+        arrayListIds.add("DEPARTAMENTO")
+        arrayListDescripcion.add("DEPARTAMENTO")
         for (i in 0 until VariablesGlobales.arrayListDeptos.size)
         {
             var descripcion = VariablesGlobales.arrayListDeptos.get(i).descripcion
@@ -121,15 +129,17 @@ class ProvidersActivity : AppCompatActivity() {
                 }
 
                 if (validado) {
-                    if (binding.spDepartaments.selectedItem.toString().equals("Seleccionar")) {
+                    if (binding.spDepartaments.selectedItem.toString().equals("DEPARTAMENTO")) {
                         progresoProviders.dismiss()
                         validado = false
                         binding.btnAdd.isEnabled = true
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Seleccione un departamento",
-                            this@ProvidersActivity
-                        );
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Seleccione un departamento",
+//                            this@ProvidersActivity
+//                        );
+                        basicAlert("Mensaje",
+                            "Seleccione un departamento")
                     }
                 }
 
@@ -138,11 +148,13 @@ class ProvidersActivity : AppCompatActivity() {
                         progresoProviders.dismiss()
                         validado = false
                         binding.btnAdd.isEnabled = true
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Ingrese un nombre",
-                            this@ProvidersActivity
-                        );
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese un nombre",
+//                            this@ProvidersActivity
+//                        );
+                        basicAlert("Mensaje",
+                            "Ingrese un nombre")
                     }
                 }
 
@@ -151,11 +163,13 @@ class ProvidersActivity : AppCompatActivity() {
                         progresoProviders.dismiss()
                         validado = false
                         binding.btnAdd.isEnabled = true
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Ingrese una empresa",
-                            this@ProvidersActivity
-                        );
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese una empresa",
+//                            this@ProvidersActivity
+//                        );
+                        basicAlert("Mensaje",
+                            "Ingrese una empresa")
                         //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -179,11 +193,13 @@ class ProvidersActivity : AppCompatActivity() {
                         progresoProviders.dismiss()
                         validado = false
                         binding.btnAdd.isEnabled = true
-                        mensajes!!.mensajeAceptar(
-                            "Mensaje",
-                            "Ingrese las placas",
-                            this@ProvidersActivity
-                        );
+//                        mensajes!!.mensajeAceptar(
+//                            "Mensaje",
+//                            "Ingrese las placas",
+//                            this@ProvidersActivity
+//                        );
+                        basicAlert("Mensaje",
+                            "Ingrese las placas")
                         //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -198,6 +214,8 @@ class ProvidersActivity : AppCompatActivity() {
                             "Ingrese un ticket",
                             this@ProvidersActivity
                         );
+                        basicAlert("Mensaje",
+                            "Ingrese un ticket")
                         //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -212,20 +230,24 @@ class ProvidersActivity : AppCompatActivity() {
                             "Ingrese un número de contacto",
                             this@ProvidersActivity
                         );
+                        basicAlert("Mensaje",
+                            "Ingrese un número de contacto")
                         //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 if (validado) {
-                    if (binding.etWork.text.toString().equals("")) {
+                    if (binding.etAsunto.text.toString().equals("")) {
                         progresoProviders.dismiss()
                         validado = false
                         binding.btnAdd.isEnabled = true
                         mensajes!!.mensajeAceptar(
                             "Mensaje",
-                            "Ingrese el trabajo a realizar",
+                            "Ingrese el asunto",
                             this@ProvidersActivity
                         );
+                        basicAlert("Mensaje",
+                            "Ingrese el asunto")
                         //Toast.makeText(this@ProvidersActivity,"Ingrese una empresa...", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -241,7 +263,7 @@ class ProvidersActivity : AppCompatActivity() {
                             "departamento_id",
                             arrayListIds.get(binding.spDepartaments.selectedItemPosition)
                         )//binding.spDepartaments.selectedItem.toString()
-                        params.put("fecha_registro", formatoFechas.formatoFechatoyyyymmdd(date))
+                        params.put("fecha_registro", dateTime)
                         params.put("nombre", binding.etName.text.toString())
                         params.put("empresa", binding.etBussines.text.toString())
                         if (VariablesGlobales.getImagen() != null) {
@@ -253,23 +275,23 @@ class ProvidersActivity : AppCompatActivity() {
                         params.put("responsable", binding.etResponsable.text.toString())
                         params.put("ticket", binding.etTicket.text.toString())
                         params.put("tel_contacto", binding.etTel.text.toString())
-                        params.put("frecuencia", "0")
-                        params.put("trabajo_realizar", binding.etWork.text.toString())
-                        if(!binding.chkBoxFrecuenteProviders.isChecked){
-                            params.put("frecuente", "0")
+                        params.put("trabajo_realizar", binding.etAsunto.text.toString())
+                        params.put("email_contacto", binding.etMail.text.toString())
+                        if(binding.spWeeksProviders.selectedItem.toString().equals("FRECUENCIA")){
+                            params.put("frecuencia", "0")
                         }
-                        else if(binding.spWeeksProviders.selectedItem.toString().equals("1 Semana"))
+                         if(binding.spWeeksProviders.selectedItem.toString().equals("1 Semana"))
                         {
-                            params.put("frecuente", "1")
+                            params.put("frecuencia", "1")
                         }
                         else if(binding.spWeeksProviders.selectedItem.toString().equals("2 Semanas")){
-                            params.put("frecuente", "2")
+                            params.put("frecuencia", "2")
                         }
                         else if(binding.spWeeksProviders.selectedItem.toString().equals("3 Semanas")){
-                            params.put("frecuente", "3")
+                            params.put("frecuencia", "3")
                         }
                         else if(binding.spWeeksProviders.selectedItem.toString().equals("4 Semanas")){
-                            params.put("frecuente", "4")
+                            params.put("frecuencia", "4")
                         }
 
                         createProviders(params)
@@ -322,26 +344,32 @@ class ProvidersActivity : AppCompatActivity() {
 
     private fun showDatePickerDialog() {
 
-        val newFragment = DatePickerDialogFragment.newInstance(DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            // +1 because January is zero
-            val selectedDate = day.toString() + " / " + (month + 1) + " / " + year
-            date = year.toString() + "-" + (month + 1) + "-" + day.toString()
-            binding.tvDate.setText(selectedDate)
-        })
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        newFragment.show(supportFragmentManager, "datePicker")
+        DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            selectedDate = day.toString() + " / " + (month + 1) + " / " + year
+            date = year.toString() + "-" + (month + 1) + "-" + day.toString()
+            //dateTime =  year.toString() + "-" + (month + 1) + "-" + day.toString() +" "+  Calendar.HOUR_OF_DAY +":"+ Calendar.MINUTE
+            binding.tvDate.setText(selectedDate)
+            showDateTimePickerDialog()
+        }, year, month, day).show()
+
     }
-    fun basicAlert(view: View) {
-        val builder = AlertDialog.Builder(this)
-        with(builder)
-        {
-            setTitle("Atención")
-            val message = setMessage("Mensaje personalizado se puede personalizar desde la plataforma")
-                .setPositiveButton("Aceptar", DialogInterface.OnClickListener {
-                        dialog, id ->
-                })
-            show()
-        }
+
+
+    private fun showDateTimePickerDialog() {
+
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(this, { _, selectedHour, selectedMinute ->
+            binding.tvDate.setText(date+String.format(" %02d:%02d", selectedHour, selectedMinute))
+            dateTime = date+String.format(" %02d:%02d", selectedHour, selectedMinute)
+        }, hour, minute, true).show()
     }
 
     fun createProviders(params: RequestParams?) {
@@ -384,14 +412,17 @@ class ProvidersActivity : AppCompatActivity() {
                         qr = jsonObject.getString("qr")
                         //mensajes!!.mensajeAceptarCerrar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
                         VariablesGlobales.setImagen(null)
-                        mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
-
+                        //mensajeCompartirAceptar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
+                        basicAlert2("Mensaje",
+                            jsonObject.getString("message"))
 
                     }
                    else{
                         progresoProviders.dismiss()
                         binding.btnAdd.isEnabled = true
-                        mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
+                        basicAlert("Mensaje",
+                            jsonObject.getString("message"))
+                       // mensajes!!.mensajeAceptar("Mensaje",jsonObject.getString("message"),this@ProvidersActivity);
                     }
 //                    if (jsonObject.getString("message") == "Agrega 2 o mas registros de identidicacion :  (Nombre,Empresa,Identificacion)") {
 //                        progresoProviders.dismiss()
@@ -444,6 +475,61 @@ class ProvidersActivity : AppCompatActivity() {
         } catch (e: PackageManager.NameNotFoundException) {
             Toast.makeText(this@ProvidersActivity, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                 .show()
+        }
+    }
+
+    fun basicAlert(titulo: String ,mensaje : String) {
+
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@ProvidersActivity)
+        val inflater = this@ProvidersActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView = inflater.inflate(com.sycnos.heyvisitas.R.layout.dialog_custom, null, false)
+
+        builder.setView(customView)
+        builder.setCancelable(false)
+        val lblReglamento =  customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblReglamento) as TextView
+        val lblAceptar = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblAceptar) as TextView
+        val lblTexto = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblTexto) as TextView
+        lblReglamento.text = titulo
+        lblTexto.text= mensaje
+        lblTexto.setMovementMethod(ScrollingMovementMethod())
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+        lblAceptar.setOnClickListener {
+
+            alertDialog.dismiss()
+
+        }
+    }
+
+    fun basicAlert2(titulo: String ,mensaje : String) {
+
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@ProvidersActivity)
+        val inflater = this@ProvidersActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView = inflater.inflate(com.sycnos.heyvisitas.R.layout.dialog_custom2, null, false)
+
+        builder.setView(customView)
+        builder.setCancelable(false)
+        val lblReglamento =  customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblReglamento) as TextView
+        val lblAceptar = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblAceptar) as TextView
+        val lblLink = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblLink) as TextView
+        val lblTexto = customView.findViewById<View>(com.sycnos.heyvisitas.R.id.lblTexto) as TextView
+        lblReglamento.text = titulo
+        lblTexto.text= mensaje
+        lblTexto.setMovementMethod(ScrollingMovementMethod())
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+        lblAceptar.setOnClickListener {
+
+            alertDialog.dismiss()
+            finish()
+
+        }
+        lblLink.setOnClickListener {
+
+            shareLinkQr()
+
         }
     }
 }

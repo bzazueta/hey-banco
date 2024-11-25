@@ -13,14 +13,15 @@
     android:background="@drawable/gradient_drawable"
     tools:context=".NoticesActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnBack"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_radius"
-        android:text="@string/back"
+        android:background="@drawable/border_radius_orange"
+        android:text="REGRESAR"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,10 +31,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Regional"
-        android:textColor="@color/white"
+        android:text="REGIONAL"
+        android:textColor="@color/label_visitas_regional"
         android:textSize="24sp"
-        android:textStyle="italic"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,47 +44,59 @@
         android:id="@+id/tvMessage"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:gravity="center"
         android:layout_marginTop="50dp"
+        android:gravity="center"
         android:padding="16dp"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        android:textColor="@color/black"
         android:text="Titulo de aviso 1"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/border_radius"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
 
-    <Button
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFile"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/border_radius"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/border_green"
         android:text="ver archivo"
         android:textColor="@color/white"
         android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/tvMessage"
-        app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvMessage2"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/border_radius"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="24dp"
         android:padding="16dp"
-        android:text="Descripción del aviso"
         android:textColor="@color/black"
         android:textSize="24sp"
-        android:textStyle="italic"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnFile" />
+        app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="ARCHIVOS ADJUNTOS"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnFile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

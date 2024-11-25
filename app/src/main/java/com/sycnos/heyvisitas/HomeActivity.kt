@@ -2,10 +2,15 @@ package com.sycnos.heyvisitas
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.loopj.android.http.AsyncHttpClient
@@ -119,10 +124,16 @@ class HomeActivity : AppCompatActivity() {
             val i = Intent(this@HomeActivity, NoticesmessagesActvity::class.java)
             startActivity(i)
         }
+
+        binding.btnExit.setOnClickListener {
+            //mensajeCerrarSesion("Mensaje","¿Desea Cerrar Sesión?",this@HomeActivity)
+            basicAlert("Mensaje","¿Desea Cerrar Sesión?")
+        }
     }
 
     override fun onBackPressed() {
-        mensajeCerrarSesion("Mensaje","¿Desea Cerrar Sesión?",this@HomeActivity)
+        //mensajeCerrarSesion("Mensaje","¿Desea Cerrar Sesión?",this@HomeActivity)
+        basicAlert("Mensaje","¿Desea Cerrar Sesión?")
 
     }
 
@@ -300,6 +311,47 @@ class HomeActivity : AppCompatActivity() {
 
                 })
             show()
+        }
+    }
+
+    fun basicAlert(titulo: String ,mensaje : String) {
+
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@HomeActivity)
+        val inflater = this@HomeActivity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val customView = inflater.inflate(R.layout.dialog_custom2, null, false)
+
+        builder.setView(customView)
+        builder.setCancelable(false)
+        val lblReglamento =  customView.findViewById<View>(R.id.lblReglamento) as TextView
+        val lblAceptar = customView.findViewById<View>(R.id.lblAceptar) as TextView
+        val lblTexto = customView.findViewById<View>(R.id.lblTexto) as TextView
+        val lblLink = customView.findViewById<View>(R.id.lblLink) as TextView
+        lblLink.text = "CANCELAR"
+        lblReglamento.text = titulo
+        lblTexto.text= mensaje
+        lblTexto.setMovementMethod(ScrollingMovementMethod())
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+        lblAceptar.setOnClickListener {
+
+            val sharedPref: SharedPreferences = this@HomeActivity.getSharedPreferences(
+                "usuario", MODE_PRIVATE
+            )
+            val editor = sharedPref.edit()
+            editor.remove("usuario")
+            editor.remove("temp")
+            editor.commit()
+            val stringJson = sharedPref.getString("usuario", "")
+            stringJson.toString()
+            alertDialog.dismiss()
+            finish()
+
+
+        }
+
+        lblLink.setOnClickListener {
+            alertDialog.dismiss()
         }
     }
 

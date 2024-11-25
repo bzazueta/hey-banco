@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.RequestParams
 import com.loopj.android.http.TextHttpResponseHandler
@@ -59,7 +60,8 @@ class PickIdentification : AppCompatActivity() {
     var identificacion: File? = null
     var selectedImageURI: Uri? = null
     var flujo: String = ""
-
+    private lateinit var filePath: Uri
+    var photoFile: File? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -182,20 +184,53 @@ class PickIdentification : AppCompatActivity() {
        // Toast.makeText(this,"entro openGallery",Toast.LENGTH_LONG).show()
        try {
            flujo = "camara"
-           val camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-           // Start the activity with camera_intent, and request pic id
-           // Start the activity with camera_intent, and request pic id
-           startActivityForResult(camera_intent, 123)
-//           Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
-//               intent.resolveActivity(packageManager)?.also {
-//                   startActivityForResult(intent, 123)
-//               }
-//           }
+//           val camera_intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//           // Start the activity with camera_intent, and request pic id
+//           // Start the activity with camera_intent, and request pic id
+//           startActivityForResult(camera_intent, 123)
+////           Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+////               intent.resolveActivity(packageManager)?.also {
+////                   startActivityForResult(intent, 123)
+////               }
+////           }
+           val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+           if (takePictureIntent.resolveActivity(this@PickIdentification.packageManager) != null) {
+               // Crear el archivo donde se guardará la foto
+               photoFile = createImageFile(this@PickIdentification)
+
+               // Continuar solo si el archivo fue creado correctamente
+               photoFile?.also {
+                   filePath = getUriFromFile(this@PickIdentification, it)
+                   takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, filePath)
+                   startActivityForResult(takePictureIntent, SELECT_PICTURE)
+               }
+           }
        }catch(e : Exception)
            {
            e.toString()
        }
     }
+
+    fun createImageFile(context: Context): File {
+        val storageDir: File? = this@PickIdentification.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        if (!storageDir?.exists()!! == true) {
+            storageDir.mkdirs()
+        }
+        return File.createTempFile(
+            "JPEG_${System.currentTimeMillis()}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        )
+    }
+
+    fun getUriFromFile(context: Context, file: File): Uri {
+        return FileProvider.getUriForFile(
+            context,
+            "${context.packageName}",
+            file
+        )
+    }
+
     private fun openGallery() {
         try
         {
@@ -245,6 +280,7 @@ class PickIdentification : AppCompatActivity() {
             e.toString()
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         binding.btnGalery.isEnabled = true
@@ -252,29 +288,32 @@ class PickIdentification : AppCompatActivity() {
 
             if(flujo.equals("camara"))
             {
-                if (requestCode == 123) {
-                    val bitmap = data?.extras?.get("data") as Bitmap
-                    binding.ivImage.setImageBitmap(bitmap)
+                if (requestCode == 1) {
+                   // val bitmap = data?.extras?.get("data") as Bitmap
+                    //binding.ivImage.setImageBitmap(bitmap)
                     //  val bitmap_: Bitmap = Utils.decodeBase64(bitmap)
-                    try {
-                        val storageDir =
-                            getExternalFilesDir(Environment.DIRECTORY_DCIM+ "/HeyVisitas/Archivos/Imagenes/")
-                        identificacion = File.createTempFile(
-                            "imagenhey",  /* prefix */
-                            ".jpeg",  /* suffix */
-                            storageDir /* directory */
-                        )
-                        VariablesGlobales.setImagen(identificacion)
-                        //Convert bitmap to byte array
-                        val bos = ByteArrayOutputStream()
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
-                        val bitmapdata = bos.toByteArray()
 
-                        //write the bytes in file
-                        val fos = FileOutputStream(identificacion)
-                        fos.write(bitmapdata)
-                        fos.flush()
-                        fos.close()
+                    try {
+//                        val storageDir =
+//                            getExternalFilesDir(Environment.DIRECTORY_DCIM+ "/HeyVisitas/Archivos/Imagenes/")
+//                        identificacion = File.createTempFile(
+//                            "imagenhey",  /* prefix */
+//                            ".jpeg",  /* suffix */
+//                            storageDir /* directory */
+//                        )
+                        binding.ivImage.setImageURI(filePath)
+                        identificacion = File(filePath.path )
+                        VariablesGlobales.setImagen(photoFile)
+//                        //Convert bitmap to byte array
+//                        val bos = ByteArrayOutputStream()
+//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos) // YOU can also save it in JPEG
+//                        val bitmapdata = bos.toByteArray()
+//
+//                        //write the bytes in file
+//                        val fos = FileOutputStream(identificacion)
+//                        fos.write(bitmapdata)
+//                        fos.flush()
+//                        fos.close()
 
                     } catch (e: java.lang.Exception) {
                         e.printStackTrace()

@@ -129,6 +129,8 @@ class MainActivity : AppCompatActivity() {
             binding.tvAuthor.text = currentQuote.author
         })*/
         binding.tvForgetPassword.setOnClickListener{
+            binding.etUser.setText("")
+            binding.etPassword.setText("")
             val i = Intent(this@MainActivity, ForgotPasswordActivity::class.java)
             startActivity(i)
         }
@@ -320,7 +322,8 @@ class MainActivity : AppCompatActivity() {
                                 progresoLogin.dismiss()
                             }
                             /****fin token*****///
-
+                             binding.etUser.setText("")
+                            binding.etPassword.setText("")
                             var idRol = jsonObject.getJSONObject("user").getString("rol")
                             when(idRol){
                                 "2" -> {

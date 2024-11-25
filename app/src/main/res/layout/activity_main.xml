@@ -14,22 +14,20 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Regional"
-        android:textColor="@color/white"
+        android:text="VISITAS REGIONAL"
+        android:textColor="@color/label_visitas_regional"
         android:textSize="24sp"
-        android:textStyle="italic"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/ivCircle"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="200dp"
-        android:src="@mipmap/image_visitas"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp"
+        android:src="@drawable/regional_logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeybanco" />
@@ -44,20 +42,24 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivCircle" />
 
     <EditText
         android:id="@+id/etUser"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginTop="32dp"
         android:background="@drawable/border_edittext"
+        android:drawableLeft="@drawable/baseline_mail_24"
         android:hint=" Usuario"
         android:paddingLeft="8dp"
         android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUser" />
@@ -72,47 +74,84 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="italic"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etUser" />
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPasswordLayout"
+        android:layout_width="250dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/border_edittext"
-        android:hint=" Contraseña"
-        android:inputType="textPassword"
-        android:paddingLeft="8dp"
-        android:textColor="@color/black"
+        android:hint="Contraseña"
+        android:textColorHint="#A9A8A8"
+        app:boxBackgroundColor="@color/white"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:endIconMode="password_toggle"
+        app:hintTextColor="#A9A8A8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!--    <EditText-->
+<!--        android:id="@+id/etPassword"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:background="@drawable/border_edittext"-->
+<!--        android:drawableEnd="@drawable/baseline_remove_red_eye_24"-->
+<!--        android:hint=" Contraseña"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:paddingLeft="8dp"-->
+<!--        android:paddingRight="4dp"-->
+<!--        android:textColor="@color/black"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />-->
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogin"
-        android:layout_width="159dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="@drawable/border_radius"
+        android:background="@drawable/border_radius_green"
         android:text="Login"
         android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordLayout" />
 
     <TextView
         android:id="@+id/tvForgetPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/border_radius_blue"
         android:gravity="center"
         android:padding="16dp"
-        android:text="No recuerdo la contraseña"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="italic"
+        android:text="RECUPERAR CONTRASEÑA"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
